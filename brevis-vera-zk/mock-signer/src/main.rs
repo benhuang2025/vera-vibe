@@ -117,8 +117,9 @@ fn main() -> Result<()> {
             let (width, height) = img.dimensions();
             let image_bytes = img.into_raw();
 
-            // Calculate shards (Hardcoded 64 shards for benchmark/demo)
-            let num_shards = 64;
+            // Calculate shards (one per CPU core for max parallelism)
+            let num_shards = num_cpus::get();
+            println!("Using {} shards (1 per CPU core)", num_shards);
             let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
             let mut shards = Vec::new();
 
@@ -292,7 +293,7 @@ fn main() -> Result<()> {
             //    H(shard_edited_hash_0 || shard_edited_hash_1 || ... || shard_edited_hash_63)
             let img = image::open(&image)?.to_rgb8();
             let image_bytes = img.into_raw();
-            let num_shards = 64;
+            let num_shards = pkg.num_shards;
             let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
             let mut final_hasher = Sha256::new();
             for i in 0..num_shards {

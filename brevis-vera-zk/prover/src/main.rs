@@ -60,10 +60,13 @@ fn main() {
     }
 
     // 2. Parallel Shard Proving
-    println!("🚀 Starting Multi-CPU Parallel AOT Proving (64 shards)...");
+    let num_shards = signed_photo.metadata.shards.len();
+    println!(
+        "🚀 Starting Multi-CPU Parallel AOT Proving ({} shards)...",
+        num_shards
+    );
     let start_total = std::time::Instant::now();
 
-    let num_shards = 64;
     let image_len = signed_photo.image_bytes.len();
     let shard_size = (image_len + num_shards - 1) / num_shards;
     let shard_program = load_program("../shard-app/elf/riscv32im-pico-zkvm-elf");
@@ -144,6 +147,7 @@ fn main() {
         edited_image: edited_image_bytes,
         proof: vec![0u8; 32],
         public_values,
+        num_shards,
     };
     let pkg_json = serde_json::to_string_pretty(&package).expect("Failed to serialize");
     fs::write(&cli.output, pkg_json).expect("Failed to write");

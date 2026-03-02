@@ -61,6 +61,7 @@ pub struct ProofPackage {
     pub edited_image: Vec<u8>,
     pub proof: Vec<u8>,
     pub public_values: PublicValues,
+    pub num_shards: usize,
 }
 
 impl EditOperation {
