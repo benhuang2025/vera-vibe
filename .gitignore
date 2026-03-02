@@ -1,0 +1,32 @@
+# Rust
+/Fibonacci/target/
+**/target/
+Cargo.lock
+
+# Logs
+*.log
+keygen_output.txt
+keygen_output_v4.txt
+
+# Secrets (IMPORTANT)
+*.pem
+
+# Generated Proofs and Manifests
+signed_photo*.json
+edit_manifest*.json
+proof_package*.json
+
+# Generated Images
+edited*.png
+/edited.png
+
+# Large Media
+DSC00050.JPG
+
+# OS specific
+.DS_Store
+
+# IDE specific
+.idea/
+.vscode/
+*.swp
