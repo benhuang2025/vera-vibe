@@ -45,6 +45,20 @@ fn main() {
     let _manifest: EditManifest =
         serde_json::from_str(&_manifest_json).expect("Failed to parse manifest JSON");
 
+    // 1b. Host-side Root CA cert chain verification
+    {
+        use p256::ecdsa::{Signature as Sig, VerifyingKey, signature::Verifier};
+        let root_ca_vk = VerifyingKey::from_sec1_bytes(&signed_photo.signature.root_ca_pubkey)
+            .expect("Invalid Root CA public key");
+        let cert_r = p256::FieldBytes::from(signed_photo.signature.device_cert_r);
+        let cert_s = p256::FieldBytes::from(signed_photo.signature.device_cert_s);
+        let device_cert = Sig::from_scalars(cert_r, cert_s).expect("Invalid device certificate");
+        root_ca_vk
+            .verify(&signed_photo.signature.public_key, &device_cert)
+            .expect("❌ FATAL: Root CA did not sign this device key!");
+        println!("✅ Root CA → Device Key cert chain verified (host-side)");
+    }
+
     // 2. Parallel Shard Proving
     println!("🚀 Starting Multi-CPU Parallel AOT Proving (64 shards)...");
     let start_total = std::time::Instant::now();
@@ -118,6 +132,7 @@ fn main() {
         "Public Key Hash: {}",
         hex::encode(public_values.pub_key_hash)
     );
+    println!("Root CA Hash: {}", hex::encode(public_values.root_ca_hash));
     println!(
         "Edited Image Hash: {}",
         hex::encode(public_values.output_image_hash)

@@ -61,16 +61,47 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::Keygen { output } => {
-            let signing_key = SigningKey::random(&mut rand::thread_rng());
-            let pem = signing_key.to_pkcs8_pem(Default::default())?;
-            fs::write(&output, pem.as_bytes())?;
-            println!("Keypair generated and saved to {:?}", output);
+            // Generate Root CA (manufacturer) key
+            let root_ca_key = SigningKey::random(&mut rand::thread_rng());
+            let root_ca_pem_path = output.with_file_name("root_ca.pem");
+            let root_ca_pem = root_ca_key.to_pkcs8_pem(Default::default())?;
+            fs::write(&root_ca_pem_path, root_ca_pem.as_bytes())?;
 
-            let verifying_key = VerifyingKey::from(&signing_key);
+            // Generate Device key
+            let device_key = SigningKey::random(&mut rand::thread_rng());
+            let device_pem = device_key.to_pkcs8_pem(Default::default())?;
+            fs::write(&output, device_pem.as_bytes())?;
+
+            // Root CA signs Device public key (device certificate)
+            let device_vk = VerifyingKey::from(&device_key);
+            let device_pubkey_bytes = device_vk.to_encoded_point(false).as_bytes().to_vec();
+            let device_cert: p256::ecdsa::Signature = root_ca_key.sign(&device_pubkey_bytes);
+
+            // Save device certificate
+            let cert_data = serde_json::json!({
+                "device_cert_r": hex::encode(device_cert.r().to_bytes()),
+                "device_cert_s": hex::encode(device_cert.s().to_bytes()),
+                "root_ca_pubkey": hex::encode(VerifyingKey::from(&root_ca_key).to_encoded_point(false).as_bytes()),
+            });
+            let cert_path = output.with_file_name("device_cert.json");
+            fs::write(&cert_path, serde_json::to_string_pretty(&cert_data)?)?;
+
+            // Output trusted Root CA hash
+            let root_ca_vk = VerifyingKey::from(&root_ca_key);
+            let root_ca_pubkey_bytes = root_ca_vk.to_encoded_point(false).as_bytes().to_vec();
+            let mut hasher = Sha256::new();
+            hasher.update(&root_ca_pubkey_bytes);
+            let root_ca_hash: [u8; 32] = hasher.finalize().into();
             println!(
-                "Public Key (HEX): {}",
-                hex::encode(verifying_key.to_encoded_point(false).as_bytes())
+                "Generated Trusted Root CA Hash: {}",
+                hex::encode(root_ca_hash)
             );
+
+            // Also output device pubkey hash for reference
+            let mut dev_hasher = Sha256::new();
+            dev_hasher.update(&device_pubkey_bytes);
+            let dev_hash: [u8; 32] = dev_hasher.finalize().into();
+            println!("Generated Device PubKey Hash: {}", hex::encode(dev_hash));
         }
         Commands::Sign {
             image,
@@ -118,12 +149,28 @@ fn main() -> Result<()> {
                 shards,
             };
 
-            // 2. Sign metadata
+            // 2. Sign metadata with device key
             let pem = fs::read_to_string(&key)?;
             let signing_key = SigningKey::from_pkcs8_pem(&pem)?;
 
             let metadata_bytes = metadata.to_bytes();
             let signature: p256::ecdsa::Signature = signing_key.sign(&metadata_bytes);
+
+            // 3. Load device certificate (Root CA's endorsement)
+            let cert_path = key.with_file_name("device_cert.json");
+            let cert_json = fs::read_to_string(&cert_path)
+                .context("device_cert.json not found. Run 'keygen' first.")?;
+            let cert_data: serde_json::Value = serde_json::from_str(&cert_json)?;
+
+            let device_cert_r: [u8; 32] =
+                hex::decode(cert_data["device_cert_r"].as_str().unwrap())?
+                    .try_into()
+                    .map_err(|_| anyhow::anyhow!("bad cert_r"))?;
+            let device_cert_s: [u8; 32] =
+                hex::decode(cert_data["device_cert_s"].as_str().unwrap())?
+                    .try_into()
+                    .map_err(|_| anyhow::anyhow!("bad cert_s"))?;
+            let root_ca_pubkey = hex::decode(cert_data["root_ca_pubkey"].as_str().unwrap())?;
 
             let sig_struct = Signature {
                 r: signature.r().to_bytes().into(),
@@ -132,6 +179,9 @@ fn main() -> Result<()> {
                     .to_encoded_point(false)
                     .as_bytes()
                     .to_vec(),
+                root_ca_pubkey,
+                device_cert_r,
+                device_cert_s,
             };
 
             let signed_photo = SignedPhoto {
@@ -277,8 +327,8 @@ fn main() -> Result<()> {
             }
 
             if let Some(trusted_hash) = trusted_pubkey_hash {
-                if hex::encode(pkg.public_values.pub_key_hash) == trusted_hash {
-                    println!("✅ Signer is in trusted list");
+                if hex::encode(pkg.public_values.root_ca_hash) == trusted_hash {
+                    println!("✅ Manufacturer (Root CA) is trusted");
                 } else {
                     println!("❌ Signer is UNTRUSTED!");
                     all_pass = false;

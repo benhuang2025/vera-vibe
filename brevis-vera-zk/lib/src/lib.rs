@@ -15,6 +15,11 @@ pub struct Signature {
     pub r: [u8; 32],
     pub s: [u8; 32],
     pub public_key: Vec<u8>,
+    /// Root CA public key (manufacturer identity)
+    pub root_ca_pubkey: Vec<u8>,
+    /// Root CA's signature over device public key (device certificate)
+    pub device_cert_r: [u8; 32],
+    pub device_cert_s: [u8; 32],
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

@@ -10,6 +10,7 @@ keygen_output_v4.txt
 
 # Secrets (IMPORTANT)
 *.pem
+device_cert.json
 
 # Generated Proofs and Manifests
 signed*.json

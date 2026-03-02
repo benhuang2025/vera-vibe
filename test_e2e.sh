@@ -12,9 +12,8 @@ echo -e "${GREEN}🚀 Starting Brevis Vera End-to-End Test Suite${NC}\n"
 echo "--- 1. Keygen ---"
 cd brevis-vera-zk
 cargo run --bin mock-signer -- keygen --output private_key_test.pem > keygen_test.txt
-PUBKEY=$(grep "Public Key (HEX):" keygen_test.txt | cut -d' ' -f4)
-PUBKEY_HASH=$(echo -n $PUBKEY | xxd -r -p | openssl dgst -sha256 | cut -d' ' -f2)
-echo "Generated Trusted PubKey Hash: $PUBKEY_HASH"
+ROOT_CA_HASH=$(grep "Generated Trusted Root CA Hash:" keygen_test.txt | awk '{print $NF}')
+echo "Generated Trusted Root CA Hash: $ROOT_CA_HASH"
 
 # 2. Capture - Sign Image
 echo -e "\n--- 2. Capture & Sign ---"
@@ -34,7 +33,7 @@ cd ..
 
 # 5. Verify - Case A: Valid
 echo -e "\n--- 5A. Positive Case: Valid Image & Correct Key ---"
-if cargo run --bin mock-signer -- verify --package ../proof_package_test.json --image ../edited_test.png --trusted-pubkey-hash $PUBKEY_HASH | grep "VERIFICATION SUCCESSFUL"; then
+if cargo run --bin mock-signer -- verify --package ../proof_package_test.json --image ../edited_test.png --trusted-pubkey-hash $ROOT_CA_HASH | grep "VERIFICATION SUCCESSFUL"; then
     echo -e "${GREEN}✅ Positive test passed!${NC}"
 else
     echo -e "${RED}❌ Positive test failed!${NC}"
@@ -45,7 +44,7 @@ fi
 echo -e "\n--- 5B. Negative Case: Tampered Image (Brightness 40) ---"
 # Create a slightly different image
 cargo run --bin mock-signer -- edit --input ../signed_test.json --ops "crop:0,0,100,100;brightness:40" --output ../tampered_image.png --manifest ../dummy.json
-if cargo run --bin mock-signer -- verify --package ../proof_package_test.json --image ../tampered_image.png --trusted-pubkey-hash $PUBKEY_HASH | grep "Image Hash MISMATCH"; then
+if cargo run --bin mock-signer -- verify --package ../proof_package_test.json --image ../tampered_image.png --trusted-pubkey-hash $ROOT_CA_HASH | grep "Image Hash MISMATCH"; then
     echo -e "${GREEN}✅ Negative test (tampered image) passed!${NC}"
 else
     echo -e "${RED}❌ Tampered image was not detected!${NC}"
