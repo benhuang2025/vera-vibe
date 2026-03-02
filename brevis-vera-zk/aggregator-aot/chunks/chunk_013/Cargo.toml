@@ -1,0 +1,7 @@
+[package]
+name = "agg-aot-chunk-013"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pico-aot-runtime = { path = "../../../aot-runtime" }
