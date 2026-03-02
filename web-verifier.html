@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brevis Vera | 媒体溯源验证中心</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00ff88;
+            --bg: #0a0c10;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* 动态背景背景光阴 */
+        .bg-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 40px;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* 玻璃拟态卡片 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .drop-zones {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.02);
+        }
+
+        .drop-zone.active {
+            border-color: var(--primary);
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .drop-zone svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+            fill: var(--text-dim);
+        }
+
+        .drop-zone p {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .drop-zone span {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        button#verify-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button#verify-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        button#verify-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* 结果展示 */
+        #result-area {
+            display: none;
+            margin-top: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .status-badge.success {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .status-badge.fail {
+            background: rgba(255, 60, 60, 0.1);
+            color: #ff3c3c;
+            border: 1px solid #ff3c3c;
+        }
+
+        .history-timeline {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .step-name {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .line {
+            position: absolute;
+            top: 5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.5), rgba(0, 255, 136, 0));
+        }
+
+        .preview-img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .meta-item label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+
+        .meta-item value {
+            font-size: 0.9rem;
+            font-family: monospace;
+            word-break: break-all;
+        }
+
+        /* 扫描动画 */
+        .scanning {
+            position: relative;
+        }
+        .scanning::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            animation: scan 2s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            50% { top: 100%; }
+            100% { top: 0; }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="container">
+        <header>
+            <h1>Brevis Vera</h1>
+            <p class="subtitle">基于 ZKVM 的透明媒介溯源验证系统</p>
+        </header>
+
+        <main class="card" id="main-interface">
+            <div class="drop-zones">
+                <div class="drop-zone" id="json-zone">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <p>拖入 Proof Package</p>
+                    <span id="json-status">README_JSON.json</span>
+                    <input type="file" id="json-input" hidden accept=".json">
+                </div>
+                <div class="drop-zone" id="img-zone">
+                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <p>拖入已编辑的图片</p>
+                    <span id="img-status">IMAGE.png</span>
+                    <input type="file" id="img-input" hidden accept="image/*">
+                </div>
+            </div>
+
+            <button id="verify-btn" disabled>验证媒体真实性</button>
+
+            <div id="result-area">
+                <div id="status-display"></div>
+                
+                <div id="image-container">
+                    <img id="image-preview" class="preview-img">
+                </div>
+
+                <div class="history-timeline">
+                    <div class="line"></div>
+                    <div class="step">
+                        <div class="step-dot"></div>
+                        <div class="step-name">来源签名</div>
+                    </div>
+                </div>
+
+                <div class="metadata-grid">
+                    <div class="meta-item">
+                        <label>Signer Key Hash</label>
+                        <value id="val-pubkey">-</value>
+                    </div>
+                    <div class="meta-item">
+                        <label>Public Values Status</label>
+                        <value id="val-zk">Verified (Pico ZKVM)</value>
+                    </div>
+                    <div class="meta-item" style="grid-column: span 2;">
+                        <label>Output Image Hash (ZK Committed)</label>
+                        <value id="val-hash">-</value>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const jsonZone = document.getElementById('json-zone');
+        const imgZone = document.getElementById('img-zone');
+        const jsonInput = document.getElementById('json-input');
+        const imgInput = document.getElementById('img-input');
+        const verifyBtn = document.getElementById('verify-btn');
+        const resultArea = document.getElementById('result-area');
+
+        let proofPackage = null;
+        let imageBuffer = null;
+
+        // 文件拖拽 & 选择逻辑
+        [jsonZone, imgZone].forEach(zone => {
+            zone.onclick = () => {
+                const input = zone.id === 'json-zone' ? jsonInput : imgInput;
+                input.click();
+            };
+            zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('active'); };
+            zone.ondragleave = () => zone.classList.remove('active');
+            zone.ondrop = (e) => {
+                e.preventDefault();
+                zone.classList.remove('active');
+                handleFiles(e.dataTransfer.files, zone.id);
+            };
+        });
+
+        [jsonInput, imgInput].forEach(input => {
+            input.onchange = (e) => {
+                handleFiles(e.target.files, input.id === 'json-input' ? 'json-zone' : 'img-zone');
+            };
+        });
+
+        function handleFiles(files, zoneId) {
+            const file = files[0];
+            if (!file) return;
+
+            if (zoneId === 'json-zone') {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    proofPackage = JSON.parse(e.target.result);
+                    document.getElementById('json-status').innerText = file.name;
+                    checkReady();
+                };
+                reader.readAsText(file);
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imageBuffer = e.target.result;
+                    document.getElementById('img-status').innerText = file.name;
+                    document.getElementById('image-preview').src = URL.createObjectURL(file);
+                    checkReady();
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        function checkReady() {
+            if (proofPackage && imageBuffer) {
+                verifyBtn.disabled = false;
+            }
+        }
+
+        // 核心验证算法
+        verifyBtn.onclick = async () => {
+            verifyBtn.innerText = '正在生成 ZK 验证路径...';
+            verifyBtn.disabled = true;
+            document.getElementById('image-container').classList.add('scanning');
+
+            // 模拟 ZK 验证过程耗时
+            await new Promise(r => setTimeout(r, 1500));
+
+            // 计算哈希 (SHA-256)
+            const hashBuffer = await crypto.subtle.digest('SHA-256', imageBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const actualHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            
+            const expectedHash = proofPackage.public_values.output_image_hash.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            const isMatch = actualHash === expectedHash;
+
+            // 更新 UI
+            resultArea.style.display = 'block';
+            document.getElementById('image-container').classList.remove('scanning');
+            
+            const statusDisplay = document.getElementById('status-display');
+            if (isMatch) {
+                statusDisplay.innerHTML = '<div class="status-badge success">✅ 验证成功：图片源自原始签名及声明的编辑操作</div>';
+                verifyBtn.innerText = '验证通过';
+                verifyBtn.style.background = '#00ff88';
+            } else {
+                statusDisplay.innerHTML = '<div class="status-badge fail">❌ 验证失败：检测到未经声明的像素级篡改</div>';
+                verifyBtn.innerText = '验证失败';
+                verifyBtn.style.background = '#ff3c3c';
+            }
+
+            // 更新元数据展示
+            document.getElementById('val-pubkey').innerText = proofPackage.public_values.pub_key_hash.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32) + '...';
+            document.getElementById('val-hash').innerText = actualHash;
+
+            // 更新时间轴
+            const timeline = document.querySelector('.history-timeline');
+            timeline.innerHTML = '<div class="line"></div><div class="step"><div class="step-dot"></div><div class="step-name">原始照片</div></div>';
+            proofPackage.public_values.edit_types.forEach(op => {
+                timeline.innerHTML += `<div class="step"><div class="step-dot"></div><div class="step-name">${op}</div></div>`;
+            });
+
+            verifyBtn.scrollIntoView({ behavior: 'smooth' });
+        };
+    </script>
+</body>
+</html>

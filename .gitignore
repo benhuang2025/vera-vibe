@@ -12,12 +12,14 @@ keygen_output_v4.txt
 *.pem
 
 # Generated Proofs and Manifests
-signed_photo*.json
+signed*.json
 edit_manifest*.json
 proof_package*.json
+dummy.json
 
 # Generated Images
 edited*.png
+tampered_image.png
 /edited.png
 
 # Large Media

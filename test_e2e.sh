@@ -10,7 +10,7 @@ echo -e "${GREEN}🚀 Starting Brevis Vera End-to-End Test Suite${NC}\n"
 
 # 1. Setup - Keygen
 echo "--- 1. Keygen ---"
-cd Fibonacci
+cd brevis-vera-zk
 cargo run --bin mock-signer -- keygen --output private_key_test.pem > keygen_test.txt
 PUBKEY=$(grep "Public Key (HEX):" keygen_test.txt | cut -d' ' -f4)
 PUBKEY_HASH=$(echo -n $PUBKEY | xxd -r -p | openssl dgst -sha256 | cut -d' ' -f2)
