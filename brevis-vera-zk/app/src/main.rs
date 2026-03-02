@@ -1,10 +1,10 @@
 #![no_main]
 
 pico_sdk::entrypoint!(main);
+use brevis_vera_lib::{EditManifest, EditOperation, PublicValues, SignedPhoto, pixel_utils};
+use p256::ecdsa::{Signature, VerifyingKey, signature::Verifier};
 use pico_sdk::io::{commit, read_as};
-use sha2::{Sha256, Digest};
-use p256::ecdsa::{VerifyingKey, Signature, signature::Verifier};
-use brevis_vera_lib::{SignedPhoto, EditManifest, EditOperation, PublicValues, pixel_utils};
+use sha2::{Digest, Sha256};
 
 pub fn main() {
     // 1. Read Inputs
@@ -16,23 +16,21 @@ pub fn main() {
     let mut hasher = Sha256::new();
     hasher.update(&signed_photo.image_bytes);
     let computed_image_hash: [u8; 32] = hasher.finalize().into();
-    
+
     assert_eq!(
-        computed_image_hash, 
-        signed_photo.metadata.image_hash, 
+        computed_image_hash, signed_photo.metadata.image_hash,
         "Image data does not match metadata hash"
     );
 
     // Second, verify the signature over the metadata
-    let metadata_bytes = serde_json::to_vec(&signed_photo.metadata).unwrap();
+    let metadata_bytes = signed_photo.metadata.to_bytes();
     let verifying_key = VerifyingKey::from_sec1_bytes(&signed_photo.signature.public_key)
         .expect("Invalid public key");
-    let signature = Signature::from_scalars(
-        signed_photo.signature.r, 
-        signed_photo.signature.s
-    ).expect("Invalid signature scalars");
+    let signature = Signature::from_scalars(signed_photo.signature.r, signed_photo.signature.s)
+        .expect("Invalid signature scalars");
 
-    verifying_key.verify(&metadata_bytes, &signature)
+    verifying_key
+        .verify(&metadata_bytes, &signature)
         .expect("Signature verification failed");
 
     // 3. Replay Edits (Integrity)
@@ -44,9 +42,20 @@ pub fn main() {
     for op in manifest.operations {
         edit_types.push(op.name());
         match op {
-            EditOperation::Crop { x, y, width, height } => {
+            EditOperation::Crop {
+                x,
+                y,
+                width,
+                height,
+            } => {
                 current_pixels = pixel_utils::apply_crop(
-                    &current_pixels, current_w, current_h, x, y, width, height
+                    &current_pixels,
+                    current_w,
+                    current_h,
+                    x,
+                    y,
+                    width,
+                    height,
                 );
                 current_w = width;
                 current_h = height;
@@ -62,6 +71,23 @@ pub fn main() {
     final_hasher.update(&current_pixels);
     let output_image_hash: [u8; 32] = final_hasher.finalize().into();
 
+    // 4b. Compute output shard hashes
+    let num_shards = 64; // Hardcoded matches mock-signer
+    let shard_size = (current_pixels.len() + num_shards - 1) / num_shards;
+    let mut shard_hashes = Vec::new();
+
+    for i in 0..num_shards {
+        let start = i * shard_size;
+        let end = core::cmp::min(start + shard_size, current_pixels.len());
+        if start >= current_pixels.len() {
+            shard_hashes.push([0u8; 32]);
+            continue;
+        }
+        let mut h = Sha256::new();
+        h.update(&current_pixels[start..end]);
+        shard_hashes.push(h.finalize().into());
+    }
+
     // 5. Commit Public Values
     let mut pub_key_hasher = Sha256::new();
     pub_key_hasher.update(&signed_photo.signature.public_key);
@@ -71,5 +97,6 @@ pub fn main() {
         pub_key_hash,
         edit_types,
         output_image_hash,
+        shard_hashes,
     });
 }

@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use brevis_vera_lib::{PhotoMetadata, Signature, SignedPhoto};
 use clap::{Parser, Subcommand};
-use p256::ecdsa::{signature::Signer, SigningKey, VerifyingKey};
+use p256::ecdsa::{SigningKey, VerifyingKey, signature::Signer};
 use p256::pkcs8::{DecodePrivateKey, EncodePrivateKey};
 use sha2::{Digest, Sha256};
 use std::fs;
@@ -65,25 +65,49 @@ fn main() -> Result<()> {
             let pem = signing_key.to_pkcs8_pem(Default::default())?;
             fs::write(&output, pem.as_bytes())?;
             println!("Keypair generated and saved to {:?}", output);
-            
+
             let verifying_key = VerifyingKey::from(&signing_key);
-            println!("Public Key (HEX): {}", hex::encode(verifying_key.to_encoded_point(false).as_bytes()));
+            println!(
+                "Public Key (HEX): {}",
+                hex::encode(verifying_key.to_encoded_point(false).as_bytes())
+            );
         }
-        Commands::Sign { image, key, output, device } => {
+        Commands::Sign {
+            image,
+            key,
+            output,
+            device,
+        } => {
             // 1. Load image and metadata
             let raw_img = image::open(&image)?;
             // Resize to a smaller size for faster ZK development
-            let img = raw_img.thumbnail(256, 256).to_rgb8();
+            // let img = raw_img.thumbnail(256, 256).to_rgb8();
+            let img = raw_img.to_rgb8();
             let (width, height) = img.dimensions();
             let image_bytes = img.into_raw();
+
+            // Calculate shards (Hardcoded 64 shards for benchmark/demo)
+            let num_shards = 64;
+            let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
+            let mut shards = Vec::new();
+
+            for i in 0..num_shards {
+                let start = i * shard_size;
+                let end = std::cmp::min(start + shard_size, image_bytes.len());
+                if start >= image_bytes.len() {
+                    shards.push([0u8; 32]);
+                    continue;
+                }
+                let mut hasher = Sha256::new();
+                hasher.update(&image_bytes[start..end]);
+                shards.push(hasher.finalize().into());
+            }
 
             let mut hasher = Sha256::new();
             hasher.update(&image_bytes);
             let image_hash: [u8; 32] = hasher.finalize().into();
-            
-            let timestamp = SystemTime::now()
-                .duration_since(UNIX_EPOCH)?
-                .as_secs();
+
+            let timestamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
 
             let metadata = PhotoMetadata {
                 device_id: device,
@@ -91,19 +115,23 @@ fn main() -> Result<()> {
                 width,
                 height,
                 image_hash,
+                shards,
             };
 
             // 2. Sign metadata
             let pem = fs::read_to_string(&key)?;
             let signing_key = SigningKey::from_pkcs8_pem(&pem)?;
-            
-            let metadata_bytes = serde_json::to_vec(&metadata)?;
+
+            let metadata_bytes = metadata.to_bytes();
             let signature: p256::ecdsa::Signature = signing_key.sign(&metadata_bytes);
-            
+
             let sig_struct = Signature {
                 r: signature.r().to_bytes().into(),
                 s: signature.s().to_bytes().into(),
-                public_key: VerifyingKey::from(&signing_key).to_encoded_point(false).as_bytes().to_vec(),
+                public_key: VerifyingKey::from(&signing_key)
+                    .to_encoded_point(false)
+                    .as_bytes()
+                    .to_vec(),
             };
 
             let signed_photo = SignedPhoto {
@@ -117,14 +145,19 @@ fn main() -> Result<()> {
             fs::write(&output, json)?;
             println!("Signed photo saved to {:?}", output);
         }
-        Commands::Edit { input, ops, output, manifest } => {
+        Commands::Edit {
+            input,
+            ops,
+            output,
+            manifest,
+        } => {
             use brevis_vera_lib::{EditManifest, EditOperation, pixel_utils};
-            use image::{RgbImage, ImageBuffer};
+            use image::{ImageBuffer, RgbImage};
 
             // 1. Load signed photo
             let json = fs::read_to_string(&input)?;
             let signed_photo: SignedPhoto = serde_json::from_str(&json)?;
-            
+
             let mut current_pixels = signed_photo.image_bytes;
             let mut current_w = signed_photo.metadata.width;
             let mut current_h = signed_photo.metadata.height;
@@ -133,7 +166,9 @@ fn main() -> Result<()> {
             let mut edit_ops = Vec::new();
             for part in ops.split(';') {
                 let subparts: Vec<&str> = part.split(':').collect();
-                if subparts.len() != 2 { continue; }
+                if subparts.len() != 2 {
+                    continue;
+                }
                 let op_type = subparts[0];
                 let params: Vec<&str> = subparts[1].split(',').collect();
 
@@ -144,13 +179,24 @@ fn main() -> Result<()> {
                             let y: u32 = params[1].parse()?;
                             let w: u32 = params[2].parse()?;
                             let h: u32 = params[3].parse()?;
-                            
+
                             current_pixels = pixel_utils::apply_crop(
-                                &current_pixels, current_w, current_h, x, y, w, h
+                                &current_pixels,
+                                current_w,
+                                current_h,
+                                x,
+                                y,
+                                w,
+                                h,
                             );
                             current_w = w;
                             current_h = h;
-                            edit_ops.push(EditOperation::Crop { x, y, width: w, height: h });
+                            edit_ops.push(EditOperation::Crop {
+                                x,
+                                y,
+                                width: w,
+                                height: h,
+                            });
                         }
                     }
                     "brightness" => {
@@ -168,17 +214,26 @@ fn main() -> Result<()> {
             let img: RgbImage = ImageBuffer::from_raw(current_w, current_h, current_pixels)
                 .context("Failed to create image buffer")?;
             img.save(&output)?;
-            
-            let manifest_data = EditManifest { operations: edit_ops };
+
+            let manifest_data = EditManifest {
+                operations: edit_ops,
+            };
             let manifest_json = serde_json::to_string_pretty(&manifest_data)?;
             fs::write(&manifest, manifest_json)?;
-            
-            println!("Edited image ({}x{}) saved to {:?}", current_w, current_h, output);
+
+            println!(
+                "Edited image ({}x{}) saved to {:?}",
+                current_w, current_h, output
+            );
             println!("Edit manifest saved to {:?}", manifest);
         }
-        Commands::Verify { package, image, trusted_pubkey_hash } => {
+        Commands::Verify {
+            package,
+            image,
+            trusted_pubkey_hash,
+        } => {
             use brevis_vera_lib::ProofPackage;
-            
+
             // 1. Load package
             let pkg_json = fs::read_to_string(&package)?;
             let pkg: ProofPackage = serde_json::from_str(&pkg_json)?;
@@ -199,7 +254,10 @@ fn main() -> Result<()> {
             } else {
                 println!("❌ Image Hash MISMATCH!");
                 println!("Actual: {}", hex::encode(image_hash));
-                println!("Public Value: {}", hex::encode(pkg.public_values.output_image_hash));
+                println!(
+                    "Public Value: {}",
+                    hex::encode(pkg.public_values.output_image_hash)
+                );
                 all_pass = false;
             }
 
@@ -215,10 +273,15 @@ fn main() -> Result<()> {
             }
 
             println!("ZK Proof Verification: ✅ Verified (Pico EMULATED)");
-            println!("History: Origin -> {}", pkg.public_values.edit_types.join(" -> "));
+            println!(
+                "History: Origin -> {}",
+                pkg.public_values.edit_types.join(" -> ")
+            );
 
             if all_pass {
-                println!("\n🏆 VERIFICATION SUCCESSFUL: This media is authentic and conforms to declared edits.");
+                println!(
+                    "\n🏆 VERIFICATION SUCCESSFUL: This media is authentic and conforms to declared edits."
+                );
             } else {
                 println!("\n🚫 VERIFICATION FAILED.");
             }

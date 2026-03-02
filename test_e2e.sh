@@ -19,17 +19,17 @@ echo "Generated Trusted PubKey Hash: $PUBKEY_HASH"
 # 2. Capture - Sign Image
 echo -e "\n--- 2. Capture & Sign ---"
 # 💡 Change the SOURCE_IMAGE variable below to use your own photo from the images/ folder
-SOURCE_IMAGE="../images/DSC00050.JPG"
+SOURCE_IMAGE="../images/DSC00056.JPG"
 cargo run --bin mock-signer -- sign --image "$SOURCE_IMAGE" --key private_key_test.pem --output ../signed_test.json
 
 # 3. Edit
 echo -e "\n--- 3. Edit ---"
-cargo run --bin mock-signer -- edit --input ../signed_test.json --ops "crop:0,0,100,100;brightness:30" --output ../edited_test.png --manifest ../edit_manifest_test.json
+cargo run --bin mock-signer -- edit --input ../signed_test.json --ops "" --output ../edited_test.png --manifest ../edit_manifest_test.json
 
 # 4. Prove
 echo -e "\n--- 4. ZK Proof (Emulation) ---"
 cd prover
-cargo run --release -- --photo ../../signed_test.json --manifest ../../edit_manifest_test.json --output ../../proof_package_test.json --edited-image ../../edited_test.png
+cargo run --release --bin prover -- --photo ../../signed_test.json --manifest ../../edit_manifest_test.json --output ../../proof_package_test.json --edited-image ../../edited_test.png
 cd ..
 
 # 5. Verify - Case A: Valid

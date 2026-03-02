@@ -4,6 +4,8 @@ members = [
     "app", 
     "prover",
     "mock-signer",
+    "shard-app",
+    "aggregator-app",
 ]
 resolver = "2"
 
