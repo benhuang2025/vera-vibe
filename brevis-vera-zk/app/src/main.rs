@@ -71,32 +71,16 @@ pub fn main() {
     final_hasher.update(&current_pixels);
     let output_image_hash: [u8; 32] = final_hasher.finalize().into();
 
-    // 4b. Compute output shard hashes
-    let num_shards = 64; // Hardcoded matches mock-signer
-    let shard_size = (current_pixels.len() + num_shards - 1) / num_shards;
-    let mut shard_hashes = Vec::new();
-
-    for i in 0..num_shards {
-        let start = i * shard_size;
-        let end = core::cmp::min(start + shard_size, current_pixels.len());
-        if start >= current_pixels.len() {
-            shard_hashes.push([0u8; 32]);
-            continue;
-        }
-        let mut h = Sha256::new();
-        h.update(&current_pixels[start..end]);
-        shard_hashes.push(h.finalize().into());
-    }
-
     // 5. Commit Public Values
     let mut pub_key_hasher = Sha256::new();
     pub_key_hasher.update(&signed_photo.signature.public_key);
     let pub_key_hash: [u8; 32] = pub_key_hasher.finalize().into();
 
     commit(&PublicValues {
+        original_image_hash: signed_photo.metadata.image_hash,
         pub_key_hash,
+        root_ca_hash: [0u8; 32],
         edit_types,
         output_image_hash,
-        shard_hashes,
     });
 }

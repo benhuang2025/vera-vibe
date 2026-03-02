@@ -59,7 +59,7 @@ fn main() {
         image_len, num_shards, shard_size
     );
 
-    let shard_results: Vec<([u8; 32], u64)> = (0..num_shards)
+    let shard_results: Vec<(([u8; 32], [u8; 32]), u64)> = (0..num_shards)
         .into_par_iter()
         .map(|i| {
             let s = i * shard_size;
@@ -70,15 +70,15 @@ fn main() {
                 Vec::new()
             };
 
-            // AOT RUN
-            let shard_pixels_serialized = bincode::serialize(&shard_pixels).unwrap();
-            let mut emu =
-                AotEmulatorCore::new(shard_program.clone(), vec![shard_pixels_serialized]);
+            // AOT RUN: send (pixels, edit_ops)
+            let shard_input = bincode::serialize(&(&shard_pixels, &_manifest.operations)).unwrap();
+            let mut emu = AotEmulatorCore::new(shard_program.clone(), vec![shard_input]);
             shard_aot::run_aot(&mut emu).expect("Shard AOT run failed");
 
-            let shard_hash: [u8; 32] = bincode::deserialize(&emu.public_values_stream)
+            // Output: (orig_hash, edited_hash)
+            let hashes: ([u8; 32], [u8; 32]) = bincode::deserialize(&emu.public_values_stream)
                 .expect("Failed to parse shard commit");
-            (shard_hash, emu.insn_count)
+            (hashes, emu.insn_count)
         })
         .collect();
 
@@ -94,11 +94,11 @@ fn main() {
     println!("🔗 Aggregating Proofs with AOT...");
     let aggregator_program = load_program("../aggregator-app/elf/riscv32im-pico-zkvm-elf");
 
-    let shard_hashes: Vec<[u8; 32]> = shard_results.iter().map(|(h, _)| *h).collect();
+    let shard_commits: Vec<([u8; 32], [u8; 32])> = shard_results.iter().map(|(h, _)| *h).collect();
     let agg_stdin = vec![
         bincode::serialize(&signed_photo.metadata).unwrap(),
         bincode::serialize(&signed_photo.signature).unwrap(),
-        bincode::serialize(&shard_hashes).unwrap(),
+        bincode::serialize(&shard_commits).unwrap(),
     ];
 
     let mut agg_emu = AotEmulatorCore::new(aggregator_program, agg_stdin);
@@ -111,11 +111,15 @@ fn main() {
 
     println!("--- Public Commitments ---");
     println!(
+        "Original Image Hash: {}",
+        hex::encode(public_values.original_image_hash)
+    );
+    println!(
         "Public Key Hash: {}",
         hex::encode(public_values.pub_key_hash)
     );
     println!(
-        "Final Image Hash: {}",
+        "Edited Image Hash: {}",
         hex::encode(public_values.output_image_hash)
     );
 

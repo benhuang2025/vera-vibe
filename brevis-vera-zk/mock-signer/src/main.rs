@@ -238,12 +238,27 @@ fn main() -> Result<()> {
             let pkg_json = fs::read_to_string(&package)?;
             let pkg: ProofPackage = serde_json::from_str(&pkg_json)?;
 
-            // 2. Hash raw pixels (NOT file bytes)
+            // 2. Compute output_image_hash the same way the aggregator does:
+            //    H(shard_edited_hash_0 || shard_edited_hash_1 || ... || shard_edited_hash_63)
             let img = image::open(&image)?.to_rgb8();
             let image_bytes = img.into_raw();
-            let mut hasher = Sha256::new();
-            hasher.update(&image_bytes);
-            let image_hash: [u8; 32] = hasher.finalize().into();
+            let num_shards = 64;
+            let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
+            let mut final_hasher = Sha256::new();
+            for i in 0..num_shards {
+                let s = i * shard_size;
+                let e = std::cmp::min(s + shard_size, image_bytes.len());
+                let shard_pixels = if s < image_bytes.len() {
+                    &image_bytes[s..e]
+                } else {
+                    &[]
+                };
+                let mut shard_hasher = Sha256::new();
+                shard_hasher.update(shard_pixels);
+                let shard_hash: [u8; 32] = shard_hasher.finalize().into();
+                final_hasher.update(&shard_hash);
+            }
+            let image_hash: [u8; 32] = final_hasher.finalize().into();
 
             // 3. Compare with Public Values
             println!("--- Verification Report ---");

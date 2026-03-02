@@ -1,2 +1,2 @@
 Keypair generated and saved to "private_key_test.pem"
-Public Key (HEX): 04eb1ae463fe711625fa3a1ef247f91b64f43eabc732274c8eab5fd3a363ba28925fc29e1b9c251fff1dca218e9057a4de6c78070d0ed345899a9e2fb1e81cc980
+Public Key (HEX): 04fcf3ebda1320b077c19a1b219934770a2e0e34bd1f86831b17685ce9c2ef94d21eb0f00ac56f70f0df73b954d2a6a9749bc0b775b777feb7a6fdeda536f65e1b

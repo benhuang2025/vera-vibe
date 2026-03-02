@@ -44,10 +44,11 @@ pub struct EditManifest {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PublicValues {
+    pub original_image_hash: [u8; 32],
     pub pub_key_hash: [u8; 32],
+    pub root_ca_hash: [u8; 32],
     pub edit_types: Vec<String>,
     pub output_image_hash: [u8; 32],
-    pub shard_hashes: Vec<[u8; 32]>, // Hash of each output shard
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
