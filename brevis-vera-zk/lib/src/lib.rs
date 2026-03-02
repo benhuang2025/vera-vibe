@@ -57,7 +57,7 @@ impl EditOperation {
     }
 }
 
-/// 轻量级像素处理辅助函数 (用于 ZKVM 和 Host)
+/// Lightweight pixel processing helper functions (used by both ZKVM and Host)
 pub mod pixel_utils {
     pub fn apply_crop(
         pixels: &[u8],

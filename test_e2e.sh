@@ -18,7 +18,9 @@ echo "Generated Trusted PubKey Hash: $PUBKEY_HASH"
 
 # 2. Capture - Sign Image
 echo -e "\n--- 2. Capture & Sign ---"
-cargo run --bin mock-signer -- sign --image ../DSC00050.JPG --key private_key_test.pem --output ../signed_test.json
+# 💡 Change the SOURCE_IMAGE variable below to use your own photo from the images/ folder
+SOURCE_IMAGE="../images/DSC00050.JPG"
+cargo run --bin mock-signer -- sign --image "$SOURCE_IMAGE" --key private_key_test.pem --output ../signed_test.json
 
 # 3. Edit
 echo -e "\n--- 3. Edit ---"

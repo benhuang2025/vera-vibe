@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brevis Vera | 媒体溯源验证中心</title>
+    <title>Brevis Vera | Media Authenticity Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -310,7 +310,7 @@
     <div class="container">
         <header>
             <h1>Brevis Vera</h1>
-            <p class="subtitle">基于 ZKVM 的透明媒介溯源验证系统</p>
+            <p class="subtitle">ZKVM-Powered Media Authenticity & Traceability</p>
         </header>
 
         <main class="card" id="main-interface">
@@ -320,8 +320,8 @@
                         <path
                             d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
                     </svg>
-                    <p>拖入 Proof Package</p>
-                    <span id="json-status">README_JSON.json</span>
+                    <p>Drop Proof Package</p>
+                    <span id="json-status">PACKAGE.json</span>
                     <input type="file" id="json-input" hidden accept=".json">
                 </div>
                 <div class="drop-zone" id="img-zone">
@@ -329,13 +329,13 @@
                         <path
                             d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
                     </svg>
-                    <p>拖入已编辑的图片</p>
+                    <p>Drop Edited Image</p>
                     <span id="img-status">IMAGE.png</span>
                     <input type="file" id="img-input" hidden accept="image/*">
                 </div>
             </div>
 
-            <button id="verify-btn" disabled>验证媒体真实性</button>
+            <button id="verify-btn" disabled>Verify Media Authenticity</button>
 
             <div id="result-area">
                 <div id="status-display"></div>
@@ -348,7 +348,7 @@
                     <div class="line"></div>
                     <div class="step">
                         <div class="step-dot"></div>
-                        <div class="step-name">来源签名</div>
+                        <div class="step-name">Original Shot</div>
                     </div>
                 </div>
 
@@ -432,9 +432,9 @@
             }
         }
 
-        // 核心验证算法
+        // Core Verification Logic
         verifyBtn.onclick = async () => {
-            verifyBtn.innerText = '正在提取像素并生成 ZK 验证路径...';
+            verifyBtn.innerText = 'Extracting pixels & verifying ZK path...';
             verifyBtn.disabled = true;
             document.getElementById('image-container').classList.add('scanning');
 
@@ -474,12 +474,12 @@
 
             const statusDisplay = document.getElementById('status-display');
             if (isMatch) {
-                statusDisplay.innerHTML = '<div class="status-badge success">✅ 验证成功：图片源自原始签名及声明的编辑操作</div>';
-                verifyBtn.innerText = '验证通过';
+                statusDisplay.innerHTML = '<div class="status-badge success">✅ VERIFIED: Image matches original signature & declared edits</div>';
+                verifyBtn.innerText = 'Verification Passed';
                 verifyBtn.style.background = '#00ff88';
             } else {
-                statusDisplay.innerHTML = '<div class="status-badge fail">❌ 验证失败：检测到未经声明的像素级篡改</div>';
-                verifyBtn.innerText = '验证失败';
+                statusDisplay.innerHTML = '<div class="status-badge fail">❌ FAILED: Detected undeclared pixel-level tampering</div>';
+                verifyBtn.innerText = 'Verification Failed';
                 verifyBtn.style.background = '#ff3c3c';
             }
 
@@ -487,9 +487,9 @@
             document.getElementById('val-pubkey').innerText = proofPackage.public_values.pub_key_hash.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32) + '...';
             document.getElementById('val-hash').innerText = actualHash;
 
-            // 更新时间轴
+            // Update Timeline
             const timeline = document.querySelector('.history-timeline');
-            timeline.innerHTML = '<div class="line"></div><div class="step"><div class="step-dot"></div><div class="step-name">原始照片</div></div>';
+            timeline.innerHTML = '<div class="line"></div><div class="step"><div class="step-dot"></div><div class="step-name">Original Shot</div></div>';
             proofPackage.public_values.edit_types.forEach(op => {
                 timeline.innerHTML += `<div class="step"><div class="step-dot"></div><div class="step-name">${op}</div></div>`;
             });
