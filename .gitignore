@@ -38,3 +38,4 @@ test_aot_log*.txt
 brevis-vera-zk/aggregator-aot/chunks/
 brevis-vera-zk/shard-aot/chunks/
 brevis-vera-zk/keygen_test.txt
+brevis-vera-zk/vm/src/instances/compiler/shape_vk_bins/*.bin
