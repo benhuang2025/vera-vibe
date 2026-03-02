@@ -5,6 +5,10 @@ edition = "2024"
 
 [dependencies]
 pico-sdk = { workspace = true }
+pico-aot-runtime = { workspace = true }
+shard-aot = { workspace = true }
+aggregator-aot = { workspace = true }
+pico-vm = { workspace = true }
 bincode = "1.3.3"
 brevis-vera-lib = { path = "../lib" }
 serde = { workspace = true }

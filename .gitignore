@@ -31,4 +31,12 @@ DSC00050.JPG
 # IDE specific
 .idea/
 .vscode/
-*.swp
+# AOT Artifacts and Tools
+pico_tools/
+test_aot_log*.txt
+brevis-vera-zk/aggregator-aot/
+brevis-vera-zk/shard-aot/
+brevis-vera-zk/aot-runtime/
+brevis-vera-zk/vm/
+brevis-vera-zk/derive/
+brevis-vera-zk/keygen_test.txt

@@ -1,9 +1,17 @@
+use aggregator_aot;
 use brevis_vera_lib::{EditManifest, ProofPackage, PublicValues, SignedPhoto};
 use clap::Parser;
-use pico_sdk::{client::DefaultProverClient, init_logger};
+use pico_aot_runtime::AotEmulatorCore;
+use pico_sdk::init_logger;
+use pico_vm::compiler::riscv::{
+    compiler::{Compiler, SourceType},
+    program::Program,
+};
 use rayon::prelude::*;
+use shard_aot;
 use std::fs;
 use std::path::PathBuf;
+use std::sync::Arc;
 
 #[derive(Parser)]
 struct Cli {
@@ -17,15 +25,16 @@ struct Cli {
     edited_image: PathBuf,
 }
 
-fn load_elf(path: &str) -> Vec<u8> {
-    fs::read(path).expect("Failed to read ELF file")
+fn load_program(path: &str) -> Arc<Program> {
+    let elf_bytes = fs::read(path).expect("Failed to read ELF file");
+    Compiler::new(SourceType::RISCV, &elf_bytes).compile()
 }
 
 fn main() {
     init_logger();
     let cli = Cli::parse();
 
-    println!("🚀 Brevis Vera Prover starting...");
+    println!("🚀 Brevis Vera Prover (AOT) starting...");
 
     // 1. Load data
     let photo_json = fs::read_to_string(&cli.photo).expect("Failed to read photo JSON");
@@ -37,13 +46,13 @@ fn main() {
         serde_json::from_str(&_manifest_json).expect("Failed to parse manifest JSON");
 
     // 2. Parallel Shard Proving
-    println!("🚀 Starting Multi-CPU Parallel Proving (64 shards)...");
+    println!("🚀 Starting Multi-CPU Parallel AOT Proving (64 shards)...");
     let start_total = std::time::Instant::now();
 
     let num_shards = 64;
     let image_len = signed_photo.image_bytes.len();
     let shard_size = (image_len + num_shards - 1) / num_shards;
-    let shard_elf = load_elf("../shard-app/elf/riscv32im-pico-zkvm-elf");
+    let shard_program = load_program("../shard-app/elf/riscv32im-pico-zkvm-elf");
 
     println!(
         "Image: {} bytes, {} shards x {} bytes each",
@@ -53,7 +62,6 @@ fn main() {
     let shard_results: Vec<([u8; 32], u64)> = (0..num_shards)
         .into_par_iter()
         .map(|i| {
-            let client = DefaultProverClient::new(&shard_elf);
             let s = i * shard_size;
             let e = std::cmp::min(s + shard_size, image_len);
             let shard_pixels = if s < image_len {
@@ -62,41 +70,44 @@ fn main() {
                 Vec::new()
             };
 
-            let mut stdin_builder = client.new_stdin_builder();
-            stdin_builder.write(&shard_pixels);
+            // AOT RUN
+            let shard_pixels_serialized = bincode::serialize(&shard_pixels).unwrap();
+            let mut emu =
+                AotEmulatorCore::new(shard_program.clone(), vec![shard_pixels_serialized]);
+            shard_aot::run_aot(&mut emu).expect("Shard AOT run failed");
 
-            let (reports, public_buffer) = client.emulate(stdin_builder);
-            let cycles = reports.last().map(|r| r.current_cycle).unwrap_or(0);
-            let shard_hash: [u8; 32] = bincode::deserialize(&public_buffer).unwrap();
-            (shard_hash, cycles)
+            let shard_hash: [u8; 32] = bincode::deserialize(&emu.public_values_stream)
+                .expect("Failed to parse shard commit");
+            (shard_hash, emu.insn_count)
         })
         .collect();
 
     let parallel_duration = start_total.elapsed();
-    let total_cycles: u64 = shard_results.iter().map(|(_, c)| c).sum();
-    let max_cycles = shard_results.iter().map(|(_, c)| *c).max().unwrap_or(0);
+    let total_insns: u64 = shard_results.iter().map(|(_, c)| c).sum();
+    let max_insns = shard_results.iter().map(|(_, c)| *c).max().unwrap_or(0);
 
     println!("✅ Parallel Shards Finished in {:?}", parallel_duration);
-    println!("📈 Total Cycles: {}", total_cycles);
-    println!("⚡ Longest Shard: {} cycles", max_cycles);
+    println!("📈 Total Insns: {}", total_insns);
+    println!("⚡ Longest Shard: {} insns", max_insns);
 
     // 3. Aggregation
-    println!("🔗 Aggregating Proofs...");
+    println!("🔗 Aggregating Proofs with AOT...");
+    let aggregator_program = load_program("../aggregator-app/elf/riscv32im-pico-zkvm-elf");
+
     let shard_hashes: Vec<[u8; 32]> = shard_results.iter().map(|(h, _)| *h).collect();
+    let agg_stdin = vec![
+        bincode::serialize(&signed_photo.metadata).unwrap(),
+        bincode::serialize(&signed_photo.signature).unwrap(),
+        bincode::serialize(&shard_hashes).unwrap(),
+    ];
 
-    let agg_elf = load_elf("../aggregator-app/elf/riscv32im-pico-zkvm-elf");
-    let agg_client = DefaultProverClient::new(&agg_elf);
-    let mut agg_stdin = agg_client.new_stdin_builder();
-    agg_stdin.write(&signed_photo.metadata);
-    agg_stdin.write(&signed_photo.signature);
-    agg_stdin.write(&shard_hashes);
+    let mut agg_emu = AotEmulatorCore::new(aggregator_program, agg_stdin);
+    aggregator_aot::run_aot(&mut agg_emu).expect("Aggregator AOT run failed");
 
-    let (agg_reports, agg_public_buffer) = agg_client.emulate(agg_stdin);
-    let agg_cycles = agg_reports.last().map(|r| r.current_cycle).unwrap_or(0);
-    println!("✅ Aggregator: {} cycles", agg_cycles);
+    let public_values: PublicValues = bincode::deserialize(&agg_emu.public_values_stream)
+        .expect("Failed to deserialize agg values");
 
-    let public_values: PublicValues =
-        bincode::deserialize(&agg_public_buffer).expect("Failed to deserialize");
+    println!("✅ Aggregator: {} insns", agg_emu.insn_count);
 
     println!("--- Public Commitments ---");
     println!(
