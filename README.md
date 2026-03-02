@@ -13,6 +13,9 @@
   - **`prover/`**: Host-side orchestrator for parallel AOT proving
   - **`mock-signer/`**: CLI tool for keygen, signing, editing, and verifying
   - **`shard-aot/`** & **`aggregator-aot/`**: AOT-compiled native code for fast emulation
+  - **`vm/`**: Pico VM runtime (forked from [brevis-network/pico](https://github.com/brevis-network/pico))
+  - **`aot-runtime/`**: AOT emulator runtime
+  - **`derive/`**: Procedural macros
 - **`images/`**: Directory for source media and raw photographs.
 - **`test_e2e.sh`**: Complete end-to-end automated test suite.
 
@@ -58,26 +61,50 @@
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Rust (nightly toolchain `nightly-2025-08-04`)
-- [Pico CLI](https://github.com/brevis-network/pico): `cargo install cargo-pico`
 
-### Run the End-to-End Test
+1. **Rust nightly toolchain** (`nightly-2025-08-04`)
+   ```bash
+   rustup install nightly-2025-08-04
+   rustup default nightly-2025-08-04
+   ```
+
+2. **Pico CLI** — required for building ZK guest programs (only needed if you want to modify guest code)
+   ```bash
+   cargo install cargo-pico
+   ```
+
+3. **RISC-V target** — required for building ZK guest programs
+   ```bash
+   rustup target add riscv32im-unknown-none-elf
+   ```
+
+### Clone and Run
+
 ```bash
+git clone https://github.com/benhuang2025/vera-vibe.git
+cd vera-vibe
+
+# Run the full end-to-end test
 chmod +x test_e2e.sh
 ./test_e2e.sh
 ```
 
-**What happens:**
+> **Note**: The repository includes all pre-built artifacts (ELF binaries, AOT chunks, and VK maps), so you can run the E2E test immediately after cloning — no additional build steps required.
+
+### What the E2E Test Does
+
 1. **Keygen** — Generates a Root CA key + Device key pair, outputs `Trusted Root CA Hash`
 2. **Sign** — Signs a photo with the device key, auto-detects CPU cores for shard count
 3. **Edit** — Applies edit operations (or none) and produces `edited_test.png`
-4. **ZK Prove** — Runs parallel AOT proving across all CPU cores (~750ms for 37MB image)
+4. **ZK Prove** — Runs parallel AOT proving across all CPU cores (~750ms for 37MB image on 124-core server)
 5. **Verify (3 cases)**:
    - ✅ Positive: correct image + correct Root CA hash → `VERIFICATION SUCCESSFUL`
    - ✅ Negative: tampered image → `Image Hash MISMATCH!`
    - ✅ Negative: wrong manufacturer key → `Signer is UNTRUSTED!`
 
-### Manual Step-by-Step
+---
+
+## 🔧 Manual Step-by-Step
 
 ```bash
 cd brevis-vera-zk
@@ -122,6 +149,68 @@ cargo run --bin mock-signer -- verify \
 1. Place your photo (JPG or PNG) into the **`images/`** directory.
 2. Open **`test_e2e.sh`** and update the `SOURCE_IMAGE` variable to your filename.
 3. Run `./test_e2e.sh`.
+
+---
+
+## 🔨 Developer Guide: Rebuilding from Source
+
+If you modify the ZK guest programs (`shard-app/` or `aggregator-app/`), you need to rebuild the ELF binaries and regenerate the AOT chunks. Follow these steps:
+
+### Step 1: Build ZK Guest ELFs
+
+```bash
+# Build the shard guest program
+cd brevis-vera-zk/shard-app
+cargo pico build
+# Output: elf/riscv32im-pico-zkvm-elf
+
+# Build the aggregator guest program
+cd ../aggregator-app
+cargo pico build
+# Output: elf/riscv32im-pico-zkvm-elf
+```
+
+### Step 2: Build the AOT Code Generator
+
+The AOT code generator converts ELF binaries into native Rust crates for fast emulation.
+
+```bash
+# Clone and build Pico tools (one-time setup)
+cd /path/to/workspace
+git clone https://github.com/brevis-network/pico.git pico_tools
+cd pico_tools
+cargo build --release -p aot-codegen
+```
+
+### Step 3: Generate AOT Chunks
+
+```bash
+cd brevis-vera-zk
+
+# Generate shard AOT chunks from the shard ELF
+../pico_tools/target/release/generate_crates \
+  shard-app/elf/riscv32im-pico-zkvm-elf \
+  shard-aot
+
+# Generate aggregator AOT chunks from the aggregator ELF
+../pico_tools/target/release/generate_crates \
+  aggregator-app/elf/riscv32im-pico-zkvm-elf \
+  aggregator-aot
+```
+
+This will populate `shard-aot/chunks/` and `aggregator-aot/chunks/` with the generated crate code.
+
+### Step 4: Build and Test
+
+```bash
+# Build the full workspace
+cd brevis-vera-zk
+cargo build --release
+
+# Run the E2E test from the repo root
+cd ..
+./test_e2e.sh
+```
 
 ---
 
