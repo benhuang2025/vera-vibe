@@ -1,0 +1,17 @@
+[package]
+name = "mock-signer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+brevis-vera-lib = { path = "../lib" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+p256 = { workspace = true }
+sha2 = { workspace = true }
+image = { workspace = true }
+anyhow = { workspace = true }
+hex = { workspace = true }
+base64 = { workspace = true }
+clap = { version = "4.5.41", features = ["derive"] }
+rand = "0.8.5"

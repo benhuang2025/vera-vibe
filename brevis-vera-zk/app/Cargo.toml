@@ -1,0 +1,12 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+pico-sdk = { workspace = true }
+brevis-vera-lib = { path = "../lib" }
+sha2 = { workspace = true }
+p256 = { workspace = true }
+hex = { workspace = true }
+serde_json = { workspace = true, features = ["alloc"] }
