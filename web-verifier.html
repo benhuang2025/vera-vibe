@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -168,8 +169,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .status-badge {
@@ -266,10 +274,14 @@
         .scanning {
             position: relative;
         }
+
         .scanning::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
             background: var(--primary);
             box-shadow: 0 0 15px var(--primary);
             animation: scan 2s linear infinite;
@@ -277,13 +289,21 @@
         }
 
         @keyframes scan {
-            0% { top: 0; }
-            50% { top: 100%; }
-            100% { top: 0; }
-        }
+            0% {
+                top: 0;
+            }
 
+            50% {
+                top: 100%;
+            }
+
+            100% {
+                top: 0;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="bg-glow"></div>
 
@@ -296,13 +316,19 @@
         <main class="card" id="main-interface">
             <div class="drop-zones">
                 <div class="drop-zone" id="json-zone">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                    </svg>
                     <p>拖入 Proof Package</p>
                     <span id="json-status">README_JSON.json</span>
                     <input type="file" id="json-input" hidden accept=".json">
                 </div>
                 <div class="drop-zone" id="img-zone">
-                    <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                    </svg>
                     <p>拖入已编辑的图片</p>
                     <span id="img-status">IMAGE.png</span>
                     <input type="file" id="img-input" hidden accept="image/*">
@@ -313,7 +339,7 @@
 
             <div id="result-area">
                 <div id="status-display"></div>
-                
+
                 <div id="image-container">
                     <img id="image-preview" class="preview-img">
                 </div>
@@ -408,18 +434,36 @@
 
         // 核心验证算法
         verifyBtn.onclick = async () => {
-            verifyBtn.innerText = '正在生成 ZK 验证路径...';
+            verifyBtn.innerText = '正在提取像素并生成 ZK 验证路径...';
             verifyBtn.disabled = true;
             document.getElementById('image-container').classList.add('scanning');
 
+            // 1. 使用 Canvas 提取原始 RGB 像素 (跳过 Alpha 通道，与 Rust 逻辑一致)
+            const imgEl = document.getElementById('image-preview');
+            const canvas = document.createElement('canvas');
+            canvas.width = imgEl.naturalWidth;
+            canvas.height = imgEl.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(imgEl, 0, 0);
+
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            const rgbBytes = new Uint8Array(canvas.width * canvas.height * 3);
+
+            // RGBA -> RGB 转换
+            for (let i = 0, j = 0; i < imageData.length; i += 4, j += 3) {
+                rgbBytes[j] = imageData[i];     // R
+                rgbBytes[j + 1] = imageData[i + 1]; // G
+                rgbBytes[j + 2] = imageData[i + 2]; // B
+            }
+
             // 模拟 ZK 验证过程耗时
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 1200));
 
             // 计算哈希 (SHA-256)
-            const hashBuffer = await crypto.subtle.digest('SHA-256', imageBuffer);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', rgbBytes);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const actualHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            
+
             const expectedHash = proofPackage.public_values.output_image_hash.map(b => b.toString(16).padStart(2, '0')).join('');
 
             const isMatch = actualHash === expectedHash;
@@ -427,7 +471,7 @@
             // 更新 UI
             resultArea.style.display = 'block';
             document.getElementById('image-container').classList.remove('scanning');
-            
+
             const statusDisplay = document.getElementById('status-display');
             if (isMatch) {
                 statusDisplay.innerHTML = '<div class="status-badge success">✅ 验证成功：图片源自原始签名及声明的编辑操作</div>';
@@ -454,4 +498,5 @@
         };
     </script>
 </body>
+
 </html>
