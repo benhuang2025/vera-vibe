@@ -4,6 +4,7 @@ members = [
     "app", 
     "prover",
     "mock-signer",
+    "web-server",
     "shard-app",
     "aggregator-app",
     "shard-aot",

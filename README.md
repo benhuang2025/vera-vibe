@@ -18,6 +18,21 @@
   - **`derive/`**: Procedural macros
 - **`images/`**: Directory for source media and raw photographs.
 - **`test_e2e.sh`**: Complete end-to-end automated test suite.
+- **`web-app/`**: Frontend (HTML/CSS/JS) for the web interface.
+- **`web-server`** (in `brevis-vera-zk/`): Axum backend serving APIs and static files.
+
+---
+
+## 🌐 Web App
+
+A full web interface for Upload & Sign, Edit & Prove, and Verify. Run the server:
+
+```bash
+cd brevis-vera-zk
+cargo run --release --bin web-server
+```
+
+Open **http://localhost:3000** (or **http://\<server-ip\>:3000** for remote access). The server listens on `0.0.0.0:3000`. For public deployment, allow port 3000 in your firewall (e.g. `sudo ufw allow 3000`) or cloud security group.
 
 ---
 

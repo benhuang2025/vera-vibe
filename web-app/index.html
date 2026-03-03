@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Brevis Vera — ZK-powered media authenticity verification using Pico ZKVM">
+    <title>Brevis Vera — ZK Media Authenticity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🛡️</span>
+                <h1>Brevis Vera</h1>
+                <span class="badge">ZK Powered</span>
+            </div>
+            <p class="subtitle">Zero-Knowledge Media Authenticity & Traceability</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav" id="tabNav">
+            <button class="tab-btn active" data-tab="upload" id="tab-upload">
+                <span class="tab-icon">📷</span>
+                <span class="tab-label">Upload & Sign</span>
+                <span class="tab-step">Step 1</span>
+            </button>
+            <div class="tab-arrow">→</div>
+            <button class="tab-btn" data-tab="edit" id="tab-edit">
+                <span class="tab-icon">✏️</span>
+                <span class="tab-label">Edit & Prove</span>
+                <span class="tab-step">Step 2</span>
+            </button>
+            <div class="tab-arrow">→</div>
+            <button class="tab-btn" data-tab="verify" id="tab-verify">
+                <span class="tab-icon">✅</span>
+                <span class="tab-label">Verify</span>
+                <span class="tab-step">Step 3</span>
+            </button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content">
+            <!-- Upload & Sign -->
+            <section class="tab-panel active" id="panel-upload">
+                <div class="panel-header">
+                    <h2>Upload & Sign a Photo</h2>
+                    <p>Simulate a camera capturing and signing a photo with an embedded device key.</p>
+                </div>
+
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-content">
+                        <span class="drop-icon">📁</span>
+                        <p>Drag & drop a photo here, or <label for="fileInput" class="file-label">browse</label></p>
+                        <p class="drop-hint">Supports JPG, PNG</p>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" hidden>
+                </div>
+
+                <div class="image-preview" id="uploadPreview" style="display:none;">
+                    <img id="previewImg" alt="Preview">
+                    <div class="image-info" id="imageInfo"></div>
+                </div>
+
+                <button class="btn btn-primary" id="signBtn" disabled>
+                    <span class="btn-icon">🔑</span> Generate Keys & Sign
+                </button>
+
+                <div class="result-cards" id="signResults" style="display:none;">
+                    <div class="result-card">
+                        <div class="result-label">Root CA Hash (Manufacturer)</div>
+                        <div class="result-value mono" id="rootCaHash"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Device Public Key Hash</div>
+                        <div class="result-value mono" id="devicePkHash"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Image Shards</div>
+                        <div class="result-value" id="numShards"></div>
+                    </div>
+                    <button class="btn btn-secondary" id="goToEditBtn">Continue to Edit & Prove →</button>
+                </div>
+            </section>
+
+            <!-- Edit & Prove -->
+            <section class="tab-panel" id="panel-edit">
+                <div class="panel-header">
+                    <h2>Edit & Generate ZK Proof</h2>
+                    <p>Apply edits to the signed photo and generate a zero-knowledge proof of the edit chain.</p>
+                </div>
+
+                <div class="edit-container" id="editContainer" style="display:none;">
+                    <div class="edit-preview">
+                        <img id="editPreviewImg" alt="Edit Preview">
+                    </div>
+
+                    <div class="edit-controls">
+                        <h3>Edit Operations</h3>
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="cropEnable"> Crop
+                            </label>
+                            <div class="crop-inputs" id="cropInputs" style="display:none;">
+                                <input type="number" id="cropX" placeholder="X" min="0">
+                                <input type="number" id="cropY" placeholder="Y" min="0">
+                                <input type="number" id="cropW" placeholder="Width" min="1">
+                                <input type="number" id="cropH" placeholder="Height" min="1">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="brightnessEnable"> Brightness
+                            </label>
+                            <div class="brightness-inputs" id="brightnessInputs" style="display:none;">
+                                <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
+                                <span id="brightnessValue">0</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-secondary" id="applyEditBtn">Apply Edits</button>
+                    </div>
+                </div>
+
+                <div class="edited-preview" id="editedPreview" style="display:none;">
+                    <h3>Edited Image</h3>
+                    <img id="editedImg" alt="Edited">
+                </div>
+
+                <div class="prove-section" id="proveSection" style="display:none;">
+                    <div class="prove-options">
+                        <label class="toggle-label">
+                            <input type="checkbox" id="realProofToggle">
+                            <span class="toggle-text">Real STARK Proof</span>
+                            <span class="toggle-hint">(~60s, cryptographically verifiable)</span>
+                        </label>
+                    </div>
+
+                    <button class="btn btn-primary" id="proveBtn">
+                        <span class="btn-icon">⚡</span> Generate ZK Proof
+                    </button>
+
+                    <div class="progress-bar" id="progressBar" style="display:none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                        <span class="progress-text" id="progressText">Generating proof...</span>
+                    </div>
+                </div>
+
+                <div class="result-cards" id="proveResults" style="display:none;">
+                    <div class="result-card success">
+                        <div class="result-label">Proof Generated</div>
+                        <div class="result-value" id="proofType"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Original Image Hash</div>
+                        <div class="result-value mono" id="origHash"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Edited Image Hash</div>
+                        <div class="result-value mono" id="editedHash"></div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Proving Time</div>
+                        <div class="result-value" id="proveTime"></div>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-secondary" id="downloadProofBtn" download>📦 Download Proof Package</a>
+                        <button class="btn btn-secondary" id="goToVerifyBtn">Continue to Verify →</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verify -->
+            <section class="tab-panel" id="panel-verify">
+                <div class="panel-header">
+                    <h2>Independent Verification</h2>
+                    <p>Upload an edited image and its proof package to independently verify authenticity.</p>
+                </div>
+
+                <div class="verify-inputs">
+                    <div class="upload-box" id="verifyImageDrop">
+                        <span class="drop-icon">🖼️</span>
+                        <p>Drop edited image here</p>
+                        <input type="file" id="verifyImageInput" accept="image/*" hidden>
+                        <div class="upload-status" id="verifyImageStatus"></div>
+                    </div>
+
+                    <div class="upload-box" id="verifyProofDrop">
+                        <span class="drop-icon">📄</span>
+                        <p>Drop proof package (JSON) here</p>
+                        <input type="file" id="verifyProofInput" accept=".json" hidden>
+                        <div class="upload-status" id="verifyProofStatus"></div>
+                    </div>
+                </div>
+
+                <div class="verify-key-input">
+                    <label for="trustedKeyInput">Trusted Root CA Hash (optional)</label>
+                    <input type="text" id="trustedKeyInput" placeholder="e816dab7bdbd5d5e..." class="text-input">
+                </div>
+
+                <button class="btn btn-primary" id="verifyBtn" disabled>
+                    <span class="btn-icon">🔍</span> Verify Authenticity
+                </button>
+
+                <div class="verdict-container" id="verdictContainer" style="display:none;">
+                    <div class="verdict-checks" id="verdictChecks"></div>
+                    <div class="verdict-banner" id="verdictBanner"></div>
+                    <div class="edit-history" id="editHistory"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with <a href="https://github.com/brevis-network/pico" target="_blank">Pico ZKVM</a> • 
+               <a href="https://github.com/benhuang2025/vera-vibe" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -22,7 +22,7 @@ pub fn main() {
                 current_pixels =
                     brevis_vera_lib::pixel_utils::apply_brightness(&current_pixels, delta);
             }
-            _ => { /* Crop is handled by host-level sharding for now */ }
+            _ => { /* Crop is handled by host-level computation */ }
         }
     }
 

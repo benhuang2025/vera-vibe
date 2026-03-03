@@ -1,0 +1,31 @@
+[package]
+name = "web-server"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "web-server"
+path = "src/main.rs"
+
+[dependencies]
+brevis-vera-lib = { path = "../lib" }
+pico-vm = { workspace = true }
+pico-aot-runtime = { workspace = true }
+shard-aot = { workspace = true }
+aggregator-aot = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+bincode = { workspace = true }
+p256 = { workspace = true }
+sha2 = { workspace = true }
+hex = { workspace = true }
+image = { workspace = true }
+anyhow = { workspace = true }
+num_cpus = { workspace = true }
+rayon = { workspace = true }
+axum = { version = "0.8", features = ["multipart"] }
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["cors", "fs"] }
+uuid = { version = "1", features = ["v4"] }
+rand = { workspace = true }
+rand_core = { version = "0.6", features = ["getrandom"] }
