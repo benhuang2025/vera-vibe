@@ -3568,7 +3568,7 @@ pub fn block_0x00210438(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(12usize, a);
     emu.pc = 2163808u32;
     emu.update_insn_clock();
-    emu.adi_no_count(12usize, 12usize, 4294966824u32, 2163812u32);
+    emu.adi_no_count(12usize, 12usize, 4294966896u32, 2163812u32);
     emu.adi_no_count(11usize, 2usize, 4u32, 2163816u32);
     emu.adi_no_count(10usize, 8usize, 0u32, 2163820u32);
     emu.apc_no_count(1usize, 2163820u32, 4294938624u32, 2163824u32);

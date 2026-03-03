@@ -231,7 +231,7 @@ pub fn block_0x00206c44(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(13usize, a);
     emu.pc = 2124880u32;
     emu.update_insn_clock();
-    emu.adi_no_count(13usize, 13usize, 220u32, 2124884u32);
+    emu.adi_no_count(13usize, 13usize, 292u32, 2124884u32);
     emu.adr_no_count(11usize, 11usize, 13usize, 2124888u32);
     emu.lw_no_count(11usize, 11usize, 0u32, 2124892u32)?;
     emu.add_memory_rw_events(7usize);
@@ -266,7 +266,7 @@ pub fn block_0x00206c60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(13usize, a);
     emu.pc = 2124912u32;
     emu.update_insn_clock();
-    emu.adi_no_count(13usize, 13usize, 220u32, 2124916u32);
+    emu.adi_no_count(13usize, 13usize, 292u32, 2124916u32);
     emu.adr_no_count(11usize, 11usize, 13usize, 2124920u32);
     emu.lw_no_count(11usize, 11usize, 0u32, 2124924u32)?;
     emu.add_memory_rw_events(8usize);
@@ -297,12 +297,12 @@ pub fn block_0x00206c80(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2124940u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 588u32, 2124944u32);
+    emu.adi_no_count(11usize, 11usize, 660u32, 2124944u32);
     let a = 0u32.wrapping_add(2232320u32);
     emu.write_reg_no_count(14usize, a);
     emu.pc = 2124948u32;
     emu.update_insn_clock();
-    emu.adi_no_count(14usize, 14usize, 572u32, 2124952u32);
+    emu.adi_no_count(14usize, 14usize, 644u32, 2124952u32);
     emu.adi_no_count(12usize, 0usize, 2u32, 2124956u32);
     emu.adi_no_count(13usize, 2usize, 8u32, 2124960u32);
     emu.apc_no_count(1usize, 2124960u32, 94208u32, 2124964u32);
@@ -310,7 +310,7 @@ pub fn block_0x00206c80(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2124968u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966316u32);
+    let target = base.wrapping_add(4294966384u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -358,12 +358,12 @@ pub fn block_0x00206cb4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2124992u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 684u32, 2124996u32);
+    emu.adi_no_count(11usize, 11usize, 756u32, 2124996u32);
     let a = 0u32.wrapping_add(2232320u32);
     emu.write_reg_no_count(14usize, a);
     emu.pc = 2125000u32;
     emu.update_insn_clock();
-    emu.adi_no_count(14usize, 14usize, 668u32, 2125004u32);
+    emu.adi_no_count(14usize, 14usize, 740u32, 2125004u32);
     emu.adi_no_count(12usize, 0usize, 18u32, 2125008u32);
     emu.adi_no_count(13usize, 2usize, 8u32, 2125012u32);
     emu.apc_no_count(1usize, 2125012u32, 94208u32, 2125016u32);
@@ -371,7 +371,7 @@ pub fn block_0x00206cb4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2125020u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966264u32);
+    let target = base.wrapping_add(4294966332u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -419,12 +419,12 @@ pub fn block_0x00206ce8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125044u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 627u32, 2125048u32);
+    emu.adi_no_count(11usize, 11usize, 699u32, 2125048u32);
     let a = 0u32.wrapping_add(2232320u32);
     emu.write_reg_no_count(14usize, a);
     emu.pc = 2125052u32;
     emu.update_insn_clock();
-    emu.adi_no_count(14usize, 14usize, 300u32, 2125056u32);
+    emu.adi_no_count(14usize, 14usize, 372u32, 2125056u32);
     emu.adi_no_count(12usize, 0usize, 19u32, 2125060u32);
     emu.adi_no_count(13usize, 2usize, 8u32, 2125064u32);
     emu.apc_no_count(1usize, 2125064u32, 94208u32, 2125068u32);
@@ -432,7 +432,7 @@ pub fn block_0x00206ce8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2125072u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966212u32);
+    let target = base.wrapping_add(4294966280u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -478,7 +478,7 @@ pub fn block_0x00206d1c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125088u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 646u32, 2125092u32);
+    emu.adi_no_count(11usize, 11usize, 718u32, 2125092u32);
     emu.adi_no_count(12usize, 0usize, 19u32, 2125096u32);
     emu.lw_no_count(1usize, 2usize, 12u32, 2125100u32)?;
     emu.adi_no_count(2usize, 2usize, 16u32, 2125104u32);
@@ -487,7 +487,7 @@ pub fn block_0x00206d1c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2125112u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965420u32);
+    let target = base.wrapping_add(4294965488u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -509,7 +509,7 @@ pub fn block_0x00206d38(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125116u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 737u32, 2125120u32);
+    emu.adi_no_count(11usize, 11usize, 809u32, 2125120u32);
     emu.adi_no_count(12usize, 0usize, 22u32, 2125124u32);
     emu.lw_no_count(1usize, 2usize, 12u32, 2125128u32)?;
     emu.adi_no_count(2usize, 2usize, 16u32, 2125132u32);
@@ -518,7 +518,7 @@ pub fn block_0x00206d38(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2125140u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965392u32);
+    let target = base.wrapping_add(4294965460u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -542,12 +542,12 @@ pub fn block_0x00206d54(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125152u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 608u32, 2125156u32);
+    emu.adi_no_count(11usize, 11usize, 680u32, 2125156u32);
     let a = 0u32.wrapping_add(2232320u32);
     emu.write_reg_no_count(14usize, a);
     emu.pc = 2125160u32;
     emu.update_insn_clock();
-    emu.adi_no_count(14usize, 14usize, 592u32, 2125164u32);
+    emu.adi_no_count(14usize, 14usize, 664u32, 2125164u32);
     emu.adi_no_count(12usize, 0usize, 19u32, 2125168u32);
     emu.adi_no_count(13usize, 2usize, 8u32, 2125172u32);
     emu.apc_no_count(1usize, 2125172u32, 94208u32, 2125176u32);
@@ -555,7 +555,7 @@ pub fn block_0x00206d54(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2125180u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966104u32);
+    let target = base.wrapping_add(4294966172u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -601,7 +601,7 @@ pub fn block_0x00206d88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125196u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 702u32, 2125200u32);
+    emu.adi_no_count(11usize, 11usize, 774u32, 2125200u32);
     emu.adi_no_count(12usize, 0usize, 26u32, 2125204u32);
     emu.lw_no_count(1usize, 2usize, 12u32, 2125208u32)?;
     emu.adi_no_count(2usize, 2usize, 16u32, 2125212u32);
@@ -610,7 +610,7 @@ pub fn block_0x00206d88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2125220u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965312u32);
+    let target = base.wrapping_add(4294965380u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -632,7 +632,7 @@ pub fn block_0x00206da4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125224u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 728u32, 2125228u32);
+    emu.adi_no_count(11usize, 11usize, 800u32, 2125228u32);
     emu.adi_no_count(12usize, 0usize, 9u32, 2125232u32);
     emu.lw_no_count(1usize, 2usize, 12u32, 2125236u32)?;
     emu.adi_no_count(2usize, 2usize, 16u32, 2125240u32);
@@ -641,7 +641,7 @@ pub fn block_0x00206da4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2125248u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965284u32);
+    let target = base.wrapping_add(4294965352u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -664,12 +664,12 @@ pub fn block_0x00206dc0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2125256u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 776u32, 2125260u32);
+    emu.adi_no_count(11usize, 11usize, 848u32, 2125260u32);
     let a = 0u32.wrapping_add(2232320u32);
     emu.write_reg_no_count(14usize, a);
     emu.pc = 2125264u32;
     emu.update_insn_clock();
-    emu.adi_no_count(14usize, 14usize, 760u32, 2125268u32);
+    emu.adi_no_count(14usize, 14usize, 832u32, 2125268u32);
     emu.adi_no_count(12usize, 0usize, 6u32, 2125272u32);
     emu.adi_no_count(13usize, 2usize, 8u32, 2125276u32);
     emu.apc_no_count(1usize, 2125276u32, 94208u32, 2125280u32);
@@ -677,7 +677,7 @@ pub fn block_0x00206dc0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2125284u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966000u32);
+    let target = base.wrapping_add(4294966068u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -848,7 +848,7 @@ pub fn block_0x00206e50(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(10usize, a);
     emu.pc = 2125396u32;
     emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 1452u32, 2125400u32);
+    emu.adi_no_count(10usize, 10usize, 1524u32, 2125400u32);
     emu.adi_no_count(11usize, 0usize, 1u32, 2125404u32);
     emu.adi_no_count(12usize, 20usize, 0u32, 2125408u32);
     emu.apc_no_count(1usize, 2125408u32, 8192u32, 2125412u32);
@@ -1278,7 +1278,7 @@ pub fn block_0x00207014(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(12usize, a);
     emu.pc = 2125848u32;
     emu.update_insn_clock();
-    emu.adi_no_count(12usize, 12usize, 1120u32, 2125852u32);
+    emu.adi_no_count(12usize, 12usize, 1192u32, 2125852u32);
     emu.adi_no_count(10usize, 0usize, 1u32, 2125856u32);
     emu.adi_no_count(11usize, 20usize, 0u32, 2125860u32);
     emu.apc_no_count(1usize, 2125860u32, 77824u32, 2125864u32);
@@ -1286,7 +1286,7 @@ pub fn block_0x00207014(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2125868u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1164u32);
+    let target = base.wrapping_add(1232u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1430,7 +1430,7 @@ pub fn block_0x00207080(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(10usize, a);
     emu.pc = 2125956u32;
     emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 1452u32, 2125960u32);
+    emu.adi_no_count(10usize, 10usize, 1524u32, 2125960u32);
     emu.adi_no_count(11usize, 0usize, 1u32, 2125964u32);
     emu.adi_no_count(12usize, 19usize, 0u32, 2125968u32);
     emu.apc_no_count(1usize, 2125968u32, 8192u32, 2125972u32);
@@ -1497,7 +1497,7 @@ pub fn block_0x0020709c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(19usize, a);
     emu.pc = 2126016u32;
     emu.update_insn_clock();
-    emu.adi_no_count(19usize, 19usize, 1136u32, 2126020u32);
+    emu.adi_no_count(19usize, 19usize, 1208u32, 2126020u32);
     emu.add_memory_rw_events(11usize);
     let return_addr = 2126024u32;
     emu.write_reg_no_count(0usize, return_addr);
@@ -1628,7 +1628,7 @@ pub fn block_0x00207108(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126104u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(360u32);
+    let target = base.wrapping_add(428u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1805,7 +1805,7 @@ pub fn block_0x002071a4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(12usize, a);
     emu.pc = 2126248u32;
     emu.update_insn_clock();
-    emu.adi_no_count(12usize, 12usize, 1120u32, 2126252u32);
+    emu.adi_no_count(12usize, 12usize, 1192u32, 2126252u32);
     emu.adi_no_count(10usize, 0usize, 1u32, 2126256u32);
     emu.adi_no_count(11usize, 19usize, 0u32, 2126260u32);
     emu.apc_no_count(1usize, 2126260u32, 77824u32, 2126264u32);
@@ -1813,7 +1813,7 @@ pub fn block_0x002071a4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126268u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(764u32);
+    let target = base.wrapping_add(832u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1837,7 +1837,7 @@ pub fn block_0x002071bc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2126280u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294966772u32);
+    let target = base.wrapping_add(4294966840u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1866,7 +1866,7 @@ pub fn block_0x002071c8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2126312u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965532u32);
+    let target = base.wrapping_add(4294965600u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1922,13 +1922,13 @@ pub fn block_0x002071f8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2126336u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 1152u32, 2126340u32);
+    emu.adi_no_count(11usize, 11usize, 1224u32, 2126340u32);
     emu.apc_no_count(6usize, 2126340u32, 90112u32, 2126344u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2126348u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(984u32);
+    let target = base.wrapping_add(1052u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1951,13 +1951,13 @@ pub fn block_0x0020720c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2126356u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 1167u32, 2126360u32);
+    emu.adi_no_count(11usize, 11usize, 1239u32, 2126360u32);
     emu.apc_no_count(6usize, 2126360u32, 90112u32, 2126364u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2126368u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(964u32);
+    let target = base.wrapping_add(1032u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1979,7 +1979,7 @@ pub fn block_0x00207220(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(13usize, a);
     emu.pc = 2126372u32;
     emu.update_insn_clock();
-    emu.adi_no_count(13usize, 13usize, 1096u32, 2126376u32);
+    emu.adi_no_count(13usize, 13usize, 1168u32, 2126376u32);
     emu.adi_no_count(12usize, 0usize, 21u32, 2126380u32);
     emu.adi_no_count(10usize, 11usize, 0u32, 2126384u32);
     emu.adi_no_count(11usize, 13usize, 0u32, 2126388u32);
@@ -1988,7 +1988,7 @@ pub fn block_0x00207220(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(6usize);
     let return_addr = 2126396u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(936u32);
+    let target = base.wrapping_add(1004u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2158,12 +2158,12 @@ pub fn block_0x00207274(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.sw_no_count(9usize, 2usize, 20u32, 2126468u32)?;
     emu.adi_no_count(8usize, 10usize, 0u32, 2126472u32);
     emu.adi_no_count(10usize, 2usize, 8u32, 2126476u32);
-    emu.apc_no_count(1usize, 2126476u32, 90112u32, 2126480u32);
+    emu.apc_no_count(1usize, 2126476u32, 94208u32, 2126480u32);
     emu.add_memory_rw_events(8usize);
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126484u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(2020u32);
+    let target = base.wrapping_add(4294965288u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2186,7 +2186,7 @@ pub fn block_0x00207294(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(9usize, a);
     emu.pc = 2126492u32;
     emu.update_insn_clock();
-    emu.adi_no_count(9usize, 9usize, 300u32, 2126496u32);
+    emu.adi_no_count(9usize, 9usize, 372u32, 2126496u32);
     emu.adi_no_count(10usize, 2usize, 8u32, 2126500u32);
     emu.adi_no_count(11usize, 2usize, 16u32, 2126504u32);
     emu.adi_no_count(12usize, 9usize, 0u32, 2126508u32);
@@ -2195,7 +2195,7 @@ pub fn block_0x00207294(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126516u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967232u32);
+    let target = base.wrapping_add(4u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2223,7 +2223,7 @@ pub fn block_0x002072b4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126544u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967204u32);
+    let target = base.wrapping_add(4294967272u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2251,7 +2251,7 @@ pub fn block_0x002072d0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126572u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967176u32);
+    let target = base.wrapping_add(4294967244u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2279,7 +2279,7 @@ pub fn block_0x002072ec(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126600u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967148u32);
+    let target = base.wrapping_add(4294967216u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2307,7 +2307,7 @@ pub fn block_0x00207308(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126628u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967120u32);
+    let target = base.wrapping_add(4294967188u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2335,7 +2335,7 @@ pub fn block_0x00207324(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126656u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967092u32);
+    let target = base.wrapping_add(4294967160u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2363,7 +2363,7 @@ pub fn block_0x00207340(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126684u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967064u32);
+    let target = base.wrapping_add(4294967132u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2391,7 +2391,7 @@ pub fn block_0x0020735c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126712u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967036u32);
+    let target = base.wrapping_add(4294967104u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2419,7 +2419,7 @@ pub fn block_0x00207378(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126740u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294967008u32);
+    let target = base.wrapping_add(4294967076u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2447,7 +2447,7 @@ pub fn block_0x00207394(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126768u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966980u32);
+    let target = base.wrapping_add(4294967048u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2475,7 +2475,7 @@ pub fn block_0x002073b0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126796u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966952u32);
+    let target = base.wrapping_add(4294967020u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2503,7 +2503,7 @@ pub fn block_0x002073cc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126824u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966924u32);
+    let target = base.wrapping_add(4294966992u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2531,7 +2531,7 @@ pub fn block_0x002073e8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126852u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966896u32);
+    let target = base.wrapping_add(4294966964u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2559,7 +2559,7 @@ pub fn block_0x00207404(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126880u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966868u32);
+    let target = base.wrapping_add(4294966936u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2587,7 +2587,7 @@ pub fn block_0x00207420(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126908u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966840u32);
+    let target = base.wrapping_add(4294966908u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2615,7 +2615,7 @@ pub fn block_0x0020743c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126936u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966812u32);
+    let target = base.wrapping_add(4294966880u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2643,7 +2643,7 @@ pub fn block_0x00207458(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126964u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966784u32);
+    let target = base.wrapping_add(4294966852u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2671,7 +2671,7 @@ pub fn block_0x00207474(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2126992u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966756u32);
+    let target = base.wrapping_add(4294966824u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2699,7 +2699,7 @@ pub fn block_0x00207490(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127020u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966728u32);
+    let target = base.wrapping_add(4294966796u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2727,7 +2727,7 @@ pub fn block_0x002074ac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127048u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966700u32);
+    let target = base.wrapping_add(4294966768u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2755,7 +2755,7 @@ pub fn block_0x002074c8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127076u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966672u32);
+    let target = base.wrapping_add(4294966740u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2783,7 +2783,7 @@ pub fn block_0x002074e4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127104u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966644u32);
+    let target = base.wrapping_add(4294966712u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2811,7 +2811,7 @@ pub fn block_0x00207500(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127132u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966616u32);
+    let target = base.wrapping_add(4294966684u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2839,7 +2839,7 @@ pub fn block_0x0020751c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127160u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966588u32);
+    let target = base.wrapping_add(4294966656u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2867,7 +2867,7 @@ pub fn block_0x00207538(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127188u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966560u32);
+    let target = base.wrapping_add(4294966628u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2895,7 +2895,7 @@ pub fn block_0x00207554(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127216u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966532u32);
+    let target = base.wrapping_add(4294966600u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2923,7 +2923,7 @@ pub fn block_0x00207570(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127244u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966504u32);
+    let target = base.wrapping_add(4294966572u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2951,7 +2951,7 @@ pub fn block_0x0020758c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127272u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966476u32);
+    let target = base.wrapping_add(4294966544u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2979,7 +2979,7 @@ pub fn block_0x002075a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127300u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966448u32);
+    let target = base.wrapping_add(4294966516u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -3007,7 +3007,7 @@ pub fn block_0x002075c4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127328u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966420u32);
+    let target = base.wrapping_add(4294966488u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -3035,7 +3035,7 @@ pub fn block_0x002075e0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127356u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966392u32);
+    let target = base.wrapping_add(4294966460u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -3063,7 +3063,7 @@ pub fn block_0x002075fc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127384u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966364u32);
+    let target = base.wrapping_add(4294966432u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -3087,7 +3087,7 @@ pub fn block_0x00207618(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let base = emu.read_reg_b_tracked(1usize);
     let return_addr = 2127396u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966748u32);
+    let target = base.wrapping_add(4294966816u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -3207,7 +3207,7 @@ pub fn block_0x0020766c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(10usize, a);
     emu.pc = 2127476u32;
     emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 1452u32, 2127480u32);
+    emu.adi_no_count(10usize, 10usize, 1524u32, 2127480u32);
     emu.adi_no_count(11usize, 0usize, 1u32, 2127484u32);
     emu.adi_no_count(12usize, 8usize, 0u32, 2127488u32);
     emu.apc_no_count(1usize, 2127488u32, 8192u32, 2127492u32);
@@ -3365,7 +3365,7 @@ pub fn block_0x002076b4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(10usize, a);
     emu.pc = 2127544u32;
     emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 1452u32, 2127548u32);
+    emu.adi_no_count(10usize, 10usize, 1524u32, 2127548u32);
     emu.adi_no_count(11usize, 0usize, 1u32, 2127552u32);
     emu.adi_no_count(12usize, 8usize, 0u32, 2127556u32);
     emu.apc_no_count(1usize, 2127556u32, 8192u32, 2127560u32);

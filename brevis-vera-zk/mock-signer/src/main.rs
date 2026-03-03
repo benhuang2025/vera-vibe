@@ -194,12 +194,17 @@ fn main() -> Result<()> {
             // 2. Parse ops
             let mut edit_ops = Vec::new();
             for part in ops.split(';') {
-                let subparts: Vec<&str> = part.split(':').collect();
-                if subparts.len() != 2 {
+                let part = part.trim();
+                if part.is_empty() {
                     continue;
                 }
+                let subparts: Vec<&str> = part.splitn(2, ':').collect();
                 let op_type = subparts[0];
-                let params: Vec<&str> = subparts[1].split(',').collect();
+                let params: Vec<&str> = if subparts.len() > 1 {
+                    subparts[1].split(',').collect()
+                } else {
+                    vec![]
+                };
 
                 match op_type {
                     "crop" => {
@@ -234,6 +239,24 @@ fn main() -> Result<()> {
                             current_pixels = pixel_utils::apply_brightness(&current_pixels, delta);
                             edit_ops.push(EditOperation::AdjustBrightness { delta });
                         }
+                    }
+                    "grayscale" => {
+                        current_pixels = pixel_utils::apply_grayscale(&current_pixels);
+                        edit_ops.push(EditOperation::Grayscale);
+                    }
+                    "contrast" => {
+                        if params.len() == 1 {
+                            let factor: u16 = params[0].parse()?;
+                            current_pixels = pixel_utils::apply_contrast(&current_pixels, factor);
+                            edit_ops.push(EditOperation::AdjustContrast { factor });
+                        }
+                    }
+                    "rotate90" => {
+                        current_pixels = pixel_utils::apply_rotate90(&current_pixels, current_w, current_h);
+                        let tmp = current_w;
+                        current_w = current_h;
+                        current_h = tmp;
+                        edit_ops.push(EditOperation::Rotate90);
                     }
                     _ => println!("Unknown op: {}", op_type),
                 }

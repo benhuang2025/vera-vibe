@@ -1,7 +1,10 @@
 #![no_main]
 
 pico_sdk::entrypoint!(main);
-use brevis_vera_lib::{EditManifest, EditOperation, PublicValues, SignedPhoto, pixel_utils, compute_block_hashes, compute_image_commitment};
+use brevis_vera_lib::{
+    EditManifest, EditOperation, PublicValues, SignedPhoto, compute_block_hashes,
+    compute_image_commitment, pixel_utils,
+};
 use p256::ecdsa::{Signature, VerifyingKey, signature::Verifier};
 use pico_sdk::io::{commit, read_as};
 use sha2::{Digest, Sha256};
@@ -59,6 +62,18 @@ pub fn main() {
             }
             EditOperation::AdjustBrightness { delta } => {
                 current_pixels = pixel_utils::apply_brightness(&current_pixels, delta);
+            }
+            EditOperation::Grayscale => {
+                current_pixels = pixel_utils::apply_grayscale(&current_pixels);
+            }
+            EditOperation::AdjustContrast { factor } => {
+                current_pixels = pixel_utils::apply_contrast(&current_pixels, factor);
+            }
+            EditOperation::Rotate90 => {
+                current_pixels = pixel_utils::apply_rotate90(&current_pixels, current_w, current_h);
+                let tmp = current_w;
+                current_w = current_h;
+                current_h = tmp;
             }
         }
     }

@@ -263,7 +263,8 @@ impl<F: PrimeField32, E: EllipticCurve + WeierstrassParameters> ChipBehavior<F>
                 let cols: &mut WeierstrassDoubleAssignCols<F, E::BaseField> =
                     row.as_mut_slice().borrow_mut();
                 let zero = BigUint::zero();
-                Self::populate_field_ops(&mut vec![], cols, zero.clone(), zero.clone());
+                let one = BigUint::from(1u32);
+                Self::populate_field_ops(&mut vec![], cols, zero, one);
                 row
             },
             log_rows,

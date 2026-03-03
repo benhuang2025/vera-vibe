@@ -157,6 +157,7 @@ async fn sign_photo(State(state): State<AppState>, mut multipart: Multipart) -> 
     // Save original image for preview
     fs::write(session_dir.join("original.jpg"), &image_data).unwrap();
 
+    let num_blocks = (pixels.len() + brevis_vera_lib::BLOCK_SIZE - 1) / brevis_vera_lib::BLOCK_SIZE;
     let block_hashes = brevis_vera_lib::compute_block_hashes(&pixels);
     let image_commitment = brevis_vera_lib::compute_image_commitment(&block_hashes);
 
@@ -225,6 +226,7 @@ async fn sign_photo(State(state): State<AppState>, mut multipart: Multipart) -> 
     Json(json!({
         "width": width,
         "height": height,
+        "num_blocks": num_blocks,
         "image_commitment": hex::encode(image_commitment),
     }))
 }
@@ -282,6 +284,18 @@ async fn edit_photo(State(state): State<AppState>, Json(req): Json<EditRequest>)
             }
             EditOperation::AdjustBrightness { delta } => {
                 pixels = brevis_vera_lib::pixel_utils::apply_brightness(&pixels, *delta);
+            }
+            EditOperation::AdjustContrast { factor } => {
+                pixels = brevis_vera_lib::pixel_utils::apply_contrast(&pixels, *factor);
+            }
+            EditOperation::Grayscale => {
+                pixels = brevis_vera_lib::pixel_utils::apply_grayscale(&pixels);
+            }
+            EditOperation::Rotate90 => {
+                pixels = brevis_vera_lib::pixel_utils::apply_rotate90(&pixels, w, h);
+                let tmp = w;
+                w = h;
+                h = tmp;
             }
         }
     }
@@ -443,13 +457,14 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
     let num_shards = num_cpus::get().max(1);
     let blocks_per_shard = (num_blocks + num_shards - 1) / num_shards;
 
-    let has_crop = manifest
-        .operations
-        .iter()
-        .any(|op| matches!(op, EditOperation::Crop { .. }));
+    let has_host_ops = manifest.operations.iter().any(|op| {
+        matches!(
+            op,
+            EditOperation::Crop { .. } | EditOperation::Grayscale | EditOperation::Rotate90
+        )
+    });
 
-    let shard_results: Vec<(Vec<[u8; 32]>, Vec<[u8; 32]>)> = if has_crop {
-        // Crop changes dimensions — compute block hashes on host
+    let shard_results: Vec<(Vec<[u8; 32]>, Vec<[u8; 32]>)> = if has_host_ops {
         let mut edited_pixels = signed_photo.image_bytes.clone();
         let mut w = signed_photo.metadata.width;
         let mut h = signed_photo.metadata.height;
@@ -466,16 +481,36 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
                     edited_pixels =
                         brevis_vera_lib::pixel_utils::apply_brightness(&edited_pixels, *delta);
                 }
+                EditOperation::AdjustContrast { factor } => {
+                    edited_pixels =
+                        brevis_vera_lib::pixel_utils::apply_contrast(&edited_pixels, *factor);
+                }
+                EditOperation::Grayscale => {
+                    edited_pixels =
+                        brevis_vera_lib::pixel_utils::apply_grayscale(&edited_pixels);
+                }
+                EditOperation::Rotate90 => {
+                    edited_pixels =
+                        brevis_vera_lib::pixel_utils::apply_rotate90(&edited_pixels, w, h);
+                    let tmp = w;
+                    w = h;
+                    h = tmp;
+                }
             }
         }
         let orig_block_hashes = brevis_vera_lib::compute_block_hashes(&signed_photo.image_bytes);
         let edited_block_hashes = brevis_vera_lib::compute_block_hashes(&edited_pixels);
         vec![(orig_block_hashes, edited_block_hashes)]
     } else {
-        let brightness_ops: Vec<EditOperation> = manifest
+        let shard_ops: Vec<EditOperation> = manifest
             .operations
             .iter()
-            .filter(|op| matches!(op, EditOperation::AdjustBrightness { .. }))
+            .filter(|op| {
+                matches!(
+                    op,
+                    EditOperation::AdjustBrightness { .. } | EditOperation::AdjustContrast { .. }
+                )
+            })
             .cloned()
             .collect();
 
@@ -493,7 +528,7 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
                 let num_blocks_in_shard = block_end - block_start;
 
                 let shard_input: (Vec<u8>, Vec<EditOperation>, usize) =
-                    (shard_pixels, brightness_ops.clone(), num_blocks_in_shard);
+                    (shard_pixels, shard_ops.clone(), num_blocks_in_shard);
                 let shard_input_bytes = bincode::serialize(&shard_input).unwrap();
                 let mut emu = pico_aot_runtime::AotEmulatorCore::new(
                     shard_program.clone(),
@@ -799,6 +834,16 @@ fn parse_ops(ops_str: &str) -> Vec<EditOperation> {
                     .parse::<i16>()
                     .ok()
                     .map(|delta| EditOperation::AdjustBrightness { delta })
+            } else if part.starts_with("contrast:") {
+                part[9..]
+                    .trim()
+                    .parse::<u16>()
+                    .ok()
+                    .map(|factor| EditOperation::AdjustContrast { factor })
+            } else if part == "grayscale" {
+                Some(EditOperation::Grayscale)
+            } else if part == "rotate90" {
+                Some(EditOperation::Rotate90)
             } else {
                 None
             }

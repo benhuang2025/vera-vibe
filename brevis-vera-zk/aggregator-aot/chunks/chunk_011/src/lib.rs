@@ -3429,7 +3429,7 @@ pub fn block_0x0020aa94(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     emu.write_reg_no_count(11usize, a);
     emu.pc = 2140836u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 4294966760u32, 2140840u32);
+    emu.adi_no_count(11usize, 11usize, 4294966832u32, 2140840u32);
     emu.apc_no_count(1usize, 2140840u32, 4294963200u32, 2140844u32);
     emu.add_memory_rw_events(7usize);
     let base = emu.read_reg_b_tracked(1usize);

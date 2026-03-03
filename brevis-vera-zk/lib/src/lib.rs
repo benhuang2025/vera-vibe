@@ -66,6 +66,12 @@ pub enum EditOperation {
     AdjustBrightness {
         delta: i16,
     },
+    Grayscale,
+    AdjustContrast {
+        /// Fixed-point factor: 100 = no change, 150 = +50%, 50 = -50%
+        factor: u16,
+    },
+    Rotate90,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -94,6 +100,9 @@ impl EditOperation {
         match self {
             EditOperation::Crop { .. } => "Crop".to_string(),
             EditOperation::AdjustBrightness { .. } => "AdjustBrightness".to_string(),
+            EditOperation::Grayscale => "Grayscale".to_string(),
+            EditOperation::AdjustContrast { .. } => "AdjustContrast".to_string(),
+            EditOperation::Rotate90 => "Rotate90".to_string(),
         }
     }
 }
@@ -132,6 +141,45 @@ pub mod pixel_utils {
                 }
             })
             .collect()
+    }
+
+    pub fn apply_grayscale(pixels: &[u8]) -> Vec<u8> {
+        let mut result = Vec::with_capacity(pixels.len());
+        for chunk in pixels.chunks(3) {
+            let r = chunk[0] as u32;
+            let g = chunk[1] as u32;
+            let b = chunk[2] as u32;
+            let gray = ((r * 77 + g * 150 + b * 29) >> 8) as u8;
+            result.push(gray);
+            result.push(gray);
+            result.push(gray);
+        }
+        result
+    }
+
+    /// factor=100 means no change, >100 increases contrast, <100 decreases
+    pub fn apply_contrast(pixels: &[u8], factor: u16) -> Vec<u8> {
+        pixels
+            .iter()
+            .map(|&p| {
+                let val = ((p as i32 - 128) * factor as i32 / 100) + 128;
+                val.clamp(0, 255) as u8
+            })
+            .collect()
+    }
+
+    /// Rotate 90° clockwise. Requires width and height of the image.
+    pub fn apply_rotate90(pixels: &[u8], w: u32, h: u32) -> Vec<u8> {
+        let (w, h) = (w as usize, h as usize);
+        let mut result = vec![0u8; w * h * 3];
+        for y in 0..h {
+            for x in 0..w {
+                let src = (y * w + x) * 3;
+                let dst = (x * h + (h - 1 - y)) * 3;
+                result[dst..dst + 3].copy_from_slice(&pixels[src..src + 3]);
+            }
+        }
+        result
     }
 }
 

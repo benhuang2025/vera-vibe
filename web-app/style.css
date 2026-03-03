@@ -419,7 +419,7 @@ body {
     border-color: var(--accent);
 }
 
-.brightness-inputs {
+.slider-inputs {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -430,10 +430,10 @@ input[type="range"] {
     accent-color: var(--accent);
 }
 
-#brightnessValue {
+.slider-value {
     font-size: 0.85rem;
     color: var(--accent-hover);
-    min-width: 2rem;
+    min-width: 2.5rem;
     text-align: right;
 }
 

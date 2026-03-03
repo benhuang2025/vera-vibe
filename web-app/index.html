@@ -54,7 +54,7 @@
                 <div class="drop-zone" id="dropZone">
                     <div class="drop-zone-content">
                         <span class="drop-icon">📁</span>
-                        <p>Drag & drop a photo here, or <label for="fileInput" class="file-label">browse</label></p>
+                        <p>Drag & drop a photo here, or <span class="file-label">browse</span></p>
                         <p class="drop-hint">Supports JPG, PNG</p>
                     </div>
                     <input type="file" id="fileInput" accept="image/*" hidden>
@@ -79,8 +79,8 @@
                         <div class="result-value mono" id="devicePkHash"></div>
                     </div>
                     <div class="result-card">
-                        <div class="result-label">Image Shards</div>
-                        <div class="result-value" id="numShards"></div>
+                        <div class="result-label">Image Blocks (64KB each)</div>
+                        <div class="result-value" id="numBlocks"></div>
                     </div>
                     <button class="btn btn-secondary" id="goToEditBtn">Continue to Edit & Prove →</button>
                 </div>
@@ -116,10 +116,32 @@
                             <label>
                                 <input type="checkbox" id="brightnessEnable"> Brightness
                             </label>
-                            <div class="brightness-inputs" id="brightnessInputs" style="display:none;">
+                            <div class="slider-inputs" id="brightnessInputs" style="display:none;">
                                 <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
-                                <span id="brightnessValue">0</span>
+                                <span class="slider-value" id="brightnessValue">0</span>
                             </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="contrastEnable"> Contrast
+                            </label>
+                            <div class="slider-inputs" id="contrastInputs" style="display:none;">
+                                <input type="range" id="contrastSlider" min="50" max="200" value="100">
+                                <span class="slider-value" id="contrastValue">100</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="grayscaleEnable"> Grayscale
+                            </label>
+                        </div>
+
+                        <div class="control-group">
+                            <label>
+                                <input type="checkbox" id="rotate90Enable"> Rotate 90°
+                            </label>
                         </div>
 
                         <button class="btn btn-secondary" id="applyEditBtn">Apply Edits</button>

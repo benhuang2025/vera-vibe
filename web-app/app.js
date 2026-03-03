@@ -96,7 +96,7 @@ signBtn.addEventListener('click', async () => {
         // Show results
         document.getElementById('rootCaHash').textContent = keyData.root_ca_hash;
         document.getElementById('devicePkHash').textContent = keyData.device_pubkey_hash;
-        document.getElementById('numShards').textContent = `${signData.num_shards} shards • ${signData.width}×${signData.height}`;
+        document.getElementById('numBlocks').textContent = `${signData.num_blocks} blocks • ${signData.width}×${signData.height}`;
         document.getElementById('signResults').style.display = 'flex';
 
         state.signedPhotoReady = true;
@@ -138,6 +138,16 @@ document.getElementById('brightnessSlider').addEventListener('input', (e) => {
     document.getElementById('brightnessValue').textContent = e.target.value;
 });
 
+// Contrast toggle
+document.getElementById('contrastEnable').addEventListener('change', (e) => {
+    document.getElementById('contrastInputs').style.display = e.target.checked ? 'flex' : 'none';
+});
+
+// Contrast slider
+document.getElementById('contrastSlider').addEventListener('input', (e) => {
+    document.getElementById('contrastValue').textContent = e.target.value;
+});
+
 // Apply edits
 document.getElementById('applyEditBtn').addEventListener('click', async () => {
     const ops = buildOpsString();
@@ -176,6 +186,16 @@ function buildOpsString() {
     if (document.getElementById('brightnessEnable').checked) {
         const v = document.getElementById('brightnessSlider').value;
         if (v != 0) parts.push(`brightness:${v}`);
+    }
+    if (document.getElementById('contrastEnable').checked) {
+        const v = document.getElementById('contrastSlider').value;
+        if (v != 100) parts.push(`contrast:${v}`);
+    }
+    if (document.getElementById('grayscaleEnable').checked) {
+        parts.push('grayscale');
+    }
+    if (document.getElementById('rotate90Enable').checked) {
+        parts.push('rotate90');
     }
     return parts.join(';');
 }
@@ -237,7 +257,7 @@ function showProveResults(data) {
     progressBar.style.display = 'none';
 
     document.getElementById('proofType').textContent = data.proof_type || 'Emulated';
-    document.getElementById('origHash').textContent = data.public_values?.original_image_hash || '';
+    document.getElementById('origHash').textContent = data.public_values?.original_image_commitment || data.public_values?.original_image_hash || '';
     document.getElementById('editedHash').textContent = data.public_values?.output_image_hash || '';
     document.getElementById('proveTime').textContent = `${(data.proving_time_ms / 1000).toFixed(1)}s`;
 

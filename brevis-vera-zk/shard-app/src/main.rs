@@ -29,7 +29,11 @@ pub fn main() {
                 current_pixels =
                     brevis_vera_lib::pixel_utils::apply_brightness(&current_pixels, delta);
             }
-            _ => { /* Crop is handled by host-level computation */ }
+            EditOperation::AdjustContrast { factor } => {
+                current_pixels =
+                    brevis_vera_lib::pixel_utils::apply_contrast(&current_pixels, factor);
+            }
+            _ => { /* Crop, Rotate90, Grayscale need full-image context → host handles */ }
         }
     }
 
