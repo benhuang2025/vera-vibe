@@ -26,7 +26,7 @@ categories = ["cryptography"]
 
 [workspace.dependencies]
 pico-sdk = { git = "https://github.com/brevis-network/pico" }
-pico-vm = { path = "vm" }
+pico-vm = { path = "vm", features = ["jemalloc", "bigint-rug", "mmap-memory"] }
 pico-derive = { path = "derive" }
 pico-aot-runtime = { path = "aot-runtime" }
 shard-aot = { path = "shard-aot" }
