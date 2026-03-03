@@ -1,5 +1,5 @@
 [package]
-name = "pico-aot-chunk-011"
+name = "agg-aot-chunk-011"
 version = "0.1.0"
 edition = "2021"
 
