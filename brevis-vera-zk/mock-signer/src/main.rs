@@ -6,7 +6,8 @@ use p256::pkcs8::{DecodePrivateKey, EncodePrivateKey};
 use sha2::{Digest, Sha256};
 use std::fs;
 use std::path::PathBuf;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::SystemTime;
+use std::time::UNIX_EPOCH;
 
 #[derive(Parser)]
 #[command(name = "brevis-vera")]
@@ -338,7 +339,47 @@ fn main() -> Result<()> {
                 println!("ℹ️ No trusted key provided, skipping origin check.");
             }
 
-            println!("ZK Proof Verification: ✅ Verified (Pico EMULATED)");
+            // Check for real STARK proof
+            let proof_dir = package.parent().unwrap_or(std::path::Path::new("."));
+            let proof_path = proof_dir.join("stark_proof.bin");
+            let vk_path = proof_dir.join("stark_vk.bin");
+
+            if proof_path.exists() && vk_path.exists() {
+                println!("🔐 Real STARK proof found, verifying...");
+                use pico_vm::configs::config::StarkGenericConfig;
+                use pico_vm::configs::stark_config::KoalaBearPoseidon2;
+                use pico_vm::instances::chiptype::riscv_chiptype::RiscvChipType;
+                use pico_vm::instances::machine::riscv::RiscvMachine;
+                use pico_vm::machine::keys::BaseVerifyingKey;
+                use pico_vm::machine::machine::MachineBehavior;
+                use pico_vm::machine::proof::MetaProof;
+                use pico_vm::primitives::consts::RISCV_NUM_PVS;
+
+                let meta_proof = MetaProof::<KoalaBearPoseidon2>::load_from_file(&proof_path)
+                    .expect("Failed to load STARK proof");
+                let vk_bytes = fs::read(&vk_path).expect("Failed to read VK");
+                let vk: BaseVerifyingKey<KoalaBearPoseidon2> =
+                    bincode::deserialize(&vk_bytes).expect("Failed to deserialize VK");
+
+                // Verify using the machine verifier
+                let machine = RiscvMachine::<KoalaBearPoseidon2, _>::new(
+                    KoalaBearPoseidon2::new(),
+                    RiscvChipType::all_chips(),
+                    RISCV_NUM_PVS,
+                );
+                match machine.verify(&meta_proof, &vk) {
+                    Ok(_) => {
+                        println!("ZK Proof Verification: ✅ Verified (Pico STARK)");
+                    }
+                    Err(e) => {
+                        println!("ZK Proof Verification: ❌ FAILED: {:?}", e);
+                        all_pass = false;
+                    }
+                }
+            } else {
+                println!("ZK Proof Verification: ✅ Verified (Pico EMULATED)");
+            }
+
             println!(
                 "History: Origin -> {}",
                 pkg.public_values.edit_types.join(" -> ")

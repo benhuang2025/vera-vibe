@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+# Parse arguments
+REAL_PROOF_FLAG=""
+if [[ "$1" == "--real-proof" ]]; then
+    REAL_PROOF_FLAG="--real-proof"
+    echo "🔐 Real STARK proof mode enabled"
+fi
+
 # Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -26,9 +33,13 @@ echo -e "\n--- 3. Edit ---"
 cargo run --bin mock-signer -- edit --input ../signed_test.json --ops "" --output ../edited_test.png --manifest ../edit_manifest_test.json
 
 # 4. Prove
-echo -e "\n--- 4. ZK Proof (Emulation) ---"
+if [ -n "$REAL_PROOF_FLAG" ]; then
+    echo -e "\n--- 4. ZK Proof (Real STARK) ---"
+else
+    echo -e "\n--- 4. ZK Proof (Emulation) ---"
+fi
 cd prover
-cargo run --release --bin prover -- --photo ../../signed_test.json --manifest ../../edit_manifest_test.json --output ../../proof_package_test.json --edited-image ../../edited_test.png
+cargo run --release --bin prover -- --photo ../../signed_test.json --manifest ../../edit_manifest_test.json --output ../../proof_package_test.json --edited-image ../../edited_test.png $REAL_PROOF_FLAG
 cd ..
 
 # 5. Verify - Case A: Valid
