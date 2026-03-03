@@ -1,4 +1,31 @@
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
+
+/// Fixed block size for image hashing (protocol constant).
+/// Camera and prover both use this to split pixels into blocks.
+/// Independent of CPU core count — prover groups blocks into shards freely.
+pub const BLOCK_SIZE: usize = 65536; // 64KB
+
+/// Compute block hashes for an image's raw pixel data.
+pub fn compute_block_hashes(pixels: &[u8]) -> Vec<[u8; 32]> {
+    let num_blocks = (pixels.len() + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    (0..num_blocks)
+        .map(|i| {
+            let s = i * BLOCK_SIZE;
+            let e = std::cmp::min(s + BLOCK_SIZE, pixels.len());
+            Sha256::digest(&pixels[s..e]).into()
+        })
+        .collect()
+}
+
+/// Compute image commitment from block hashes: SHA256(block_hash_0 || block_hash_1 || ...)
+pub fn compute_image_commitment(block_hashes: &[[u8; 32]]) -> [u8; 32] {
+    let mut hasher = Sha256::new();
+    for h in block_hashes {
+        hasher.update(h);
+    }
+    hasher.finalize().into()
+}
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PhotoMetadata {
@@ -6,8 +33,9 @@ pub struct PhotoMetadata {
     pub timestamp: u64,
     pub width: u32,
     pub height: u32,
-    pub image_hash: [u8; 32],
-    pub shards: Vec<[u8; 32]>, // Hashes of each pixel segment
+    /// SHA256(block_hash_0 || block_hash_1 || ... || block_hash_N)
+    /// where each block is BLOCK_SIZE bytes of raw pixels.
+    pub image_commitment: [u8; 32],
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -15,9 +43,7 @@ pub struct Signature {
     pub r: [u8; 32],
     pub s: [u8; 32],
     pub public_key: Vec<u8>,
-    /// Root CA public key (manufacturer identity)
     pub root_ca_pubkey: Vec<u8>,
-    /// Root CA's signature over device public key (device certificate)
     pub device_cert_r: [u8; 32],
     pub device_cert_s: [u8; 32],
 }
@@ -49,7 +75,7 @@ pub struct EditManifest {
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct PublicValues {
-    pub original_image_hash: [u8; 32],
+    pub original_image_commitment: [u8; 32],
     pub pub_key_hash: [u8; 32],
     pub root_ca_hash: [u8; 32],
     pub edit_types: Vec<String>,
@@ -61,7 +87,6 @@ pub struct ProofPackage {
     pub edited_image: Vec<u8>,
     pub proof: Vec<u8>,
     pub public_values: PublicValues,
-    pub num_shards: usize,
 }
 
 impl EditOperation {
@@ -111,17 +136,13 @@ pub mod pixel_utils {
 }
 
 impl PhotoMetadata {
-    /// Canonical serialization for ZK signing
     pub fn to_bytes(&self) -> Vec<u8> {
         let mut bytes = Vec::new();
         bytes.extend_from_slice(self.device_id.as_bytes());
         bytes.extend_from_slice(&self.timestamp.to_le_bytes());
         bytes.extend_from_slice(&self.width.to_le_bytes());
         bytes.extend_from_slice(&self.height.to_le_bytes());
-        bytes.extend_from_slice(&self.image_hash);
-        for shard in &self.shards {
-            bytes.extend_from_slice(shard);
-        }
+        bytes.extend_from_slice(&self.image_commitment);
         bytes
     }
 }

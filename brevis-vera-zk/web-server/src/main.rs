@@ -157,21 +157,8 @@ async fn sign_photo(State(state): State<AppState>, mut multipart: Multipart) -> 
     // Save original image for preview
     fs::write(session_dir.join("original.jpg"), &image_data).unwrap();
 
-    // Determine shard count
-    let num_shards = num_cpus::get().max(1);
-
-    // Compute shard hashes
-    let shard_size = (pixels.len() + num_shards - 1) / num_shards;
-    let mut shards = Vec::new();
-    for i in 0..num_shards {
-        let s = i * shard_size;
-        let e = std::cmp::min(s + shard_size, pixels.len());
-        if s < pixels.len() {
-            shards.push(Sha256::digest(&pixels[s..e]).into());
-        }
-    }
-
-    let image_hash: [u8; 32] = Sha256::digest(&pixels).into();
+    let block_hashes = brevis_vera_lib::compute_block_hashes(&pixels);
+    let image_commitment = brevis_vera_lib::compute_image_commitment(&block_hashes);
 
     // Load device key and cert
     let device_key_pem = fs::read_to_string(session_dir.join("device_key.pem")).unwrap();
@@ -190,8 +177,7 @@ async fn sign_photo(State(state): State<AppState>, mut multipart: Multipart) -> 
             .as_secs(),
         width,
         height,
-        image_hash,
-        shards: shards.clone(),
+        image_commitment,
     };
 
     // Sign metadata
@@ -237,10 +223,9 @@ async fn sign_photo(State(state): State<AppState>, mut multipart: Multipart) -> 
     }
 
     Json(json!({
-        "num_shards": num_shards,
         "width": width,
         "height": height,
-        "image_hash": hex::encode(image_hash),
+        "image_commitment": hex::encode(image_commitment),
     }))
 }
 
@@ -443,9 +428,9 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
             .unwrap();
     }
 
-    update(15, "Running parallel shard emulation...");
+    update(15, "Running parallel shard emulation (Plan D)...");
 
-    // Parallel shard AOT emulation
+    use brevis_vera_lib::BLOCK_SIZE;
     use pico_vm::compiler::riscv::compiler::{Compiler, SourceType};
     use rayon::prelude::*;
 
@@ -453,19 +438,18 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
     let shard_elf = fs::read(&shard_elf_path).expect("Failed to read shard ELF");
     let shard_program = Compiler::new(SourceType::RISCV, &shard_elf).compile();
 
-    let num_shards = signed_photo.metadata.shards.len();
     let image_len = signed_photo.image_bytes.len();
-    let shard_size = (image_len + num_shards - 1) / num_shards;
+    let num_blocks = (image_len + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    let num_shards = num_cpus::get().max(1);
+    let blocks_per_shard = (num_blocks + num_shards - 1) / num_shards;
 
-    // Check if manifest has crop - use CropBypass so hash matches edited.png
     let has_crop = manifest
         .operations
         .iter()
         .any(|op| matches!(op, EditOperation::Crop { .. }));
 
-    let shard_results: Vec<([u8; 32], [u8; 32])> = if has_crop {
-        // Crop changes image dimensions so shard AOT can't handle it.
-        // Compute (orig_hash, edited_hash) pairs directly on the host.
+    let shard_results: Vec<(Vec<[u8; 32]>, Vec<[u8; 32]>)> = if has_crop {
+        // Crop changes dimensions — compute block hashes on host
         let mut edited_pixels = signed_photo.image_bytes.clone();
         let mut w = signed_photo.metadata.width;
         let mut h = signed_photo.metadata.height;
@@ -484,33 +468,10 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
                 }
             }
         }
-        let edited_len = edited_pixels.len();
-        let edited_shard_size = (edited_len + num_shards - 1) / num_shards;
-
-        (0..num_shards)
-            .into_par_iter()
-            .map(|i| {
-                let orig_s = i * shard_size;
-                let orig_e = std::cmp::min(orig_s + shard_size, image_len);
-                let orig_hash: [u8; 32] = if orig_s < image_len {
-                    Sha256::digest(&signed_photo.image_bytes[orig_s..orig_e]).into()
-                } else {
-                    Sha256::digest(&[]).into()
-                };
-
-                let edited_s = i * edited_shard_size;
-                let edited_e = std::cmp::min(edited_s + edited_shard_size, edited_len);
-                let edited_hash: [u8; 32] = if edited_s < edited_len {
-                    Sha256::digest(&edited_pixels[edited_s..edited_e]).into()
-                } else {
-                    Sha256::digest(&[]).into()
-                };
-
-                (orig_hash, edited_hash)
-            })
-            .collect()
+        let orig_block_hashes = brevis_vera_lib::compute_block_hashes(&signed_photo.image_bytes);
+        let edited_block_hashes = brevis_vera_lib::compute_block_hashes(&edited_pixels);
+        vec![(orig_block_hashes, edited_block_hashes)]
     } else {
-        // No crop: shard applies brightness in ZK via AOT emulation
         let brightness_ops: Vec<EditOperation> = manifest
             .operations
             .iter()
@@ -521,16 +482,18 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
         (0..num_shards)
             .into_par_iter()
             .map(|i| {
-                let s = i * shard_size;
-                let e = std::cmp::min(s + shard_size, image_len);
-                let shard_pixels = if s < image_len {
-                    signed_photo.image_bytes[s..e].to_vec()
-                } else {
-                    Vec::new()
-                };
+                let block_start = i * blocks_per_shard;
+                let block_end = std::cmp::min(block_start + blocks_per_shard, num_blocks);
+                if block_start >= num_blocks {
+                    return (vec![], vec![]);
+                }
+                let pixel_start = block_start * BLOCK_SIZE;
+                let pixel_end = std::cmp::min(block_end * BLOCK_SIZE, image_len);
+                let shard_pixels = signed_photo.image_bytes[pixel_start..pixel_end].to_vec();
+                let num_blocks_in_shard = block_end - block_start;
 
-                let shard_input: (Vec<u8>, Vec<EditOperation>) =
-                    (shard_pixels, brightness_ops.clone());
+                let shard_input: (Vec<u8>, Vec<EditOperation>, usize) =
+                    (shard_pixels, brightness_ops.clone(), num_blocks_in_shard);
                 let shard_input_bytes = bincode::serialize(&shard_input).unwrap();
                 let mut emu = pico_aot_runtime::AotEmulatorCore::new(
                     shard_program.clone(),
@@ -545,7 +508,12 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
 
     update(50, "Shard emulation complete. Running aggregator...");
 
-    let shard_commits: Vec<([u8; 32], [u8; 32])> = shard_results;
+    let mut all_orig_block_hashes: Vec<[u8; 32]> = Vec::with_capacity(num_blocks);
+    let mut all_edited_block_hashes: Vec<[u8; 32]> = Vec::with_capacity(num_blocks);
+    for (orig, edited) in &shard_results {
+        all_orig_block_hashes.extend_from_slice(orig);
+        all_edited_block_hashes.extend_from_slice(edited);
+    }
 
     let public_values: PublicValues;
     let proof_bytes: Vec<u8>;
@@ -573,7 +541,8 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
         let mut stdin_builder = EmulatorStdinBuilder::<Vec<u8>, KoalaBearPoseidon2>::default();
         stdin_builder.write(&signed_photo.metadata);
         stdin_builder.write(&signed_photo.signature);
-        stdin_builder.write(&shard_commits);
+        stdin_builder.write(&all_orig_block_hashes);
+        stdin_builder.write(&all_edited_block_hashes);
         let (stdin, _) = stdin_builder.finalize();
 
         update(60, "STARK proving in progress...");
@@ -617,7 +586,8 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
         let agg_stdin = vec![
             bincode::serialize(&signed_photo.metadata).unwrap(),
             bincode::serialize(&signed_photo.signature).unwrap(),
-            bincode::serialize(&shard_commits).unwrap(),
+            bincode::serialize(&all_orig_block_hashes).unwrap(),
+            bincode::serialize(&all_edited_block_hashes).unwrap(),
         ];
 
         let mut agg_emu = pico_aot_runtime::AotEmulatorCore::new(agg_program, agg_stdin);
@@ -632,10 +602,9 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
 
     // Save proof package (lightweight, without image bytes)
     let package = ProofPackage {
-        edited_image: vec![], // image is served separately
+        edited_image: vec![],
         proof: proof_bytes,
         public_values: public_values.clone(),
-        num_shards,
     };
     let pkg_json = serde_json::to_string_pretty(&package).unwrap();
     fs::write(session_dir.join("proof_package.json"), &pkg_json).unwrap();
@@ -651,7 +620,7 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
             job.result = Some(json!({
                 "proof_type": proof_type,
                 "public_values": {
-                    "original_image_hash": hex::encode(public_values.original_image_hash),
+                    "original_image_commitment": hex::encode(public_values.original_image_commitment),
                     "output_image_hash": hex::encode(public_values.output_image_hash),
                     "root_ca_hash": hex::encode(public_values.root_ca_hash),
                     "pub_key_hash": hex::encode(public_values.pub_key_hash),
@@ -764,8 +733,7 @@ async fn verify_photo(
         )
     })?;
 
-    // Hash the uploaded image the same way the aggregator does:
-    // H(shard_edited_hash_0 || shard_edited_hash_1 || ... || shard_edited_hash_N)
+    // Hash the uploaded image using block-based commitment (Plan D)
     let img = image::load_from_memory(&image_data).map_err(|_| {
         (
             StatusCode::BAD_REQUEST,
@@ -774,21 +742,8 @@ async fn verify_photo(
     })?;
     let rgb = img.to_rgb8();
     let image_bytes = rgb.into_raw();
-    let num_shards = pkg.num_shards;
-    let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
-    let mut final_hasher = Sha256::new();
-    for i in 0..num_shards {
-        let s = i * shard_size;
-        let e = std::cmp::min(s + shard_size, image_bytes.len());
-        let shard_pixels = if s < image_bytes.len() {
-            &image_bytes[s..e]
-        } else {
-            &[]
-        };
-        let shard_hash: [u8; 32] = Sha256::digest(shard_pixels).into();
-        final_hasher.update(&shard_hash);
-    }
-    let actual_hash: [u8; 32] = final_hasher.finalize().into();
+    let block_hashes = brevis_vera_lib::compute_block_hashes(&image_bytes);
+    let actual_hash = brevis_vera_lib::compute_image_commitment(&block_hashes);
     let actual_hex = hex::encode(actual_hash);
     let expected_hex = hex::encode(pkg.public_values.output_image_hash);
 

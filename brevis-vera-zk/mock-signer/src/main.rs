@@ -110,36 +110,14 @@ fn main() -> Result<()> {
             output,
             device,
         } => {
-            // 1. Load image and metadata
+            // 1. Load image and compute block-based commitment
             let raw_img = image::open(&image)?;
-            // Resize to a smaller size for faster ZK development
-            // let img = raw_img.thumbnail(256, 256).to_rgb8();
             let img = raw_img.to_rgb8();
             let (width, height) = img.dimensions();
             let image_bytes = img.into_raw();
 
-            // Calculate shards (one per CPU core for max parallelism)
-            let num_shards = num_cpus::get();
-            println!("Using {} shards (1 per CPU core)", num_shards);
-            let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
-            let mut shards = Vec::new();
-
-            for i in 0..num_shards {
-                let start = i * shard_size;
-                let end = std::cmp::min(start + shard_size, image_bytes.len());
-                if start >= image_bytes.len() {
-                    shards.push([0u8; 32]);
-                    continue;
-                }
-                let mut hasher = Sha256::new();
-                hasher.update(&image_bytes[start..end]);
-                shards.push(hasher.finalize().into());
-            }
-
-            let mut hasher = Sha256::new();
-            hasher.update(&image_bytes);
-            let image_hash: [u8; 32] = hasher.finalize().into();
-
+            let block_hashes = brevis_vera_lib::compute_block_hashes(&image_bytes);
+            let image_commitment = brevis_vera_lib::compute_image_commitment(&block_hashes);
             let timestamp = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs();
 
             let metadata = PhotoMetadata {
@@ -147,8 +125,7 @@ fn main() -> Result<()> {
                 timestamp,
                 width,
                 height,
-                image_hash,
-                shards,
+                image_commitment,
             };
 
             // 2. Sign metadata with device key
@@ -290,27 +267,11 @@ fn main() -> Result<()> {
             let pkg_json = fs::read_to_string(&package)?;
             let pkg: ProofPackage = serde_json::from_str(&pkg_json)?;
 
-            // 2. Compute output_image_hash the same way the aggregator does:
-            //    H(shard_edited_hash_0 || shard_edited_hash_1 || ... || shard_edited_hash_63)
+            // 2. Compute output_image_hash using block-based commitment (Plan D)
             let img = image::open(&image)?.to_rgb8();
             let image_bytes = img.into_raw();
-            let num_shards = pkg.num_shards;
-            let shard_size = (image_bytes.len() + num_shards - 1) / num_shards;
-            let mut final_hasher = Sha256::new();
-            for i in 0..num_shards {
-                let s = i * shard_size;
-                let e = std::cmp::min(s + shard_size, image_bytes.len());
-                let shard_pixels = if s < image_bytes.len() {
-                    &image_bytes[s..e]
-                } else {
-                    &[]
-                };
-                let mut shard_hasher = Sha256::new();
-                shard_hasher.update(shard_pixels);
-                let shard_hash: [u8; 32] = shard_hasher.finalize().into();
-                final_hasher.update(&shard_hash);
-            }
-            let image_hash: [u8; 32] = final_hasher.finalize().into();
+            let block_hashes = brevis_vera_lib::compute_block_hashes(&image_bytes);
+            let image_hash = brevis_vera_lib::compute_image_commitment(&block_hashes);
 
             // 3. Compare with Public Values
             println!("--- Verification Report ---");

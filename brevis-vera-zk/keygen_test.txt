@@ -1,2 +1,2 @@
-Generated Trusted Root CA Hash: ccc52e8742c635a6b6bcdada031c82d4d6f2e2c31c7fd85d476b0a466938d1c6
-Generated Device PubKey Hash: c2a64002d20850c7019204c8a9955662dac717be0a7d27e4bd5d93c1ffa27d71
+Generated Trusted Root CA Hash: 3ad98dd97210d45580c1c310fc08ae1f4dc7d00278d8bed4644e1df205e57723
+Generated Device PubKey Hash: d7af49e7f1c78542a973ee79ae4341d9b3e65873d8e4b7b59cc24fa8d8c6229e

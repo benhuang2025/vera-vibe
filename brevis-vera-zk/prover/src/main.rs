@@ -65,42 +65,44 @@ fn main() {
         println!("✅ Root CA → Device Key cert chain verified (host-side)");
     }
 
-    // 2. Parallel Shard Proving (AOT emulation)
-    let num_shards = signed_photo.metadata.shards.len();
+    // 2. Parallel Shard Proving (AOT emulation) — block-based (Plan D)
+    use brevis_vera_lib::BLOCK_SIZE;
+
+    let image_len = signed_photo.image_bytes.len();
+    let num_blocks = (image_len + BLOCK_SIZE - 1) / BLOCK_SIZE;
+    let num_shards = num_cpus::get().max(1);
+    let blocks_per_shard = (num_blocks + num_shards - 1) / num_shards;
+
     println!(
-        "🚀 Starting Multi-CPU Parallel AOT Proving ({} shards)...",
-        num_shards
+        "🚀 Plan D: {} bytes, {} blocks ({}B each), {} shards ({} blocks/shard)",
+        image_len, num_blocks, BLOCK_SIZE, num_shards, blocks_per_shard
     );
     let start_total = std::time::Instant::now();
 
-    let image_len = signed_photo.image_bytes.len();
-    let shard_size = (image_len + num_shards - 1) / num_shards;
     let shard_program = load_program("../shard-app/elf/riscv32im-pico-zkvm-elf");
 
-    println!(
-        "Image: {} bytes, {} shards x {} bytes each",
-        image_len, num_shards, shard_size
-    );
-
-    let shard_results: Vec<(([u8; 32], [u8; 32]), u64)> = (0..num_shards)
+    let shard_results: Vec<((Vec<[u8; 32]>, Vec<[u8; 32]>), u64)> = (0..num_shards)
         .into_par_iter()
         .map(|i| {
-            let s = i * shard_size;
-            let e = std::cmp::min(s + shard_size, image_len);
-            let shard_pixels = if s < image_len {
-                signed_photo.image_bytes[s..e].to_vec()
-            } else {
-                Vec::new()
-            };
+            let block_start = i * blocks_per_shard;
+            let block_end = std::cmp::min(block_start + blocks_per_shard, num_blocks);
+            if block_start >= num_blocks {
+                return ((vec![], vec![]), 0u64);
+            }
+            let pixel_start = block_start * BLOCK_SIZE;
+            let pixel_end = std::cmp::min(block_end * BLOCK_SIZE, image_len);
+            let shard_pixels = signed_photo.image_bytes[pixel_start..pixel_end].to_vec();
+            let num_blocks_in_shard = block_end - block_start;
 
-            // AOT RUN: send (pixels, edit_ops)
-            let shard_input = bincode::serialize(&(&shard_pixels, &_manifest.operations)).unwrap();
+            let shard_input =
+                bincode::serialize(&(&shard_pixels, &_manifest.operations, &num_blocks_in_shard))
+                    .unwrap();
             let mut emu = AotEmulatorCore::new(shard_program.clone(), vec![shard_input]);
             shard_aot::run_aot(&mut emu).expect("Shard AOT run failed");
 
-            // Output: (orig_hash, edited_hash)
-            let hashes: ([u8; 32], [u8; 32]) = bincode::deserialize(&emu.public_values_stream)
-                .expect("Failed to parse shard commit");
+            let hashes: (Vec<[u8; 32]>, Vec<[u8; 32]>) =
+                bincode::deserialize(&emu.public_values_stream)
+                    .expect("Failed to parse shard commit");
             (hashes, emu.insn_count)
         })
         .collect();
@@ -113,8 +115,18 @@ fn main() {
     println!("📈 Total Insns: {}", total_insns);
     println!("⚡ Longest Shard: {} insns", max_insns);
 
-    // 3. Aggregation
-    let shard_commits: Vec<([u8; 32], [u8; 32])> = shard_results.iter().map(|(h, _)| *h).collect();
+    // 3. Flatten block hashes from all shards
+    let mut all_orig_block_hashes: Vec<[u8; 32]> = Vec::with_capacity(num_blocks);
+    let mut all_edited_block_hashes: Vec<[u8; 32]> = Vec::with_capacity(num_blocks);
+    for ((orig, edited), _) in &shard_results {
+        all_orig_block_hashes.extend_from_slice(orig);
+        all_edited_block_hashes.extend_from_slice(edited);
+    }
+    println!(
+        "📊 Block hashes: {} orig, {} edited",
+        all_orig_block_hashes.len(),
+        all_edited_block_hashes.len()
+    );
 
     let public_values: PublicValues;
     let proof_bytes: Vec<u8>;
@@ -131,18 +143,17 @@ fn main() {
         let agg_elf = fs::read("../aggregator-app/elf/riscv32im-pico-zkvm-elf")
             .expect("Failed to read aggregator ELF");
 
-        // Setup RiscvProver
         let prover = RiscvProver::new_initial_prover(
             (KoalaBearPoseidon2::new(), agg_elf.as_slice()),
             Default::default(),
             None,
         );
 
-        // Build stdin
         let mut stdin_builder = EmulatorStdinBuilder::<Vec<u8>, KoalaBearPoseidon2>::default();
         stdin_builder.write(&signed_photo.metadata);
         stdin_builder.write(&signed_photo.signature);
-        stdin_builder.write(&shard_commits);
+        stdin_builder.write(&all_orig_block_hashes);
+        stdin_builder.write(&all_edited_block_hashes);
         let (stdin, _) = stdin_builder.finalize();
 
         // Generate STARK proof
@@ -192,7 +203,8 @@ fn main() {
         let agg_stdin = vec![
             bincode::serialize(&signed_photo.metadata).unwrap(),
             bincode::serialize(&signed_photo.signature).unwrap(),
-            bincode::serialize(&shard_commits).unwrap(),
+            bincode::serialize(&all_orig_block_hashes).unwrap(),
+            bincode::serialize(&all_edited_block_hashes).unwrap(),
         ];
 
         let mut agg_emu = AotEmulatorCore::new(aggregator_program, agg_stdin);
@@ -207,8 +219,8 @@ fn main() {
 
     println!("--- Public Commitments ---");
     println!(
-        "Original Image Hash: {}",
-        hex::encode(public_values.original_image_hash)
+        "Original Image Commitment: {}",
+        hex::encode(public_values.original_image_commitment)
     );
     println!(
         "Public Key Hash: {}",
@@ -226,7 +238,6 @@ fn main() {
         edited_image: edited_image_bytes,
         proof: proof_bytes,
         public_values,
-        num_shards,
     };
     let pkg_json = serde_json::to_string_pretty(&package).expect("Failed to serialize");
     fs::write(&cli.output, pkg_json).expect("Failed to write");

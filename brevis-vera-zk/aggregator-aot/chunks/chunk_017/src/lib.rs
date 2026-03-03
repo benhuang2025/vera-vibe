@@ -1,196 +1,218 @@
 pub use pico_aot_runtime::{AotEmulatorCore, BlockClock, BlockFn, NextStep};
-pub const PC_MIN: u32 = 2193808u32;
-pub const PC_MAX: u32 = 2196136u32;
+pub const PC_MIN: u32 = 2191040u32;
+pub const PC_MAX: u32 = 2193492u32;
 pub fn lookup(pc: u32) -> Option<BlockFn> {
-    const FN: [BlockFn; 110usize] = [
-        block_0x00217990,
-        block_0x002179a8,
-        block_0x002179b4,
-        block_0x002179e8,
-        block_0x002179f4,
-        block_0x002179fc,
-        block_0x00217a1c,
-        block_0x00217a24,
-        block_0x00217a54,
-        block_0x00217a90,
-        block_0x00217ab8,
-        block_0x00217abc,
-        block_0x00217ae0,
-        block_0x00217ae4,
-        block_0x00217af4,
-        block_0x00217b0c,
-        block_0x00217b20,
-        block_0x00217b28,
-        block_0x00217b38,
-        block_0x00217b40,
-        block_0x00217b4c,
-        block_0x00217b74,
-        block_0x00217b84,
-        block_0x00217b8c,
-        block_0x00217b94,
-        block_0x00217ba4,
-        block_0x00217bb8,
-        block_0x00217bbc,
-        block_0x00217bd0,
-        block_0x00217bdc,
-        block_0x00217be4,
-        block_0x00217c04,
-        block_0x00217c0c,
-        block_0x00217c3c,
-        block_0x00217c78,
-        block_0x00217c88,
-        block_0x00217c98,
-        block_0x00217cb8,
-        block_0x00217cc4,
-        block_0x00217ccc,
-        block_0x00217cec,
-        block_0x00217cf4,
-        block_0x00217d24,
-        block_0x00217d60,
-        block_0x00217d74,
-        block_0x00217d8c,
-        block_0x00217db0,
-        block_0x00217dcc,
-        block_0x00217dd4,
-        block_0x00217de8,
-        block_0x00217dfc,
-        block_0x00217e10,
-        block_0x00217e34,
-        block_0x00217e3c,
-        block_0x00217e54,
-        block_0x00217e64,
-        block_0x00217e6c,
-        block_0x00217e74,
-        block_0x00217e84,
-        block_0x00217eac,
-        block_0x00217ee4,
-        block_0x00217ee8,
-        block_0x00217ef0,
-        block_0x00217f00,
-        block_0x00217f18,
-        block_0x00217f28,
-        block_0x00217f30,
-        block_0x00217f40,
-        block_0x00217f48,
-        block_0x00217f50,
-        block_0x00217f60,
-        block_0x00217f74,
-        block_0x00217f8c,
-        block_0x00217fc4,
-        block_0x00217ffc,
-        block_0x00218000,
-        block_0x00218008,
-        block_0x00218018,
-        block_0x00218030,
-        block_0x00218040,
-        block_0x00218048,
-        block_0x00218058,
-        block_0x00218060,
-        block_0x00218068,
-        block_0x00218078,
-        block_0x0021808c,
-        block_0x002180a4,
-        block_0x002180dc,
-        block_0x00218114,
-        block_0x00218118,
-        block_0x00218120,
-        block_0x00218130,
-        block_0x00218148,
-        block_0x00218158,
-        block_0x00218160,
-        block_0x00218170,
-        block_0x00218178,
-        block_0x00218180,
-        block_0x00218190,
-        block_0x002181a4,
-        block_0x002181bc,
-        block_0x002181f4,
-        block_0x002181f8,
-        block_0x0021820c,
-        block_0x00218214,
-        block_0x0021821c,
-        block_0x0021824c,
-        block_0x00218260,
-        block_0x00218288,
-        block_0x002182a8,
+    const FN: [BlockFn; 107usize] = [
+        block_0x00216ec0,
+        block_0x00216f1c,
+        block_0x00216f28,
+        block_0x00216f7c,
+        block_0x00216f84,
+        block_0x00216f88,
+        block_0x00216f90,
+        block_0x00216fa4,
+        block_0x00216fac,
+        block_0x00216fb0,
+        block_0x00216fd4,
+        block_0x00216fdc,
+        block_0x00217004,
+        block_0x00217014,
+        block_0x0021701c,
+        block_0x00217024,
+        block_0x00217068,
+        block_0x0021706c,
+        block_0x00217074,
+        block_0x00217078,
+        block_0x0021708c,
+        block_0x00217090,
+        block_0x002170cc,
+        block_0x00217104,
+        block_0x00217130,
+        block_0x00217164,
+        block_0x00217170,
+        block_0x0021718c,
+        block_0x002171a8,
+        block_0x002171dc,
+        block_0x002171e8,
+        block_0x00217204,
+        block_0x00217220,
+        block_0x0021723c,
+        block_0x00217258,
+        block_0x00217270,
+        block_0x0021727c,
+        block_0x002172b0,
+        block_0x002172bc,
+        block_0x002172c4,
+        block_0x002172e4,
+        block_0x002172ec,
+        block_0x0021731c,
+        block_0x00217358,
+        block_0x00217380,
+        block_0x00217384,
+        block_0x002173a8,
+        block_0x002173ac,
+        block_0x002173bc,
+        block_0x002173d4,
+        block_0x002173e8,
+        block_0x002173f0,
+        block_0x00217400,
+        block_0x00217408,
+        block_0x00217414,
+        block_0x0021743c,
+        block_0x0021744c,
+        block_0x00217454,
+        block_0x0021745c,
+        block_0x0021746c,
+        block_0x00217480,
+        block_0x00217484,
+        block_0x00217498,
+        block_0x002174a4,
+        block_0x002174ac,
+        block_0x002174cc,
+        block_0x002174d4,
+        block_0x00217504,
+        block_0x00217540,
+        block_0x00217550,
+        block_0x00217560,
+        block_0x00217580,
+        block_0x0021758c,
+        block_0x00217594,
+        block_0x002175b4,
+        block_0x002175bc,
+        block_0x002175ec,
+        block_0x00217628,
+        block_0x0021763c,
+        block_0x00217654,
+        block_0x00217678,
+        block_0x00217694,
+        block_0x0021769c,
+        block_0x002176b0,
+        block_0x002176c4,
+        block_0x002176d8,
+        block_0x002176fc,
+        block_0x00217704,
+        block_0x0021771c,
+        block_0x0021772c,
+        block_0x00217734,
+        block_0x0021773c,
+        block_0x0021774c,
+        block_0x00217774,
+        block_0x002177ac,
+        block_0x002177b0,
+        block_0x002177b8,
+        block_0x002177c8,
+        block_0x002177e0,
+        block_0x002177f0,
+        block_0x002177f8,
+        block_0x00217808,
+        block_0x00217810,
+        block_0x00217818,
+        block_0x00217828,
+        block_0x0021783c,
+        block_0x00217854,
     ];
-    const IDX: [u16; 583usize] = [
-        1u16, 0u16, 0u16, 0u16, 0u16, 0u16, 2u16, 0u16, 0u16, 3u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 4u16, 0u16, 0u16, 5u16,
-        0u16, 6u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 7u16, 0u16, 8u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 9u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 10u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 11u16, 12u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 13u16, 14u16, 0u16, 0u16, 0u16, 15u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 16u16, 0u16, 0u16, 0u16, 0u16, 17u16, 0u16, 18u16, 0u16,
-        0u16, 0u16, 19u16, 0u16, 20u16, 0u16, 0u16, 21u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 22u16, 0u16, 0u16, 0u16, 23u16, 0u16, 24u16, 0u16, 25u16,
-        0u16, 0u16, 0u16, 26u16, 0u16, 0u16, 0u16, 0u16, 27u16, 28u16, 0u16, 0u16, 0u16,
-        0u16, 29u16, 0u16, 0u16, 30u16, 0u16, 31u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 32u16, 0u16, 33u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 34u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 35u16, 0u16, 0u16, 0u16, 36u16, 0u16, 0u16, 0u16, 37u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 38u16, 0u16, 0u16, 39u16, 0u16, 40u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 41u16, 0u16, 42u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 43u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 44u16, 0u16, 0u16,
-        0u16, 0u16, 45u16, 0u16, 0u16, 0u16, 0u16, 0u16, 46u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 47u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 48u16, 0u16,
-        49u16, 0u16, 0u16, 0u16, 0u16, 50u16, 0u16, 0u16, 0u16, 0u16, 51u16, 0u16, 0u16,
-        0u16, 0u16, 52u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 53u16, 0u16,
-        54u16, 0u16, 0u16, 0u16, 0u16, 0u16, 55u16, 0u16, 0u16, 0u16, 56u16, 0u16, 57u16,
-        0u16, 58u16, 0u16, 0u16, 0u16, 59u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 60u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 61u16, 62u16, 0u16, 63u16, 0u16, 0u16, 0u16, 64u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 65u16, 0u16, 0u16, 0u16, 66u16, 0u16, 67u16, 0u16, 0u16, 0u16,
-        68u16, 0u16, 69u16, 0u16, 70u16, 0u16, 0u16, 0u16, 71u16, 0u16, 0u16, 0u16, 0u16,
-        72u16, 0u16, 0u16, 0u16, 0u16, 0u16, 73u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 74u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 75u16, 76u16, 0u16, 77u16, 0u16,
-        0u16, 0u16, 78u16, 0u16, 0u16, 0u16, 0u16, 0u16, 79u16, 0u16, 0u16, 0u16, 80u16,
-        0u16, 81u16, 0u16, 0u16, 0u16, 82u16, 0u16, 83u16, 0u16, 84u16, 0u16, 0u16, 0u16,
-        85u16, 0u16, 0u16, 0u16, 0u16, 86u16, 0u16, 0u16, 0u16, 0u16, 0u16, 87u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 88u16,
+    const IDX: [u16; 614usize] = [
+        1u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 2u16, 0u16, 0u16,
+        3u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 4u16, 0u16, 5u16, 6u16, 0u16,
+        7u16, 0u16, 0u16, 0u16, 0u16, 8u16, 0u16, 9u16, 10u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 11u16, 0u16, 12u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 13u16, 0u16, 0u16, 0u16, 14u16, 0u16, 15u16, 0u16, 16u16, 0u16,
         0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        89u16, 90u16, 0u16, 91u16, 0u16, 0u16, 0u16, 92u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        93u16, 0u16, 0u16, 0u16, 94u16, 0u16, 95u16, 0u16, 0u16, 0u16, 96u16, 0u16,
-        97u16, 0u16, 98u16, 0u16, 0u16, 0u16, 99u16, 0u16, 0u16, 0u16, 0u16, 100u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 101u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 102u16, 103u16, 0u16, 0u16, 0u16, 0u16,
-        104u16, 0u16, 105u16, 0u16, 106u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 107u16, 0u16, 0u16, 0u16, 0u16, 108u16, 0u16, 0u16, 0u16,
-        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 109u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
-        0u16, 110u16,
+        0u16, 0u16, 17u16, 18u16, 0u16, 19u16, 20u16, 0u16, 0u16, 0u16, 0u16, 21u16,
+        22u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 23u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 24u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 25u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 26u16, 0u16, 0u16, 27u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 28u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 29u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 30u16, 0u16, 0u16, 31u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 32u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 33u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 34u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 35u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 36u16, 0u16, 0u16, 37u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 38u16, 0u16, 0u16, 39u16, 0u16, 40u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 41u16, 0u16, 42u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 43u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 44u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 45u16, 46u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 47u16, 48u16, 0u16, 0u16, 0u16, 49u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 50u16, 0u16, 0u16, 0u16, 0u16, 51u16, 0u16, 52u16, 0u16, 0u16, 0u16, 53u16,
+        0u16, 54u16, 0u16, 0u16, 55u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 56u16, 0u16, 0u16, 0u16, 57u16, 0u16, 58u16, 0u16, 59u16, 0u16, 0u16, 0u16,
+        60u16, 0u16, 0u16, 0u16, 0u16, 61u16, 62u16, 0u16, 0u16, 0u16, 0u16, 63u16, 0u16,
+        0u16, 64u16, 0u16, 65u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 66u16, 0u16,
+        67u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 68u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 69u16, 0u16, 0u16, 0u16, 70u16, 0u16, 0u16, 0u16, 71u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 72u16, 0u16, 0u16, 73u16, 0u16, 74u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 75u16, 0u16, 76u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 77u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 78u16, 0u16, 0u16, 0u16, 0u16, 79u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 80u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        0u16, 81u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 82u16, 0u16, 83u16, 0u16, 0u16,
+        0u16, 0u16, 84u16, 0u16, 0u16, 0u16, 0u16, 85u16, 0u16, 0u16, 0u16, 0u16, 86u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 87u16, 0u16, 88u16, 0u16, 0u16,
+        0u16, 0u16, 0u16, 89u16, 0u16, 0u16, 0u16, 90u16, 0u16, 91u16, 0u16, 92u16, 0u16,
+        0u16, 0u16, 93u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 94u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        95u16, 96u16, 0u16, 97u16, 0u16, 0u16, 0u16, 98u16, 0u16, 0u16, 0u16, 0u16, 0u16,
+        99u16, 0u16, 0u16, 0u16, 100u16, 0u16, 101u16, 0u16, 0u16, 0u16, 102u16, 0u16,
+        103u16, 0u16, 104u16, 0u16, 0u16, 0u16, 105u16, 0u16, 0u16, 0u16, 0u16, 106u16,
+        0u16, 0u16, 0u16, 0u16, 0u16, 107u16,
     ];
-    if pc < 2193808u32 || pc > 2196136u32 {
+    if pc < 2191040u32 || pc > 2193492u32 {
         return None;
     }
-    let word_offset = ((pc - 2193808u32) >> 2) as usize;
+    let word_offset = ((pc - 2191040u32) >> 2) as usize;
     if word_offset >= IDX.len() {
         return None;
     }
     let idx_val = IDX[word_offset];
     if idx_val == 0 { None } else { Some(FN[(idx_val - 1) as usize]) }
 }
-#[inline(always)]
-pub fn block_0x00217990(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 6u32;
+#[inline]
+pub fn block_0x00216ec0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 23u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
     }
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(13usize, 10usize, 0u32, 2193812u32)?;
-    emu.lw_no_count(12usize, 10usize, 4u32, 2193816u32)?;
-    emu.adi_no_count(10usize, 11usize, 0u32, 2193820u32);
-    emu.adi_no_count(11usize, 13usize, 0u32, 2193824u32);
-    emu.apc_no_count(6usize, 2193824u32, 24576u32, 2193828u32);
-    emu.add_memory_rw_events(6usize);
-    let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2193832u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(192u32);
+    emu.adi_no_count(2usize, 2usize, 4294967248u32, 2191044u32);
+    emu.sw_no_count(1usize, 2usize, 44u32, 2191048u32)?;
+    emu.sw_no_count(10usize, 2usize, 8u32, 2191052u32)?;
+    emu.adi_no_count(10usize, 2usize, 8u32, 2191056u32);
+    let a = 0u32.wrapping_add(2191360u32);
+    emu.write_reg_no_count(12usize, a);
+    emu.pc = 2191060u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(12usize, 12usize, 4294966404u32, 2191064u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(13usize, a);
+    emu.pc = 2191068u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(13usize, 13usize, 4294965616u32, 2191072u32);
+    emu.adi_no_count(14usize, 0usize, 2u32, 2191076u32);
+    emu.adi_no_count(15usize, 2usize, 36u32, 2191080u32);
+    emu.adi_no_count(16usize, 0usize, 1u32, 2191084u32);
+    emu.sw_no_count(10usize, 2usize, 36u32, 2191088u32)?;
+    emu.sw_no_count(12usize, 2usize, 40u32, 2191092u32)?;
+    emu.lw_no_count(10usize, 11usize, 0u32, 2191096u32)?;
+    emu.lw_no_count(11usize, 11usize, 4u32, 2191100u32)?;
+    emu.sw_no_count(13usize, 2usize, 12u32, 2191104u32)?;
+    emu.sw_no_count(14usize, 2usize, 16u32, 2191108u32)?;
+    emu.sw_no_count(15usize, 2usize, 20u32, 2191112u32)?;
+    emu.sw_no_count(16usize, 2usize, 24u32, 2191116u32)?;
+    emu.sw_no_count(0usize, 2usize, 28u32, 2191120u32)?;
+    emu.adi_no_count(12usize, 2usize, 12u32, 2191124u32);
+    emu.apc_no_count(1usize, 2191124u32, 24576u32, 2191128u32);
+    emu.add_memory_rw_events(23usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191132u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294966480u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -200,7 +222,7 @@ pub fn block_0x00217990(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x002179a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00216f1c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 3u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -208,11 +230,11 @@ pub fn block_0x002179a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(6usize, 11usize, 12u32, 2193836u32)?;
-    emu.adi_no_count(11usize, 12usize, 0u32, 2193840u32);
+    emu.lw_no_count(1usize, 2usize, 44u32, 2191136u32)?;
+    emu.adi_no_count(2usize, 2usize, 48u32, 2191140u32);
     emu.add_memory_rw_events(3usize);
-    let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2193844u32;
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191144u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -224,351 +246,39 @@ pub fn block_0x002179a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x002179b4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 13u32;
+pub fn block_0x00216f28(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 21u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
     }
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(2usize, 2usize, 4294967248u32, 2193848u32);
-    emu.sw_no_count(1usize, 2usize, 44u32, 2193852u32)?;
-    emu.sw_no_count(8usize, 2usize, 40u32, 2193856u32)?;
-    emu.sw_no_count(9usize, 2usize, 36u32, 2193860u32)?;
-    emu.sw_no_count(18usize, 2usize, 32u32, 2193864u32)?;
-    emu.sw_no_count(19usize, 2usize, 28u32, 2193868u32)?;
-    emu.sw_no_count(20usize, 2usize, 24u32, 2193872u32)?;
-    emu.sw_no_count(21usize, 2usize, 20u32, 2193876u32)?;
-    emu.sw_no_count(22usize, 2usize, 16u32, 2193880u32)?;
-    emu.adi_no_count(8usize, 10usize, 0u32, 2193884u32);
-    emu.adi_no_count(10usize, 0usize, 128u32, 2193888u32);
-    emu.sw_no_count(0usize, 2usize, 12u32, 2193892u32)?;
-    emu.add_memory_rw_events(12usize);
-    let b = emu.read_reg_b_tracked(10usize);
-    let a = emu.read_reg_a_tracked(11usize);
-    if a >= b {
-        emu.pc = 2193908u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002179f4));
-    } else {
-        emu.pc = 2193896u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002179e8));
-    }
-}
-#[inline(always)]
-pub fn block_0x002179e8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 3u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sb_no_count(11usize, 2usize, 12u32, 2193900u32);
-    emu.adi_no_count(18usize, 0usize, 1u32, 2193904u32);
-    emu.add_memory_rw_events(3usize);
-    let return_addr = 2193908u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194064u32;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217a90));
-}
-#[inline(always)]
-pub fn block_0x002179f4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sri_no_count(10usize, 11usize, 11u32, 2193912u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a != b {
-        emu.pc = 2193948u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217a1c));
-    } else {
-        emu.pc = 2193916u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002179fc));
-    }
-}
-#[inline(always)]
-pub fn block_0x002179fc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 8u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sri_no_count(10usize, 11usize, 6u32, 2193920u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2193924u32);
-    emu.ori_no_count(10usize, 10usize, 192u32, 2193928u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2193932u32);
-    emu.sb_no_count(10usize, 2usize, 12u32, 2193936u32);
-    emu.sb_no_count(11usize, 2usize, 13u32, 2193940u32);
-    emu.adi_no_count(18usize, 0usize, 2u32, 2193944u32);
-    emu.add_memory_rw_events(8usize);
-    let return_addr = 2193948u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194064u32;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217a90));
-}
-#[inline(always)]
-pub fn block_0x00217a1c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sri_no_count(10usize, 11usize, 16u32, 2193952u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a != b {
-        emu.pc = 2194004u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217a54));
-    } else {
-        emu.pc = 2193956u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217a24));
-    }
-}
-#[inline]
-pub fn block_0x00217a24(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 12u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sri_no_count(10usize, 11usize, 12u32, 2193960u32);
-    emu.sli_no_count(12usize, 11usize, 20u32, 2193964u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2193968u32);
-    emu.ori_no_count(10usize, 10usize, 224u32, 2193972u32);
-    emu.sri_no_count(12usize, 12usize, 26u32, 2193976u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2193980u32);
-    emu.adi_no_count(12usize, 12usize, 128u32, 2193984u32);
-    emu.sb_no_count(10usize, 2usize, 12u32, 2193988u32);
-    emu.sb_no_count(12usize, 2usize, 13u32, 2193992u32);
-    emu.sb_no_count(11usize, 2usize, 14u32, 2193996u32);
-    emu.adi_no_count(18usize, 0usize, 3u32, 2194000u32);
-    emu.add_memory_rw_events(12usize);
-    let return_addr = 2194004u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194064u32;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217a90));
-}
-#[inline]
-pub fn block_0x00217a54(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 15u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.sri_no_count(10usize, 11usize, 18u32, 2194008u32);
-    emu.sli_no_count(12usize, 11usize, 14u32, 2194012u32);
-    emu.sli_no_count(13usize, 11usize, 20u32, 2194016u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194020u32);
-    emu.ori_no_count(10usize, 10usize, 240u32, 2194024u32);
-    emu.sri_no_count(12usize, 12usize, 26u32, 2194028u32);
-    emu.sri_no_count(13usize, 13usize, 26u32, 2194032u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194036u32);
-    emu.adi_no_count(12usize, 12usize, 128u32, 2194040u32);
-    emu.adi_no_count(13usize, 13usize, 128u32, 2194044u32);
-    emu.sb_no_count(10usize, 2usize, 12u32, 2194048u32);
-    emu.sb_no_count(12usize, 2usize, 13u32, 2194052u32);
-    emu.sb_no_count(13usize, 2usize, 14u32, 2194056u32);
-    emu.sb_no_count(11usize, 2usize, 15u32, 2194060u32);
-    emu.adi_no_count(18usize, 0usize, 4u32, 2194064u32);
-    emu.add_memory_rw_events(15usize);
-    emu.pc = 2194064u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217a90));
-}
-#[inline]
-pub fn block_0x00217a90(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 10u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(19usize, 8usize, 8u32, 2194068u32)?;
-    emu.lw_no_count(10usize, 19usize, 4u32, 2194072u32)?;
-    emu.lw_no_count(21usize, 19usize, 8u32, 2194076u32)?;
-    emu.lw_no_count(20usize, 19usize, 12u32, 2194080u32)?;
-    emu.lw_no_count(11usize, 19usize, 0u32, 2194084u32)?;
-    emu.sltru_no_count(12usize, 21usize, 10usize, 2194088u32);
-    emu.sltiu_no_count(13usize, 20usize, 1u32, 2194092u32);
-    emu.anr_no_count(14usize, 13usize, 12usize, 2194096u32);
-    emu.adi_no_count(12usize, 21usize, 0u32, 2194100u32);
-    emu.add_memory_rw_events(9usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(14usize);
-    if a != b {
-        emu.pc = 2194108u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217abc));
-    } else {
-        emu.pc = 2194104u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217ab8));
-    }
-}
-#[inline(always)]
-pub fn block_0x00217ab8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 1u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(12usize, 10usize, 0u32, 2194108u32);
-    emu.add_memory_rw_events(1usize);
-    emu.pc = 2194108u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217abc));
-}
-#[inline]
-pub fn block_0x00217abc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 9u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(13usize, 13usize, 4294967295u32, 2194112u32);
-    emu.orr_no_count(13usize, 13usize, 21usize, 2194116u32);
-    emu.sbr_no_count(13usize, 10usize, 13usize, 2194120u32);
-    emu.sltru_no_count(10usize, 10usize, 13usize, 2194124u32);
-    emu.adi_no_count(10usize, 10usize, 4294967295u32, 2194128u32);
-    emu.anr_no_count(22usize, 10usize, 13usize, 2194132u32);
-    emu.adr_no_count(10usize, 11usize, 12usize, 2194136u32);
-    emu.adi_no_count(9usize, 22usize, 0u32, 2194140u32);
-    emu.add_memory_rw_events(8usize);
-    let b = emu.read_reg_b_tracked(18usize);
-    let a = emu.read_reg_a_tracked(22usize);
-    if a < b {
-        emu.pc = 2194148u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217ae4));
-    } else {
-        emu.pc = 2194144u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00217ae0));
-    }
-}
-#[inline(always)]
-pub fn block_0x00217ae0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 1u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(9usize, 18usize, 0u32, 2194148u32);
-    emu.add_memory_rw_events(1usize);
-    emu.pc = 2194148u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00217ae4));
-}
-#[inline(always)]
-pub fn block_0x00217ae4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 2usize, 12u32, 2194152u32);
-    emu.adi_no_count(12usize, 9usize, 0u32, 2194156u32);
-    emu.apc_no_count(1usize, 2194156u32, 4294909952u32, 2194160u32);
-    emu.add_memory_rw_events(4usize);
+    emu.adi_no_count(2usize, 2usize, 4294967184u32, 2191148u32);
+    emu.sw_no_count(1usize, 2usize, 108u32, 2191152u32)?;
+    emu.sw_no_count(8usize, 2usize, 104u32, 2191156u32)?;
+    emu.sw_no_count(9usize, 2usize, 100u32, 2191160u32)?;
+    emu.sw_no_count(18usize, 2usize, 96u32, 2191164u32)?;
+    emu.sw_no_count(19usize, 2usize, 92u32, 2191168u32)?;
+    emu.sw_no_count(20usize, 2usize, 88u32, 2191172u32)?;
+    emu.sw_no_count(21usize, 2usize, 84u32, 2191176u32)?;
+    emu.sw_no_count(22usize, 2usize, 80u32, 2191180u32)?;
+    emu.sw_no_count(23usize, 2usize, 76u32, 2191184u32)?;
+    emu.sw_no_count(24usize, 2usize, 72u32, 2191188u32)?;
+    emu.sw_no_count(25usize, 2usize, 68u32, 2191192u32)?;
+    emu.sw_no_count(26usize, 2usize, 64u32, 2191196u32)?;
+    emu.adi_no_count(9usize, 11usize, 0u32, 2191200u32);
+    emu.adi_no_count(18usize, 10usize, 0u32, 2191204u32);
+    emu.sw_no_count(0usize, 2usize, 12u32, 2191208u32)?;
+    emu.sw_no_count(10usize, 2usize, 20u32, 2191212u32)?;
+    emu.adi_no_count(10usize, 2usize, 32u32, 2191216u32);
+    emu.adi_no_count(11usize, 2usize, 12u32, 2191220u32);
+    emu.apc_no_count(1usize, 2191220u32, 0u32, 2191224u32);
+    emu.add_memory_rw_events(21usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194164u32;
+    let return_addr = 2191228u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966648u32);
+    let target = base.wrapping_add(4294966556u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -578,7 +288,967 @@ pub fn block_0x00217ae4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217af4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00216f7c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 32u32, 2191232u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2191564u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002170cc));
+    } else {
+        emu.pc = 2191236u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216f84));
+    }
+}
+#[inline(always)]
+pub fn block_0x00216f84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(20usize, 0usize, 0u32, 2191240u32);
+    emu.add_memory_rw_events(1usize);
+    emu.pc = 2191240u32;
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00216f88));
+}
+#[inline(always)]
+pub fn block_0x00216f88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 36u32, 2191244u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a == b {
+        emu.pc = 2191280u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216fb0));
+    } else {
+        emu.pc = 2191248u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216f90));
+    }
+}
+#[inline(always)]
+pub fn block_0x00216f90(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 5u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(20usize, 20usize, 1u32, 2191252u32);
+    emu.adi_no_count(10usize, 2usize, 32u32, 2191256u32);
+    emu.adi_no_count(11usize, 2usize, 12u32, 2191260u32);
+    emu.apc_no_count(1usize, 2191260u32, 0u32, 2191264u32);
+    emu.add_memory_rw_events(5usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191268u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294966516u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00216fa4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 32u32, 2191272u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a == b {
+        emu.pc = 2191240u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216f88));
+    } else {
+        emu.pc = 2191276u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216fac));
+    }
+}
+#[inline(always)]
+pub fn block_0x00216fac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.add_memory_rw_events(1usize);
+    let return_addr = 2191280u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    emu.pc = 2191564u32;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x002170cc));
+}
+#[inline]
+pub fn block_0x00216fb0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 9u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(8usize, 9usize, 0u32, 2191284u32)?;
+    emu.lw_no_count(9usize, 9usize, 4u32, 2191288u32)?;
+    emu.sw_no_count(0usize, 2usize, 12u32, 2191292u32)?;
+    emu.sw_no_count(18usize, 2usize, 20u32, 2191296u32)?;
+    emu.sw_no_count(0usize, 2usize, 24u32, 2191300u32)?;
+    emu.adi_no_count(10usize, 2usize, 32u32, 2191304u32);
+    emu.adi_no_count(11usize, 2usize, 12u32, 2191308u32);
+    emu.apc_no_count(1usize, 2191308u32, 0u32, 2191312u32);
+    emu.add_memory_rw_events(9usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191316u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294966468u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00216fd4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 32u32, 2191320u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2191564u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002170cc));
+    } else {
+        emu.pc = 2191324u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00216fdc));
+    }
+}
+#[inline]
+pub fn block_0x00216fdc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 10u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(21usize, 2usize, 28u32, 2191328u32);
+    let a = 0u32.wrapping_add(2207744u32);
+    emu.write_reg_no_count(22usize, a);
+    emu.pc = 2191332u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(22usize, 22usize, 4294966512u32, 2191336u32);
+    let a = 0u32.wrapping_add(2232320u32);
+    emu.write_reg_no_count(23usize, a);
+    emu.pc = 2191340u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(23usize, 23usize, 4294965860u32, 2191344u32);
+    emu.adi_no_count(24usize, 0usize, 1u32, 2191348u32);
+    emu.adi_no_count(25usize, 2usize, 56u32, 2191352u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(18usize, a);
+    emu.pc = 2191356u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(18usize, 18usize, 4294965632u32, 2191360u32);
+    emu.add_memory_rw_events(10usize);
+    let return_addr = 2191364u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    emu.pc = 2191388u32;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x0021701c));
+}
+#[inline(always)]
+pub fn block_0x00217004(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 4u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(10usize, 2usize, 32u32, 2191368u32);
+    emu.adi_no_count(11usize, 2usize, 12u32, 2191372u32);
+    emu.apc_no_count(1usize, 2191372u32, 0u32, 2191376u32);
+    emu.add_memory_rw_events(4usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191380u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294966404u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217014(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 32u32, 2191384u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2191564u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002170cc));
+    } else {
+        emu.pc = 2191388u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x0021701c));
+    }
+}
+#[inline(always)]
+pub fn block_0x0021701c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(19usize, 2usize, 36u32, 2191392u32)?;
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(19usize);
+    if a == b {
+        emu.pc = 2191504u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217090));
+    } else {
+        emu.pc = 2191396u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217024));
+    }
+}
+#[inline]
+pub fn block_0x00217024(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 17u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 40u32, 2191400u32)?;
+    emu.lw_no_count(26usize, 2usize, 24u32, 2191404u32)?;
+    emu.sw_no_count(21usize, 2usize, 56u32, 2191408u32)?;
+    emu.sw_no_count(22usize, 2usize, 60u32, 2191412u32)?;
+    emu.sw_no_count(0usize, 2usize, 48u32, 2191416u32)?;
+    emu.adi_no_count(26usize, 26usize, 1u32, 2191420u32);
+    emu.sw_no_count(10usize, 2usize, 28u32, 2191424u32)?;
+    emu.sw_no_count(26usize, 2usize, 24u32, 2191428u32)?;
+    emu.sw_no_count(23usize, 2usize, 32u32, 2191432u32)?;
+    emu.sw_no_count(24usize, 2usize, 36u32, 2191436u32)?;
+    emu.sw_no_count(25usize, 2usize, 40u32, 2191440u32)?;
+    emu.sw_no_count(24usize, 2usize, 44u32, 2191444u32)?;
+    emu.adi_no_count(12usize, 2usize, 32u32, 2191448u32);
+    emu.adi_no_count(10usize, 8usize, 0u32, 2191452u32);
+    emu.adi_no_count(11usize, 9usize, 0u32, 2191456u32);
+    emu.apc_no_count(1usize, 2191456u32, 24576u32, 2191460u32);
+    emu.add_memory_rw_events(17usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191464u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294966148u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217068(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2191504u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217090));
+    } else {
+        emu.pc = 2191468u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x0021706c));
+    }
+}
+#[inline(always)]
+pub fn block_0x0021706c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sltiu_no_count(10usize, 26usize, 1u32, 2191472u32);
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2191364u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217004));
+    } else {
+        emu.pc = 2191476u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217074));
+    }
+}
+#[inline(always)]
+pub fn block_0x00217074(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let b = emu.read_reg_b_tracked(20usize);
+    let a = emu.read_reg_a_tracked(26usize);
+    if a >= b {
+        emu.pc = 2191364u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217004));
+    } else {
+        emu.pc = 2191480u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217078));
+    }
+}
+#[inline(always)]
+pub fn block_0x00217078(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 5u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(13usize, 9usize, 12u32, 2191484u32)?;
+    emu.adi_no_count(12usize, 0usize, 1u32, 2191488u32);
+    emu.adi_no_count(10usize, 8usize, 0u32, 2191492u32);
+    emu.adi_no_count(11usize, 18usize, 0u32, 2191496u32);
+    emu.add_memory_rw_events(5usize);
+    let base = emu.read_reg_b_tracked(13usize);
+    let return_addr = 2191500u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x0021708c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a == b {
+        emu.pc = 2191364u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217004));
+    } else {
+        emu.pc = 2191504u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217090));
+    }
+}
+#[inline]
+pub fn block_0x00217090(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 15u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(10usize, 19usize, 0u32, 2191508u32);
+    emu.lw_no_count(1usize, 2usize, 108u32, 2191512u32)?;
+    emu.lw_no_count(8usize, 2usize, 104u32, 2191516u32)?;
+    emu.lw_no_count(9usize, 2usize, 100u32, 2191520u32)?;
+    emu.lw_no_count(18usize, 2usize, 96u32, 2191524u32)?;
+    emu.lw_no_count(19usize, 2usize, 92u32, 2191528u32)?;
+    emu.lw_no_count(20usize, 2usize, 88u32, 2191532u32)?;
+    emu.lw_no_count(21usize, 2usize, 84u32, 2191536u32)?;
+    emu.lw_no_count(22usize, 2usize, 80u32, 2191540u32)?;
+    emu.lw_no_count(23usize, 2usize, 76u32, 2191544u32)?;
+    emu.lw_no_count(24usize, 2usize, 72u32, 2191548u32)?;
+    emu.lw_no_count(25usize, 2usize, 68u32, 2191552u32)?;
+    emu.lw_no_count(26usize, 2usize, 64u32, 2191556u32)?;
+    emu.adi_no_count(2usize, 2usize, 112u32, 2191560u32);
+    emu.add_memory_rw_events(15usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191564u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline]
+pub fn block_0x002170cc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 14u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(10usize, 2usize, 36u32, 2191568u32)?;
+    emu.lw_no_count(11usize, 2usize, 40u32, 2191572u32)?;
+    emu.sw_no_count(10usize, 2usize, 56u32, 2191576u32)?;
+    emu.sw_no_count(11usize, 2usize, 60u32, 2191580u32)?;
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(10usize, a);
+    emu.pc = 2191584u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(10usize, 10usize, 4294965548u32, 2191588u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(13usize, a);
+    emu.pc = 2191592u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(13usize, 13usize, 4294965532u32, 2191596u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(14usize, a);
+    emu.pc = 2191600u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(14usize, 14usize, 4294965564u32, 2191604u32);
+    emu.adi_no_count(11usize, 0usize, 13u32, 2191608u32);
+    emu.adi_no_count(12usize, 2usize, 56u32, 2191612u32);
+    emu.apc_no_count(1usize, 2191612u32, 20480u32, 2191616u32);
+    emu.add_memory_rw_events(14usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191620u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(1692u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline]
+pub fn block_0x00217104(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 11u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2191624u32);
+    emu.sw_no_count(1usize, 2usize, 12u32, 2191628u32)?;
+    emu.adi_no_count(12usize, 10usize, 0u32, 2191632u32);
+    emu.lbu_no_count(10usize, 10usize, 0u32, 2191636u32);
+    emu.sli_no_count(10usize, 10usize, 2u32, 2191640u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(13usize, a);
+    emu.pc = 2191644u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(13usize, 13usize, 4294965468u32, 2191648u32);
+    emu.adr_no_count(10usize, 10usize, 13usize, 2191652u32);
+    emu.lw_no_count(13usize, 10usize, 0u32, 2191656u32)?;
+    emu.adi_no_count(10usize, 11usize, 0u32, 2191660u32);
+    emu.add_memory_rw_events(11usize);
+    let base = emu.read_reg_b_tracked(13usize);
+    let return_addr = 2191664u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline]
+pub fn block_0x00217130(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 13u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(12usize, 12usize, 4u32, 2191668u32);
+    emu.sw_no_count(12usize, 2usize, 4u32, 2191672u32)?;
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191676u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965652u32, 2191680u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(13usize, a);
+    emu.pc = 2191684u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(13usize, 13usize, 4294965662u32, 2191688u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(16usize, a);
+    emu.pc = 2191692u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(16usize, 16usize, 4294965636u32, 2191696u32);
+    emu.adi_no_count(12usize, 0usize, 10u32, 2191700u32);
+    emu.adi_no_count(14usize, 0usize, 3u32, 2191704u32);
+    emu.adi_no_count(15usize, 2usize, 4u32, 2191708u32);
+    emu.apc_no_count(1usize, 2191708u32, 24576u32, 2191712u32);
+    emu.add_memory_rw_events(13usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191716u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(1008u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217164(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 3u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191720u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191724u32);
+    emu.add_memory_rw_events(3usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191728u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217170(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191732u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965719u32, 2191736u32);
+    emu.adi_no_count(12usize, 0usize, 5u32, 2191740u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191744u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191748u32);
+    emu.apc_no_count(6usize, 2191748u32, 24576u32, 2191752u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191756u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(868u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x0021718c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191760u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965674u32, 2191764u32);
+    emu.adi_no_count(12usize, 0usize, 7u32, 2191768u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191772u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191776u32);
+    emu.apc_no_count(6usize, 2191776u32, 24576u32, 2191780u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191784u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(840u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline]
+pub fn block_0x002171a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 13u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(12usize, 12usize, 1u32, 2191788u32);
+    emu.sw_no_count(12usize, 2usize, 8u32, 2191792u32)?;
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191796u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965700u32, 2191800u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(13usize, a);
+    emu.pc = 2191804u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(13usize, 13usize, 4294965713u32, 2191808u32);
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(16usize, a);
+    emu.pc = 2191812u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(16usize, 16usize, 4294965684u32, 2191816u32);
+    emu.adi_no_count(12usize, 0usize, 13u32, 2191820u32);
+    emu.adi_no_count(14usize, 0usize, 6u32, 2191824u32);
+    emu.adi_no_count(15usize, 2usize, 8u32, 2191828u32);
+    emu.apc_no_count(1usize, 2191828u32, 24576u32, 2191832u32);
+    emu.add_memory_rw_events(13usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191836u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(888u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x002171dc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 3u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191840u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191844u32);
+    emu.add_memory_rw_events(3usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2191848u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x002171e8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191852u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965743u32, 2191856u32);
+    emu.adi_no_count(12usize, 0usize, 11u32, 2191860u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191864u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191868u32);
+    emu.apc_no_count(6usize, 2191868u32, 24576u32, 2191872u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191876u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(748u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217204(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191880u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965665u32, 2191884u32);
+    emu.adi_no_count(12usize, 0usize, 9u32, 2191888u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191892u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191896u32);
+    emu.apc_no_count(6usize, 2191896u32, 24576u32, 2191900u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191904u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(720u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217220(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191908u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965724u32, 2191912u32);
+    emu.adi_no_count(12usize, 0usize, 6u32, 2191916u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191920u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191924u32);
+    emu.apc_no_count(6usize, 2191924u32, 24576u32, 2191928u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191932u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(692u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x0021723c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 7u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    let a = 0u32.wrapping_add(2236416u32);
+    emu.write_reg_no_count(11usize, a);
+    emu.pc = 2191936u32;
+    emu.update_insn_clock();
+    emu.adi_no_count(11usize, 11usize, 4294965730u32, 2191940u32);
+    emu.adi_no_count(12usize, 0usize, 13u32, 2191944u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2191948u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2191952u32);
+    emu.apc_no_count(6usize, 2191952u32, 24576u32, 2191956u32);
+    emu.add_memory_rw_events(7usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191960u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(664u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217258(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 6u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -586,34 +1256,439 @@ pub fn block_0x00217af4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adr_no_count(9usize, 21usize, 9usize, 2194168u32);
-    emu.sltru_no_count(10usize, 9usize, 21usize, 2194172u32);
-    emu.adr_no_count(10usize, 20usize, 10usize, 2194176u32);
-    emu.sw_no_count(9usize, 19usize, 8u32, 2194180u32)?;
-    emu.sw_no_count(10usize, 19usize, 12u32, 2194184u32)?;
+    emu.lw_no_count(13usize, 10usize, 0u32, 2191964u32)?;
+    emu.lw_no_count(12usize, 10usize, 4u32, 2191968u32)?;
+    emu.adi_no_count(10usize, 11usize, 0u32, 2191972u32);
+    emu.adi_no_count(11usize, 13usize, 0u32, 2191976u32);
+    emu.apc_no_count(6usize, 2191976u32, 24576u32, 2191980u32);
+    emu.add_memory_rw_events(6usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191984u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(640u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x00217270(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 3u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(6usize, 11usize, 12u32, 2191988u32)?;
+    emu.adi_no_count(11usize, 12usize, 0u32, 2191992u32);
+    emu.add_memory_rw_events(3usize);
+    let base = emu.read_reg_b_tracked(6usize);
+    let return_addr = 2191996u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    let target = base.wrapping_add(0u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline]
+pub fn block_0x0021727c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 13u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(2usize, 2usize, 4294967248u32, 2192000u32);
+    emu.sw_no_count(1usize, 2usize, 44u32, 2192004u32)?;
+    emu.sw_no_count(8usize, 2usize, 40u32, 2192008u32)?;
+    emu.sw_no_count(9usize, 2usize, 36u32, 2192012u32)?;
+    emu.sw_no_count(18usize, 2usize, 32u32, 2192016u32)?;
+    emu.sw_no_count(19usize, 2usize, 28u32, 2192020u32)?;
+    emu.sw_no_count(20usize, 2usize, 24u32, 2192024u32)?;
+    emu.sw_no_count(21usize, 2usize, 20u32, 2192028u32)?;
+    emu.sw_no_count(22usize, 2usize, 16u32, 2192032u32)?;
+    emu.adi_no_count(8usize, 10usize, 0u32, 2192036u32);
+    emu.adi_no_count(10usize, 0usize, 128u32, 2192040u32);
+    emu.sw_no_count(0usize, 2usize, 12u32, 2192044u32)?;
+    emu.add_memory_rw_events(12usize);
+    let b = emu.read_reg_b_tracked(10usize);
+    let a = emu.read_reg_a_tracked(11usize);
+    if a >= b {
+        emu.pc = 2192060u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002172bc));
+    } else {
+        emu.pc = 2192048u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002172b0));
+    }
+}
+#[inline(always)]
+pub fn block_0x002172b0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 3u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sb_no_count(11usize, 2usize, 12u32, 2192052u32);
+    emu.adi_no_count(18usize, 0usize, 1u32, 2192056u32);
+    emu.add_memory_rw_events(3usize);
+    let return_addr = 2192060u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    emu.pc = 2192216u32;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00217358));
+}
+#[inline(always)]
+pub fn block_0x002172bc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sri_no_count(10usize, 11usize, 11u32, 2192064u32);
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2192100u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002172e4));
+    } else {
+        emu.pc = 2192068u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002172c4));
+    }
+}
+#[inline(always)]
+pub fn block_0x002172c4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 8u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sri_no_count(10usize, 11usize, 6u32, 2192072u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192076u32);
+    emu.ori_no_count(10usize, 10usize, 192u32, 2192080u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192084u32);
+    emu.sb_no_count(10usize, 2usize, 12u32, 2192088u32);
+    emu.sb_no_count(11usize, 2usize, 13u32, 2192092u32);
+    emu.adi_no_count(18usize, 0usize, 2u32, 2192096u32);
+    emu.add_memory_rw_events(8usize);
+    let return_addr = 2192100u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    emu.pc = 2192216u32;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00217358));
+}
+#[inline(always)]
+pub fn block_0x002172e4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 2u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sri_no_count(10usize, 11usize, 16u32, 2192104u32);
+    emu.add_memory_rw_events(1usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(10usize);
+    if a != b {
+        emu.pc = 2192156u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x0021731c));
+    } else {
+        emu.pc = 2192108u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002172ec));
+    }
+}
+#[inline]
+pub fn block_0x002172ec(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 12u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sri_no_count(10usize, 11usize, 12u32, 2192112u32);
+    emu.sli_no_count(12usize, 11usize, 20u32, 2192116u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192120u32);
+    emu.ori_no_count(10usize, 10usize, 224u32, 2192124u32);
+    emu.sri_no_count(12usize, 12usize, 26u32, 2192128u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192132u32);
+    emu.adi_no_count(12usize, 12usize, 128u32, 2192136u32);
+    emu.sb_no_count(10usize, 2usize, 12u32, 2192140u32);
+    emu.sb_no_count(12usize, 2usize, 13u32, 2192144u32);
+    emu.sb_no_count(11usize, 2usize, 14u32, 2192148u32);
+    emu.adi_no_count(18usize, 0usize, 3u32, 2192152u32);
+    emu.add_memory_rw_events(12usize);
+    let return_addr = 2192156u32;
+    emu.write_reg_no_count(0usize, return_addr);
+    emu.pc = 2192216u32;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00217358));
+}
+#[inline]
+pub fn block_0x0021731c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 15u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.sri_no_count(10usize, 11usize, 18u32, 2192160u32);
+    emu.sli_no_count(12usize, 11usize, 14u32, 2192164u32);
+    emu.sli_no_count(13usize, 11usize, 20u32, 2192168u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192172u32);
+    emu.ori_no_count(10usize, 10usize, 240u32, 2192176u32);
+    emu.sri_no_count(12usize, 12usize, 26u32, 2192180u32);
+    emu.sri_no_count(13usize, 13usize, 26u32, 2192184u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192188u32);
+    emu.adi_no_count(12usize, 12usize, 128u32, 2192192u32);
+    emu.adi_no_count(13usize, 13usize, 128u32, 2192196u32);
+    emu.sb_no_count(10usize, 2usize, 12u32, 2192200u32);
+    emu.sb_no_count(12usize, 2usize, 13u32, 2192204u32);
+    emu.sb_no_count(13usize, 2usize, 14u32, 2192208u32);
+    emu.sb_no_count(11usize, 2usize, 15u32, 2192212u32);
+    emu.adi_no_count(18usize, 0usize, 4u32, 2192216u32);
+    emu.add_memory_rw_events(15usize);
+    emu.pc = 2192216u32;
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00217358));
+}
+#[inline]
+pub fn block_0x00217358(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 10u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.lw_no_count(19usize, 8usize, 8u32, 2192220u32)?;
+    emu.lw_no_count(10usize, 19usize, 4u32, 2192224u32)?;
+    emu.lw_no_count(21usize, 19usize, 8u32, 2192228u32)?;
+    emu.lw_no_count(20usize, 19usize, 12u32, 2192232u32)?;
+    emu.lw_no_count(11usize, 19usize, 0u32, 2192236u32)?;
+    emu.sltru_no_count(12usize, 21usize, 10usize, 2192240u32);
+    emu.sltiu_no_count(13usize, 20usize, 1u32, 2192244u32);
+    emu.anr_no_count(14usize, 13usize, 12usize, 2192248u32);
+    emu.adi_no_count(12usize, 21usize, 0u32, 2192252u32);
+    emu.add_memory_rw_events(9usize);
+    let b = emu.read_reg_b_tracked(0usize);
+    let a = emu.read_reg_a_tracked(14usize);
+    if a != b {
+        emu.pc = 2192260u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217384));
+    } else {
+        emu.pc = 2192256u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x00217380));
+    }
+}
+#[inline(always)]
+pub fn block_0x00217380(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(12usize, 10usize, 0u32, 2192260u32);
+    emu.add_memory_rw_events(1usize);
+    emu.pc = 2192260u32;
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x00217384));
+}
+#[inline]
+pub fn block_0x00217384(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 9u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(13usize, 13usize, 4294967295u32, 2192264u32);
+    emu.orr_no_count(13usize, 13usize, 21usize, 2192268u32);
+    emu.sbr_no_count(13usize, 10usize, 13usize, 2192272u32);
+    emu.sltru_no_count(10usize, 10usize, 13usize, 2192276u32);
+    emu.adi_no_count(10usize, 10usize, 4294967295u32, 2192280u32);
+    emu.anr_no_count(22usize, 10usize, 13usize, 2192284u32);
+    emu.adr_no_count(10usize, 11usize, 12usize, 2192288u32);
+    emu.adi_no_count(9usize, 22usize, 0u32, 2192292u32);
+    emu.add_memory_rw_events(8usize);
+    let b = emu.read_reg_b_tracked(18usize);
+    let a = emu.read_reg_a_tracked(22usize);
+    if a < b {
+        emu.pc = 2192300u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002173ac));
+    } else {
+        emu.pc = 2192296u32;
+        emu.update_insn_clock();
+        emu.check_chunk_boundary_fast();
+        if emu.should_yield() {
+            return Ok(crate::NextStep::Dynamic(emu.pc));
+        }
+        return Ok(crate::NextStep::Direct(block_0x002173a8));
+    }
+}
+#[inline(always)]
+pub fn block_0x002173a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 1u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(9usize, 18usize, 0u32, 2192300u32);
+    emu.add_memory_rw_events(1usize);
+    emu.pc = 2192300u32;
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Direct(block_0x002173ac));
+}
+#[inline(always)]
+pub fn block_0x002173ac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 4u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adi_no_count(11usize, 2usize, 12u32, 2192304u32);
+    emu.adi_no_count(12usize, 9usize, 0u32, 2192308u32);
+    emu.apc_no_count(1usize, 2192308u32, 4294909952u32, 2192312u32);
+    emu.add_memory_rw_events(4usize);
+    let base = emu.read_reg_b_tracked(1usize);
+    let return_addr = 2192316u32;
+    emu.write_reg_no_count(1usize, return_addr);
+    let target = base.wrapping_add(4294965612u32);
+    emu.pc = target;
+    emu.update_insn_clock();
+    emu.check_chunk_boundary_fast();
+    if emu.should_yield() {
+        return Ok(crate::NextStep::Dynamic(emu.pc));
+    }
+    return Ok(crate::NextStep::Dynamic(target));
+}
+#[inline(always)]
+pub fn block_0x002173bc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+    const BLOCK_INSNS: u32 = 6u32;
+    if !emu.can_fit_instructions(BLOCK_INSNS) {
+        return emu.interpret_from_current_pc();
+    }
+    if emu.is_unconstrained_mode() {
+        return emu.interpret_from_current_pc();
+    }
+    emu.adr_no_count(9usize, 21usize, 9usize, 2192320u32);
+    emu.sltru_no_count(10usize, 9usize, 21usize, 2192324u32);
+    emu.adr_no_count(10usize, 20usize, 10usize, 2192328u32);
+    emu.sw_no_count(9usize, 19usize, 8u32, 2192332u32)?;
+    emu.sw_no_count(10usize, 19usize, 12u32, 2192336u32)?;
     emu.add_memory_rw_events(5usize);
     let b = emu.read_reg_b_tracked(18usize);
     let a = emu.read_reg_a_tracked(22usize);
     if a >= b {
-        emu.pc = 2194208u32;
+        emu.pc = 2192360u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b20));
+        return Ok(crate::NextStep::Direct(block_0x002173e8));
     } else {
-        emu.pc = 2194188u32;
+        emu.pc = 2192340u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b0c));
+        return Ok(crate::NextStep::Direct(block_0x002173d4));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b0c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002173d4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -623,34 +1698,34 @@ pub fn block_0x00217b0c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     }
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(10usize, a);
-    emu.pc = 2194192u32;
+    emu.pc = 2192344u32;
     emu.update_insn_clock();
-    emu.lw_no_count(19usize, 10usize, 272u32, 2194196u32)?;
-    emu.ani_no_count(12usize, 19usize, 255u32, 2194200u32);
-    emu.adi_no_count(11usize, 0usize, 4u32, 2194204u32);
+    emu.lw_no_count(19usize, 10usize, 4294965872u32, 2192348u32)?;
+    emu.ani_no_count(12usize, 19usize, 255u32, 2192352u32);
+    emu.adi_no_count(11usize, 0usize, 4u32, 2192356u32);
     emu.add_memory_rw_events(4usize);
     let b = emu.read_reg_b_tracked(11usize);
     let a = emu.read_reg_a_tracked(12usize);
     if a != b {
-        emu.pc = 2194216u32;
+        emu.pc = 2192368u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b28));
+        return Ok(crate::NextStep::Direct(block_0x002173f0));
     } else {
-        emu.pc = 2194208u32;
+        emu.pc = 2192360u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b20));
+        return Ok(crate::NextStep::Direct(block_0x002173e8));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b20(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002173e8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -658,20 +1733,20 @@ pub fn block_0x00217b20(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 0usize, 0u32, 2194212u32);
+    emu.adi_no_count(10usize, 0usize, 0u32, 2192364u32);
     emu.add_memory_rw_events(2usize);
-    let return_addr = 2194216u32;
+    let return_addr = 2192368u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194252u32;
+    emu.pc = 2192404u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217b4c));
+    return Ok(crate::NextStep::Direct(block_0x00217414));
 }
 #[inline(always)]
-pub fn block_0x00217b28(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002173f0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -679,32 +1754,32 @@ pub fn block_0x00217b28(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(20usize, 10usize, 276u32, 2194220u32)?;
-    emu.lbu_no_count(10usize, 8usize, 0u32, 2194224u32);
-    emu.lw_no_count(9usize, 8usize, 4u32, 2194228u32)?;
+    emu.lw_no_count(20usize, 10usize, 4294965876u32, 2192372u32)?;
+    emu.lbu_no_count(10usize, 8usize, 0u32, 2192376u32);
+    emu.lw_no_count(9usize, 8usize, 4u32, 2192380u32)?;
     emu.add_memory_rw_events(3usize);
     let b = emu.read_reg_b_tracked(10usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a < b {
-        emu.pc = 2194292u32;
+        emu.pc = 2192444u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b74));
+        return Ok(crate::NextStep::Direct(block_0x0021743c));
     } else {
-        emu.pc = 2194232u32;
+        emu.pc = 2192384u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b38));
+        return Ok(crate::NextStep::Direct(block_0x00217400));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b38(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217400(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -712,30 +1787,30 @@ pub fn block_0x00217b38(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(11usize, 0usize, 3u32, 2194236u32);
+    emu.adi_no_count(11usize, 0usize, 3u32, 2192388u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(11usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a == b {
-        emu.pc = 2194292u32;
+        emu.pc = 2192444u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b74));
+        return Ok(crate::NextStep::Direct(block_0x0021743c));
     } else {
-        emu.pc = 2194240u32;
+        emu.pc = 2192392u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b40));
+        return Ok(crate::NextStep::Direct(block_0x00217408));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b40(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217408(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 3u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -743,19 +1818,19 @@ pub fn block_0x00217b40(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sw_no_count(19usize, 8usize, 0u32, 2194244u32)?;
-    emu.sw_no_count(20usize, 8usize, 4u32, 2194248u32)?;
-    emu.adi_no_count(10usize, 0usize, 1u32, 2194252u32);
+    emu.sw_no_count(19usize, 8usize, 0u32, 2192396u32)?;
+    emu.sw_no_count(20usize, 8usize, 4u32, 2192400u32)?;
+    emu.adi_no_count(10usize, 0usize, 1u32, 2192404u32);
     emu.add_memory_rw_events(3usize);
-    emu.pc = 2194252u32;
+    emu.pc = 2192404u32;
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217b4c));
+    return Ok(crate::NextStep::Direct(block_0x00217414));
 }
 #[inline]
-pub fn block_0x00217b4c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217414(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 10u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -763,18 +1838,18 @@ pub fn block_0x00217b4c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(1usize, 2usize, 44u32, 2194256u32)?;
-    emu.lw_no_count(8usize, 2usize, 40u32, 2194260u32)?;
-    emu.lw_no_count(9usize, 2usize, 36u32, 2194264u32)?;
-    emu.lw_no_count(18usize, 2usize, 32u32, 2194268u32)?;
-    emu.lw_no_count(19usize, 2usize, 28u32, 2194272u32)?;
-    emu.lw_no_count(20usize, 2usize, 24u32, 2194276u32)?;
-    emu.lw_no_count(21usize, 2usize, 20u32, 2194280u32)?;
-    emu.lw_no_count(22usize, 2usize, 16u32, 2194284u32)?;
-    emu.adi_no_count(2usize, 2usize, 48u32, 2194288u32);
+    emu.lw_no_count(1usize, 2usize, 44u32, 2192408u32)?;
+    emu.lw_no_count(8usize, 2usize, 40u32, 2192412u32)?;
+    emu.lw_no_count(9usize, 2usize, 36u32, 2192416u32)?;
+    emu.lw_no_count(18usize, 2usize, 32u32, 2192420u32)?;
+    emu.lw_no_count(19usize, 2usize, 28u32, 2192424u32)?;
+    emu.lw_no_count(20usize, 2usize, 24u32, 2192428u32)?;
+    emu.lw_no_count(21usize, 2usize, 20u32, 2192432u32)?;
+    emu.lw_no_count(22usize, 2usize, 16u32, 2192436u32)?;
+    emu.adi_no_count(2usize, 2usize, 48u32, 2192440u32);
     emu.add_memory_rw_events(10usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194292u32;
+    let return_addr = 2192444u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -786,7 +1861,7 @@ pub fn block_0x00217b4c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217b74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021743c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -794,32 +1869,32 @@ pub fn block_0x00217b74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(21usize, 9usize, 4u32, 2194296u32)?;
-    emu.lw_no_count(11usize, 21usize, 0u32, 2194300u32)?;
-    emu.lw_no_count(18usize, 9usize, 0u32, 2194304u32)?;
+    emu.lw_no_count(21usize, 9usize, 4u32, 2192448u32)?;
+    emu.lw_no_count(11usize, 21usize, 0u32, 2192452u32)?;
+    emu.lw_no_count(18usize, 9usize, 0u32, 2192456u32)?;
     emu.add_memory_rw_events(3usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2194316u32;
+        emu.pc = 2192468u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b8c));
+        return Ok(crate::NextStep::Direct(block_0x00217454));
     } else {
-        emu.pc = 2194308u32;
+        emu.pc = 2192460u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b84));
+        return Ok(crate::NextStep::Direct(block_0x0021744c));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021744c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -827,10 +1902,10 @@ pub fn block_0x00217b84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 18usize, 0u32, 2194312u32);
+    emu.adi_no_count(10usize, 18usize, 0u32, 2192464u32);
     emu.add_memory_rw_events(2usize);
     let base = emu.read_reg_b_tracked(11usize);
-    let return_addr = 2194316u32;
+    let return_addr = 2192468u32;
     emu.write_reg_no_count(1usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -842,7 +1917,7 @@ pub fn block_0x00217b84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217b8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217454(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -850,30 +1925,30 @@ pub fn block_0x00217b8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(11usize, 21usize, 4u32, 2194320u32)?;
+    emu.lw_no_count(11usize, 21usize, 4u32, 2192472u32)?;
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2194340u32;
+        emu.pc = 2192492u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217ba4));
+        return Ok(crate::NextStep::Direct(block_0x0021746c));
     } else {
-        emu.pc = 2194324u32;
+        emu.pc = 2192476u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217b94));
+        return Ok(crate::NextStep::Direct(block_0x0021745c));
     }
 }
 #[inline(always)]
-pub fn block_0x00217b94(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021745c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -881,14 +1956,14 @@ pub fn block_0x00217b94(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(12usize, 21usize, 8u32, 2194328u32)?;
-    emu.adi_no_count(10usize, 18usize, 0u32, 2194332u32);
-    emu.apc_no_count(1usize, 2194332u32, 4294905856u32, 2194336u32);
+    emu.lw_no_count(12usize, 21usize, 8u32, 2192480u32)?;
+    emu.adi_no_count(10usize, 18usize, 0u32, 2192484u32);
+    emu.apc_no_count(1usize, 2192484u32, 4294905856u32, 2192488u32);
     emu.add_memory_rw_events(4usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194340u32;
+    let return_addr = 2192492u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966092u32);
+    let target = base.wrapping_add(4294966984u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -898,7 +1973,7 @@ pub fn block_0x00217b94(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217ba4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021746c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -906,15 +1981,15 @@ pub fn block_0x00217ba4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(11usize, 0usize, 12u32, 2194344u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2194348u32);
-    emu.adi_no_count(10usize, 9usize, 0u32, 2194352u32);
-    emu.apc_no_count(1usize, 2194352u32, 4294905856u32, 2194356u32);
+    emu.adi_no_count(11usize, 0usize, 12u32, 2192496u32);
+    emu.adi_no_count(12usize, 0usize, 4u32, 2192500u32);
+    emu.adi_no_count(10usize, 9usize, 0u32, 2192504u32);
+    emu.apc_no_count(1usize, 2192504u32, 4294905856u32, 2192508u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194360u32;
+    let return_addr = 2192512u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294966072u32);
+    let target = base.wrapping_add(4294966964u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -924,7 +1999,7 @@ pub fn block_0x00217ba4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217bb8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217480(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 1u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -933,18 +2008,18 @@ pub fn block_0x00217bb8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
         return emu.interpret_from_current_pc();
     }
     emu.add_memory_rw_events(1usize);
-    let return_addr = 2194364u32;
+    let return_addr = 2192516u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194240u32;
+    emu.pc = 2192392u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217b40));
+    return Ok(crate::NextStep::Direct(block_0x00217408));
 }
 #[inline(always)]
-pub fn block_0x00217bbc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217484(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -952,33 +2027,33 @@ pub fn block_0x00217bbc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2194368u32);
-    emu.sw_no_count(1usize, 2usize, 12u32, 2194372u32)?;
-    emu.adi_no_count(10usize, 0usize, 128u32, 2194376u32);
-    emu.sw_no_count(0usize, 2usize, 8u32, 2194380u32)?;
+    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2192520u32);
+    emu.sw_no_count(1usize, 2usize, 12u32, 2192524u32)?;
+    emu.adi_no_count(10usize, 0usize, 128u32, 2192528u32);
+    emu.sw_no_count(0usize, 2usize, 8u32, 2192532u32)?;
     emu.add_memory_rw_events(4usize);
     let b = emu.read_reg_b_tracked(10usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a >= b {
-        emu.pc = 2194396u32;
+        emu.pc = 2192548u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217bdc));
+        return Ok(crate::NextStep::Direct(block_0x002174a4));
     } else {
-        emu.pc = 2194384u32;
+        emu.pc = 2192536u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217bd0));
+        return Ok(crate::NextStep::Direct(block_0x00217498));
     }
 }
 #[inline(always)]
-pub fn block_0x00217bd0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217498(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 3u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -986,21 +2061,21 @@ pub fn block_0x00217bd0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sb_no_count(11usize, 2usize, 8u32, 2194388u32);
-    emu.adi_no_count(12usize, 0usize, 1u32, 2194392u32);
+    emu.sb_no_count(11usize, 2usize, 8u32, 2192540u32);
+    emu.adi_no_count(12usize, 0usize, 1u32, 2192544u32);
     emu.add_memory_rw_events(3usize);
-    let return_addr = 2194396u32;
+    let return_addr = 2192548u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194552u32;
+    emu.pc = 2192704u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217c78));
+    return Ok(crate::NextStep::Direct(block_0x00217540));
 }
 #[inline(always)]
-pub fn block_0x00217bdc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002174a4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1008,30 +2083,30 @@ pub fn block_0x00217bdc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(10usize, 11usize, 11u32, 2194400u32);
+    emu.sri_no_count(10usize, 11usize, 11u32, 2192552u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a != b {
-        emu.pc = 2194436u32;
+        emu.pc = 2192588u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217c04));
+        return Ok(crate::NextStep::Direct(block_0x002174cc));
     } else {
-        emu.pc = 2194404u32;
+        emu.pc = 2192556u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217be4));
+        return Ok(crate::NextStep::Direct(block_0x002174ac));
     }
 }
 #[inline(always)]
-pub fn block_0x00217be4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002174ac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 8u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1039,26 +2114,26 @@ pub fn block_0x00217be4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(10usize, 11usize, 6u32, 2194408u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194412u32);
-    emu.ori_no_count(10usize, 10usize, 192u32, 2194416u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194420u32);
-    emu.sb_no_count(10usize, 2usize, 8u32, 2194424u32);
-    emu.sb_no_count(11usize, 2usize, 9u32, 2194428u32);
-    emu.adi_no_count(12usize, 0usize, 2u32, 2194432u32);
+    emu.sri_no_count(10usize, 11usize, 6u32, 2192560u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192564u32);
+    emu.ori_no_count(10usize, 10usize, 192u32, 2192568u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192572u32);
+    emu.sb_no_count(10usize, 2usize, 8u32, 2192576u32);
+    emu.sb_no_count(11usize, 2usize, 9u32, 2192580u32);
+    emu.adi_no_count(12usize, 0usize, 2u32, 2192584u32);
     emu.add_memory_rw_events(8usize);
-    let return_addr = 2194436u32;
+    let return_addr = 2192588u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194552u32;
+    emu.pc = 2192704u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217c78));
+    return Ok(crate::NextStep::Direct(block_0x00217540));
 }
 #[inline(always)]
-pub fn block_0x00217c04(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002174cc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1066,30 +2141,30 @@ pub fn block_0x00217c04(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(10usize, 11usize, 16u32, 2194440u32);
+    emu.sri_no_count(10usize, 11usize, 16u32, 2192592u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a != b {
-        emu.pc = 2194492u32;
+        emu.pc = 2192644u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217c3c));
+        return Ok(crate::NextStep::Direct(block_0x00217504));
     } else {
-        emu.pc = 2194444u32;
+        emu.pc = 2192596u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217c0c));
+        return Ok(crate::NextStep::Direct(block_0x002174d4));
     }
 }
 #[inline]
-pub fn block_0x00217c0c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002174d4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 12u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1097,30 +2172,30 @@ pub fn block_0x00217c0c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(10usize, 11usize, 12u32, 2194448u32);
-    emu.sli_no_count(12usize, 11usize, 20u32, 2194452u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194456u32);
-    emu.ori_no_count(10usize, 10usize, 224u32, 2194460u32);
-    emu.sri_no_count(12usize, 12usize, 26u32, 2194464u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194468u32);
-    emu.adi_no_count(12usize, 12usize, 128u32, 2194472u32);
-    emu.sb_no_count(10usize, 2usize, 8u32, 2194476u32);
-    emu.sb_no_count(12usize, 2usize, 9u32, 2194480u32);
-    emu.sb_no_count(11usize, 2usize, 10u32, 2194484u32);
-    emu.adi_no_count(12usize, 0usize, 3u32, 2194488u32);
+    emu.sri_no_count(10usize, 11usize, 12u32, 2192600u32);
+    emu.sli_no_count(12usize, 11usize, 20u32, 2192604u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192608u32);
+    emu.ori_no_count(10usize, 10usize, 224u32, 2192612u32);
+    emu.sri_no_count(12usize, 12usize, 26u32, 2192616u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192620u32);
+    emu.adi_no_count(12usize, 12usize, 128u32, 2192624u32);
+    emu.sb_no_count(10usize, 2usize, 8u32, 2192628u32);
+    emu.sb_no_count(12usize, 2usize, 9u32, 2192632u32);
+    emu.sb_no_count(11usize, 2usize, 10u32, 2192636u32);
+    emu.adi_no_count(12usize, 0usize, 3u32, 2192640u32);
     emu.add_memory_rw_events(12usize);
-    let return_addr = 2194492u32;
+    let return_addr = 2192644u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194552u32;
+    emu.pc = 2192704u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217c78));
+    return Ok(crate::NextStep::Direct(block_0x00217540));
 }
 #[inline]
-pub fn block_0x00217c3c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217504(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 15u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1128,31 +2203,31 @@ pub fn block_0x00217c3c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(10usize, 11usize, 18u32, 2194496u32);
-    emu.sli_no_count(12usize, 11usize, 14u32, 2194500u32);
-    emu.sli_no_count(13usize, 11usize, 20u32, 2194504u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194508u32);
-    emu.ori_no_count(10usize, 10usize, 240u32, 2194512u32);
-    emu.sri_no_count(12usize, 12usize, 26u32, 2194516u32);
-    emu.sri_no_count(13usize, 13usize, 26u32, 2194520u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194524u32);
-    emu.adi_no_count(12usize, 12usize, 128u32, 2194528u32);
-    emu.adi_no_count(13usize, 13usize, 128u32, 2194532u32);
-    emu.sb_no_count(10usize, 2usize, 8u32, 2194536u32);
-    emu.sb_no_count(12usize, 2usize, 9u32, 2194540u32);
-    emu.sb_no_count(13usize, 2usize, 10u32, 2194544u32);
-    emu.sb_no_count(11usize, 2usize, 11u32, 2194548u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2194552u32);
+    emu.sri_no_count(10usize, 11usize, 18u32, 2192648u32);
+    emu.sli_no_count(12usize, 11usize, 14u32, 2192652u32);
+    emu.sli_no_count(13usize, 11usize, 20u32, 2192656u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192660u32);
+    emu.ori_no_count(10usize, 10usize, 240u32, 2192664u32);
+    emu.sri_no_count(12usize, 12usize, 26u32, 2192668u32);
+    emu.sri_no_count(13usize, 13usize, 26u32, 2192672u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192676u32);
+    emu.adi_no_count(12usize, 12usize, 128u32, 2192680u32);
+    emu.adi_no_count(13usize, 13usize, 128u32, 2192684u32);
+    emu.sb_no_count(10usize, 2usize, 8u32, 2192688u32);
+    emu.sb_no_count(12usize, 2usize, 9u32, 2192692u32);
+    emu.sb_no_count(13usize, 2usize, 10u32, 2192696u32);
+    emu.sb_no_count(11usize, 2usize, 11u32, 2192700u32);
+    emu.adi_no_count(12usize, 0usize, 4u32, 2192704u32);
     emu.add_memory_rw_events(15usize);
-    emu.pc = 2194552u32;
+    emu.pc = 2192704u32;
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217c78));
+    return Ok(crate::NextStep::Direct(block_0x00217540));
 }
 #[inline(always)]
-pub fn block_0x00217c78(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217540(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1160,14 +2235,14 @@ pub fn block_0x00217c78(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 0usize, 2u32, 2194556u32);
-    emu.adi_no_count(11usize, 2usize, 8u32, 2194560u32);
-    emu.apc_no_count(1usize, 2194560u32, 4294909952u32, 2194564u32);
+    emu.adi_no_count(10usize, 0usize, 2u32, 2192708u32);
+    emu.adi_no_count(11usize, 2usize, 8u32, 2192712u32);
+    emu.apc_no_count(1usize, 2192712u32, 4294905856u32, 2192716u32);
     emu.add_memory_rw_events(4usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194568u32;
+    let return_addr = 2192720u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294965988u32);
+    let target = base.wrapping_add(1752u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1177,7 +2252,7 @@ pub fn block_0x00217c78(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217c88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217550(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1185,12 +2260,12 @@ pub fn block_0x00217c88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 0usize, 0u32, 2194572u32);
-    emu.lw_no_count(1usize, 2usize, 12u32, 2194576u32)?;
-    emu.adi_no_count(2usize, 2usize, 16u32, 2194580u32);
+    emu.adi_no_count(10usize, 0usize, 0u32, 2192724u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2192728u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2192732u32);
     emu.add_memory_rw_events(4usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194584u32;
+    let return_addr = 2192736u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -1202,7 +2277,7 @@ pub fn block_0x00217c88(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217c98(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217560(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 8u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1210,36 +2285,36 @@ pub fn block_0x00217c98(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(2usize, 2usize, 4294967264u32, 2194588u32);
-    emu.sw_no_count(1usize, 2usize, 28u32, 2194592u32)?;
-    emu.sw_no_count(8usize, 2usize, 24u32, 2194596u32)?;
-    emu.sw_no_count(9usize, 2usize, 20u32, 2194600u32)?;
-    emu.sw_no_count(18usize, 2usize, 16u32, 2194604u32)?;
-    emu.adi_no_count(12usize, 0usize, 128u32, 2194608u32);
-    emu.sw_no_count(0usize, 2usize, 12u32, 2194612u32)?;
+    emu.adi_no_count(2usize, 2usize, 4294967264u32, 2192740u32);
+    emu.sw_no_count(1usize, 2usize, 28u32, 2192744u32)?;
+    emu.sw_no_count(8usize, 2usize, 24u32, 2192748u32)?;
+    emu.sw_no_count(9usize, 2usize, 20u32, 2192752u32)?;
+    emu.sw_no_count(18usize, 2usize, 16u32, 2192756u32)?;
+    emu.adi_no_count(12usize, 0usize, 128u32, 2192760u32);
+    emu.sw_no_count(0usize, 2usize, 12u32, 2192764u32)?;
     emu.add_memory_rw_events(7usize);
     let b = emu.read_reg_b_tracked(12usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a >= b {
-        emu.pc = 2194628u32;
+        emu.pc = 2192780u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217cc4));
+        return Ok(crate::NextStep::Direct(block_0x0021758c));
     } else {
-        emu.pc = 2194616u32;
+        emu.pc = 2192768u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217cb8));
+        return Ok(crate::NextStep::Direct(block_0x00217580));
     }
 }
 #[inline(always)]
-pub fn block_0x00217cb8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217580(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 3u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1247,21 +2322,21 @@ pub fn block_0x00217cb8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sb_no_count(11usize, 2usize, 12u32, 2194620u32);
-    emu.adi_no_count(8usize, 0usize, 1u32, 2194624u32);
+    emu.sb_no_count(11usize, 2usize, 12u32, 2192772u32);
+    emu.adi_no_count(8usize, 0usize, 1u32, 2192776u32);
     emu.add_memory_rw_events(3usize);
-    let return_addr = 2194628u32;
+    let return_addr = 2192780u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194784u32;
+    emu.pc = 2192936u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217d60));
+    return Ok(crate::NextStep::Direct(block_0x00217628));
 }
 #[inline(always)]
-pub fn block_0x00217cc4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021758c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1269,30 +2344,30 @@ pub fn block_0x00217cc4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(12usize, 11usize, 11u32, 2194632u32);
+    emu.sri_no_count(12usize, 11usize, 11u32, 2192784u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(12usize);
     if a != b {
-        emu.pc = 2194668u32;
+        emu.pc = 2192820u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217cec));
+        return Ok(crate::NextStep::Direct(block_0x002175b4));
     } else {
-        emu.pc = 2194636u32;
+        emu.pc = 2192788u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217ccc));
+        return Ok(crate::NextStep::Direct(block_0x00217594));
     }
 }
 #[inline(always)]
-pub fn block_0x00217ccc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217594(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 8u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1300,26 +2375,26 @@ pub fn block_0x00217ccc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(12usize, 11usize, 6u32, 2194640u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194644u32);
-    emu.ori_no_count(12usize, 12usize, 192u32, 2194648u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194652u32);
-    emu.sb_no_count(12usize, 2usize, 12u32, 2194656u32);
-    emu.sb_no_count(11usize, 2usize, 13u32, 2194660u32);
-    emu.adi_no_count(8usize, 0usize, 2u32, 2194664u32);
+    emu.sri_no_count(12usize, 11usize, 6u32, 2192792u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192796u32);
+    emu.ori_no_count(12usize, 12usize, 192u32, 2192800u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192804u32);
+    emu.sb_no_count(12usize, 2usize, 12u32, 2192808u32);
+    emu.sb_no_count(11usize, 2usize, 13u32, 2192812u32);
+    emu.adi_no_count(8usize, 0usize, 2u32, 2192816u32);
     emu.add_memory_rw_events(8usize);
-    let return_addr = 2194668u32;
+    let return_addr = 2192820u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194784u32;
+    emu.pc = 2192936u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217d60));
+    return Ok(crate::NextStep::Direct(block_0x00217628));
 }
 #[inline(always)]
-pub fn block_0x00217cec(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002175b4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1327,30 +2402,30 @@ pub fn block_0x00217cec(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(12usize, 11usize, 16u32, 2194672u32);
+    emu.sri_no_count(12usize, 11usize, 16u32, 2192824u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(12usize);
     if a != b {
-        emu.pc = 2194724u32;
+        emu.pc = 2192876u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217d24));
+        return Ok(crate::NextStep::Direct(block_0x002175ec));
     } else {
-        emu.pc = 2194676u32;
+        emu.pc = 2192828u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217cf4));
+        return Ok(crate::NextStep::Direct(block_0x002175bc));
     }
 }
 #[inline]
-pub fn block_0x00217cf4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002175bc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 12u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1358,30 +2433,30 @@ pub fn block_0x00217cf4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(12usize, 11usize, 12u32, 2194680u32);
-    emu.sli_no_count(13usize, 11usize, 20u32, 2194684u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194688u32);
-    emu.ori_no_count(12usize, 12usize, 224u32, 2194692u32);
-    emu.sri_no_count(13usize, 13usize, 26u32, 2194696u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194700u32);
-    emu.adi_no_count(13usize, 13usize, 128u32, 2194704u32);
-    emu.sb_no_count(12usize, 2usize, 12u32, 2194708u32);
-    emu.sb_no_count(13usize, 2usize, 13u32, 2194712u32);
-    emu.sb_no_count(11usize, 2usize, 14u32, 2194716u32);
-    emu.adi_no_count(8usize, 0usize, 3u32, 2194720u32);
+    emu.sri_no_count(12usize, 11usize, 12u32, 2192832u32);
+    emu.sli_no_count(13usize, 11usize, 20u32, 2192836u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192840u32);
+    emu.ori_no_count(12usize, 12usize, 224u32, 2192844u32);
+    emu.sri_no_count(13usize, 13usize, 26u32, 2192848u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192852u32);
+    emu.adi_no_count(13usize, 13usize, 128u32, 2192856u32);
+    emu.sb_no_count(12usize, 2usize, 12u32, 2192860u32);
+    emu.sb_no_count(13usize, 2usize, 13u32, 2192864u32);
+    emu.sb_no_count(11usize, 2usize, 14u32, 2192868u32);
+    emu.adi_no_count(8usize, 0usize, 3u32, 2192872u32);
     emu.add_memory_rw_events(12usize);
-    let return_addr = 2194724u32;
+    let return_addr = 2192876u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194784u32;
+    emu.pc = 2192936u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217d60));
+    return Ok(crate::NextStep::Direct(block_0x00217628));
 }
 #[inline]
-pub fn block_0x00217d24(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002175ec(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 15u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1389,31 +2464,31 @@ pub fn block_0x00217d24(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.sri_no_count(12usize, 11usize, 18u32, 2194728u32);
-    emu.sli_no_count(13usize, 11usize, 14u32, 2194732u32);
-    emu.sli_no_count(14usize, 11usize, 20u32, 2194736u32);
-    emu.ani_no_count(11usize, 11usize, 63u32, 2194740u32);
-    emu.ori_no_count(12usize, 12usize, 240u32, 2194744u32);
-    emu.sri_no_count(13usize, 13usize, 26u32, 2194748u32);
-    emu.sri_no_count(14usize, 14usize, 26u32, 2194752u32);
-    emu.adi_no_count(11usize, 11usize, 128u32, 2194756u32);
-    emu.adi_no_count(13usize, 13usize, 128u32, 2194760u32);
-    emu.adi_no_count(14usize, 14usize, 128u32, 2194764u32);
-    emu.sb_no_count(12usize, 2usize, 12u32, 2194768u32);
-    emu.sb_no_count(13usize, 2usize, 13u32, 2194772u32);
-    emu.sb_no_count(14usize, 2usize, 14u32, 2194776u32);
-    emu.sb_no_count(11usize, 2usize, 15u32, 2194780u32);
-    emu.adi_no_count(8usize, 0usize, 4u32, 2194784u32);
+    emu.sri_no_count(12usize, 11usize, 18u32, 2192880u32);
+    emu.sli_no_count(13usize, 11usize, 14u32, 2192884u32);
+    emu.sli_no_count(14usize, 11usize, 20u32, 2192888u32);
+    emu.ani_no_count(11usize, 11usize, 63u32, 2192892u32);
+    emu.ori_no_count(12usize, 12usize, 240u32, 2192896u32);
+    emu.sri_no_count(13usize, 13usize, 26u32, 2192900u32);
+    emu.sri_no_count(14usize, 14usize, 26u32, 2192904u32);
+    emu.adi_no_count(11usize, 11usize, 128u32, 2192908u32);
+    emu.adi_no_count(13usize, 13usize, 128u32, 2192912u32);
+    emu.adi_no_count(14usize, 14usize, 128u32, 2192916u32);
+    emu.sb_no_count(12usize, 2usize, 12u32, 2192920u32);
+    emu.sb_no_count(13usize, 2usize, 13u32, 2192924u32);
+    emu.sb_no_count(14usize, 2usize, 14u32, 2192928u32);
+    emu.sb_no_count(11usize, 2usize, 15u32, 2192932u32);
+    emu.adi_no_count(8usize, 0usize, 4u32, 2192936u32);
     emu.add_memory_rw_events(15usize);
-    emu.pc = 2194784u32;
+    emu.pc = 2192936u32;
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217d60));
+    return Ok(crate::NextStep::Direct(block_0x00217628));
 }
 #[inline(always)]
-pub fn block_0x00217d60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217628(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1421,33 +2496,33 @@ pub fn block_0x00217d60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(9usize, 10usize, 8u32, 2194788u32)?;
-    emu.lw_no_count(10usize, 9usize, 0u32, 2194792u32)?;
-    emu.lw_no_count(18usize, 9usize, 8u32, 2194796u32)?;
-    emu.sbr_no_count(10usize, 10usize, 18usize, 2194800u32);
+    emu.lw_no_count(9usize, 10usize, 8u32, 2192940u32)?;
+    emu.lw_no_count(10usize, 9usize, 0u32, 2192944u32)?;
+    emu.lw_no_count(18usize, 9usize, 8u32, 2192948u32)?;
+    emu.sbr_no_count(10usize, 10usize, 18usize, 2192952u32);
     emu.add_memory_rw_events(4usize);
     let b = emu.read_reg_b_tracked(8usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a < b {
-        emu.pc = 2194864u32;
+        emu.pc = 2193016u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217db0));
+        return Ok(crate::NextStep::Direct(block_0x00217678));
     } else {
-        emu.pc = 2194804u32;
+        emu.pc = 2192956u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217d74));
+        return Ok(crate::NextStep::Direct(block_0x0021763c));
     }
 }
 #[inline(always)]
-pub fn block_0x00217d74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021763c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 6u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1455,16 +2530,16 @@ pub fn block_0x00217d74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(10usize, 9usize, 4u32, 2194808u32)?;
-    emu.adr_no_count(10usize, 10usize, 18usize, 2194812u32);
-    emu.adi_no_count(11usize, 2usize, 12u32, 2194816u32);
-    emu.adi_no_count(12usize, 8usize, 0u32, 2194820u32);
-    emu.apc_no_count(1usize, 2194820u32, 4294909952u32, 2194824u32);
+    emu.lw_no_count(10usize, 9usize, 4u32, 2192960u32)?;
+    emu.adr_no_count(10usize, 10usize, 18usize, 2192964u32);
+    emu.adi_no_count(11usize, 2usize, 12u32, 2192968u32);
+    emu.adi_no_count(12usize, 8usize, 0u32, 2192972u32);
+    emu.apc_no_count(1usize, 2192972u32, 4294905856u32, 2192976u32);
     emu.add_memory_rw_events(6usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194828u32;
+    let return_addr = 2192980u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294965984u32);
+    let target = base.wrapping_add(1748u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1474,7 +2549,7 @@ pub fn block_0x00217d74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x00217d8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217654(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 9u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1482,17 +2557,17 @@ pub fn block_0x00217d8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adr_no_count(8usize, 18usize, 8usize, 2194832u32);
-    emu.sw_no_count(8usize, 9usize, 8u32, 2194836u32)?;
-    emu.adi_no_count(10usize, 0usize, 0u32, 2194840u32);
-    emu.lw_no_count(1usize, 2usize, 28u32, 2194844u32)?;
-    emu.lw_no_count(8usize, 2usize, 24u32, 2194848u32)?;
-    emu.lw_no_count(9usize, 2usize, 20u32, 2194852u32)?;
-    emu.lw_no_count(18usize, 2usize, 16u32, 2194856u32)?;
-    emu.adi_no_count(2usize, 2usize, 32u32, 2194860u32);
+    emu.adr_no_count(8usize, 18usize, 8usize, 2192984u32);
+    emu.sw_no_count(8usize, 9usize, 8u32, 2192988u32)?;
+    emu.adi_no_count(10usize, 0usize, 0u32, 2192992u32);
+    emu.lw_no_count(1usize, 2usize, 28u32, 2192996u32)?;
+    emu.lw_no_count(8usize, 2usize, 24u32, 2193000u32)?;
+    emu.lw_no_count(9usize, 2usize, 20u32, 2193004u32)?;
+    emu.lw_no_count(18usize, 2usize, 16u32, 2193008u32)?;
+    emu.adi_no_count(2usize, 2usize, 32u32, 2193012u32);
     emu.add_memory_rw_events(9usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194864u32;
+    let return_addr = 2193016u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -1504,7 +2579,7 @@ pub fn block_0x00217d8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217db0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217678(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 7u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1512,15 +2587,15 @@ pub fn block_0x00217db0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(13usize, 0usize, 1u32, 2194868u32);
-    emu.adi_no_count(14usize, 0usize, 1u32, 2194872u32);
-    emu.adi_no_count(10usize, 9usize, 0u32, 2194876u32);
-    emu.adi_no_count(11usize, 18usize, 0u32, 2194880u32);
-    emu.adi_no_count(12usize, 8usize, 0u32, 2194884u32);
-    emu.apc_no_count(1usize, 2194884u32, 0u32, 2194888u32);
+    emu.adi_no_count(13usize, 0usize, 1u32, 2193020u32);
+    emu.adi_no_count(14usize, 0usize, 1u32, 2193024u32);
+    emu.adi_no_count(10usize, 9usize, 0u32, 2193028u32);
+    emu.adi_no_count(11usize, 18usize, 0u32, 2193032u32);
+    emu.adi_no_count(12usize, 8usize, 0u32, 2193036u32);
+    emu.apc_no_count(1usize, 2193036u32, 0u32, 2193040u32);
     emu.add_memory_rw_events(7usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2194892u32;
+    let return_addr = 2193044u32;
     emu.write_reg_no_count(1usize, return_addr);
     let target = base.wrapping_add(1788u32);
     emu.pc = target;
@@ -1532,7 +2607,7 @@ pub fn block_0x00217db0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217dcc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217694(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1540,20 +2615,20 @@ pub fn block_0x00217dcc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(18usize, 9usize, 8u32, 2194896u32)?;
+    emu.lw_no_count(18usize, 9usize, 8u32, 2193048u32)?;
     emu.add_memory_rw_events(2usize);
-    let return_addr = 2194900u32;
+    let return_addr = 2193052u32;
     emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2194804u32;
+    emu.pc = 2192956u32;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217d74));
+    return Ok(crate::NextStep::Direct(block_0x0021763c));
 }
 #[inline(always)]
-pub fn block_0x00217dd4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021769c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1561,18 +2636,18 @@ pub fn block_0x00217dd4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(12usize, 11usize, 0u32, 2194904u32);
+    emu.adi_no_count(12usize, 11usize, 0u32, 2193056u32);
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(11usize, a);
-    emu.pc = 2194908u32;
+    emu.pc = 2193060u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 156u32, 2194912u32);
-    emu.apc_no_count(6usize, 2194912u32, 20480u32, 2194916u32);
+    emu.adi_no_count(11usize, 11usize, 4294965756u32, 2193064u32);
+    emu.apc_no_count(6usize, 2193064u32, 20480u32, 2193068u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2194920u32;
+    let return_addr = 2193072u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(892u32);
+    let target = base.wrapping_add(1340u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1582,7 +2657,7 @@ pub fn block_0x00217dd4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217de8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002176b0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1590,18 +2665,18 @@ pub fn block_0x00217de8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(12usize, 11usize, 0u32, 2194924u32);
+    emu.adi_no_count(12usize, 11usize, 0u32, 2193076u32);
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(11usize, a);
-    emu.pc = 2194928u32;
+    emu.pc = 2193080u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 204u32, 2194932u32);
-    emu.apc_no_count(6usize, 2194932u32, 20480u32, 2194936u32);
+    emu.adi_no_count(11usize, 11usize, 4294965804u32, 2193084u32);
+    emu.apc_no_count(6usize, 2193084u32, 20480u32, 2193088u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2194940u32;
+    let return_addr = 2193092u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(872u32);
+    let target = base.wrapping_add(1320u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1611,7 +2686,7 @@ pub fn block_0x00217de8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217dfc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002176c4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1619,18 +2694,18 @@ pub fn block_0x00217dfc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(12usize, 11usize, 0u32, 2194944u32);
+    emu.adi_no_count(12usize, 11usize, 0u32, 2193096u32);
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(11usize, a);
-    emu.pc = 2194948u32;
+    emu.pc = 2193100u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 180u32, 2194952u32);
-    emu.apc_no_count(6usize, 2194952u32, 20480u32, 2194956u32);
+    emu.adi_no_count(11usize, 11usize, 4294965780u32, 2193104u32);
+    emu.apc_no_count(6usize, 2193104u32, 20480u32, 2193108u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2194960u32;
+    let return_addr = 2193112u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(852u32);
+    let target = base.wrapping_add(1300u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1640,7 +2715,7 @@ pub fn block_0x00217dfc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x00217e10(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002176d8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 9u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1648,37 +2723,37 @@ pub fn block_0x00217e10(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2194964u32);
-    emu.sw_no_count(1usize, 2usize, 12u32, 2194968u32)?;
-    emu.sw_no_count(8usize, 2usize, 8u32, 2194972u32)?;
-    emu.sw_no_count(9usize, 2usize, 4u32, 2194976u32)?;
-    emu.sw_no_count(18usize, 2usize, 0u32, 2194980u32)?;
-    emu.lbu_no_count(11usize, 10usize, 0u32, 2194984u32);
-    emu.lw_no_count(8usize, 10usize, 4u32, 2194988u32)?;
-    emu.adi_no_count(10usize, 0usize, 4u32, 2194992u32);
+    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2193116u32);
+    emu.sw_no_count(1usize, 2usize, 12u32, 2193120u32)?;
+    emu.sw_no_count(8usize, 2usize, 8u32, 2193124u32)?;
+    emu.sw_no_count(9usize, 2usize, 4u32, 2193128u32)?;
+    emu.sw_no_count(18usize, 2usize, 0u32, 2193132u32)?;
+    emu.lbu_no_count(11usize, 10usize, 0u32, 2193136u32);
+    emu.lw_no_count(8usize, 10usize, 4u32, 2193140u32)?;
+    emu.adi_no_count(10usize, 0usize, 4u32, 2193144u32);
     emu.add_memory_rw_events(8usize);
     let b = emu.read_reg_b_tracked(11usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a < b {
-        emu.pc = 2195028u32;
+        emu.pc = 2193180u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e54));
+        return Ok(crate::NextStep::Direct(block_0x0021771c));
     } else {
-        emu.pc = 2194996u32;
+        emu.pc = 2193148u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e34));
+        return Ok(crate::NextStep::Direct(block_0x002176fc));
     }
 }
 #[inline(always)]
-pub fn block_0x00217e34(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002176fc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1686,30 +2761,30 @@ pub fn block_0x00217e34(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 0usize, 3u32, 2195000u32);
+    emu.adi_no_count(10usize, 0usize, 3u32, 2193152u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(10usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2195028u32;
+        emu.pc = 2193180u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e54));
+        return Ok(crate::NextStep::Direct(block_0x0021771c));
     } else {
-        emu.pc = 2195004u32;
+        emu.pc = 2193156u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e3c));
+        return Ok(crate::NextStep::Direct(block_0x00217704));
     }
 }
 #[inline(always)]
-pub fn block_0x00217e3c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217704(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 6u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1717,14 +2792,14 @@ pub fn block_0x00217e3c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(1usize, 2usize, 12u32, 2195008u32)?;
-    emu.lw_no_count(8usize, 2usize, 8u32, 2195012u32)?;
-    emu.lw_no_count(9usize, 2usize, 4u32, 2195016u32)?;
-    emu.lw_no_count(18usize, 2usize, 0u32, 2195020u32)?;
-    emu.adi_no_count(2usize, 2usize, 16u32, 2195024u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2193160u32)?;
+    emu.lw_no_count(8usize, 2usize, 8u32, 2193164u32)?;
+    emu.lw_no_count(9usize, 2usize, 4u32, 2193168u32)?;
+    emu.lw_no_count(18usize, 2usize, 0u32, 2193172u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2193176u32);
     emu.add_memory_rw_events(6usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195028u32;
+    let return_addr = 2193180u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -1736,7 +2811,7 @@ pub fn block_0x00217e3c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217e54(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021771c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1744,32 +2819,32 @@ pub fn block_0x00217e54(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(18usize, 8usize, 4u32, 2195032u32)?;
-    emu.lw_no_count(11usize, 18usize, 0u32, 2195036u32)?;
-    emu.lw_no_count(9usize, 8usize, 0u32, 2195040u32)?;
+    emu.lw_no_count(18usize, 8usize, 4u32, 2193184u32)?;
+    emu.lw_no_count(11usize, 18usize, 0u32, 2193188u32)?;
+    emu.lw_no_count(9usize, 8usize, 0u32, 2193192u32)?;
     emu.add_memory_rw_events(3usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2195052u32;
+        emu.pc = 2193204u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e6c));
+        return Ok(crate::NextStep::Direct(block_0x00217734));
     } else {
-        emu.pc = 2195044u32;
+        emu.pc = 2193196u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e64));
+        return Ok(crate::NextStep::Direct(block_0x0021772c));
     }
 }
 #[inline(always)]
-pub fn block_0x00217e64(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021772c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1777,10 +2852,10 @@ pub fn block_0x00217e64(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195048u32);
+    emu.adi_no_count(10usize, 9usize, 0u32, 2193200u32);
     emu.add_memory_rw_events(2usize);
     let base = emu.read_reg_b_tracked(11usize);
-    let return_addr = 2195052u32;
+    let return_addr = 2193204u32;
     emu.write_reg_no_count(1usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -1792,7 +2867,7 @@ pub fn block_0x00217e64(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217e6c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217734(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1800,30 +2875,30 @@ pub fn block_0x00217e6c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(11usize, 18usize, 4u32, 2195056u32)?;
+    emu.lw_no_count(11usize, 18usize, 4u32, 2193208u32)?;
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2195076u32;
+        emu.pc = 2193228u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e84));
+        return Ok(crate::NextStep::Direct(block_0x0021774c));
     } else {
-        emu.pc = 2195060u32;
+        emu.pc = 2193212u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217e74));
+        return Ok(crate::NextStep::Direct(block_0x0021773c));
     }
 }
 #[inline(always)]
-pub fn block_0x00217e74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021773c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1831,14 +2906,14 @@ pub fn block_0x00217e74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(12usize, 18usize, 8u32, 2195064u32)?;
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195068u32);
-    emu.apc_no_count(1usize, 2195068u32, 4294905856u32, 2195072u32);
+    emu.lw_no_count(12usize, 18usize, 8u32, 2193216u32)?;
+    emu.adi_no_count(10usize, 9usize, 0u32, 2193220u32);
+    emu.apc_no_count(1usize, 2193220u32, 4294905856u32, 2193224u32);
     emu.add_memory_rw_events(4usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195076u32;
+    let return_addr = 2193228u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294965356u32);
+    let target = base.wrapping_add(4294966248u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1848,7 +2923,7 @@ pub fn block_0x00217e74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x00217e84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021774c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 10u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1856,20 +2931,20 @@ pub fn block_0x00217e84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(11usize, 0usize, 12u32, 2195080u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195084u32);
-    emu.adi_no_count(10usize, 8usize, 0u32, 2195088u32);
-    emu.lw_no_count(1usize, 2usize, 12u32, 2195092u32)?;
-    emu.lw_no_count(8usize, 2usize, 8u32, 2195096u32)?;
-    emu.lw_no_count(9usize, 2usize, 4u32, 2195100u32)?;
-    emu.lw_no_count(18usize, 2usize, 0u32, 2195104u32)?;
-    emu.adi_no_count(2usize, 2usize, 16u32, 2195108u32);
-    emu.apc_no_count(6usize, 2195108u32, 4294905856u32, 2195112u32);
+    emu.adi_no_count(11usize, 0usize, 12u32, 2193232u32);
+    emu.adi_no_count(12usize, 0usize, 4u32, 2193236u32);
+    emu.adi_no_count(10usize, 8usize, 0u32, 2193240u32);
+    emu.lw_no_count(1usize, 2usize, 12u32, 2193244u32)?;
+    emu.lw_no_count(8usize, 2usize, 8u32, 2193248u32)?;
+    emu.lw_no_count(9usize, 2usize, 4u32, 2193252u32)?;
+    emu.lw_no_count(18usize, 2usize, 0u32, 2193256u32)?;
+    emu.adi_no_count(2usize, 2usize, 16u32, 2193260u32);
+    emu.apc_no_count(6usize, 2193260u32, 4294905856u32, 2193264u32);
     emu.add_memory_rw_events(10usize);
     let base = emu.read_reg_b_tracked(6usize);
-    let return_addr = 2195116u32;
+    let return_addr = 2193268u32;
     emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(4294965316u32);
+    let target = base.wrapping_add(4294966208u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1879,7 +2954,7 @@ pub fn block_0x00217e84(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x00217eac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217774(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 14u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1887,27 +2962,27 @@ pub fn block_0x00217eac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(2usize, 2usize, 4294967232u32, 2195120u32);
-    emu.sw_no_count(1usize, 2usize, 60u32, 2195124u32)?;
-    emu.sw_no_count(8usize, 2usize, 56u32, 2195128u32)?;
-    emu.sw_no_count(9usize, 2usize, 52u32, 2195132u32)?;
-    emu.sw_no_count(18usize, 2usize, 48u32, 2195136u32)?;
-    emu.adi_no_count(9usize, 10usize, 0u32, 2195140u32);
-    emu.adi_no_count(18usize, 0usize, 4u32, 2195144u32);
-    emu.sb_no_count(18usize, 2usize, 8u32, 2195148u32);
-    emu.sw_no_count(11usize, 2usize, 16u32, 2195152u32)?;
+    emu.adi_no_count(2usize, 2usize, 4294967232u32, 2193272u32);
+    emu.sw_no_count(1usize, 2usize, 60u32, 2193276u32)?;
+    emu.sw_no_count(8usize, 2usize, 56u32, 2193280u32)?;
+    emu.sw_no_count(9usize, 2usize, 52u32, 2193284u32)?;
+    emu.sw_no_count(18usize, 2usize, 48u32, 2193288u32)?;
+    emu.adi_no_count(9usize, 10usize, 0u32, 2193292u32);
+    emu.adi_no_count(18usize, 0usize, 4u32, 2193296u32);
+    emu.sb_no_count(18usize, 2usize, 8u32, 2193300u32);
+    emu.sw_no_count(11usize, 2usize, 16u32, 2193304u32)?;
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195156u32;
+    emu.pc = 2193308u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 180u32, 2195160u32);
-    emu.adi_no_count(10usize, 2usize, 8u32, 2195164u32);
-    emu.apc_no_count(1usize, 2195164u32, 20480u32, 2195168u32);
+    emu.adi_no_count(11usize, 11usize, 4294965780u32, 2193312u32);
+    emu.adi_no_count(10usize, 2usize, 8u32, 2193316u32);
+    emu.apc_no_count(1usize, 2193316u32, 20480u32, 2193320u32);
     emu.add_memory_rw_events(14usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195172u32;
+    let return_addr = 2193324u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(640u32);
+    let target = base.wrapping_add(1088u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -1917,7 +2992,7 @@ pub fn block_0x00217eac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217ee4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177ac(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 1u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1928,25 +3003,25 @@ pub fn block_0x00217ee4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a == b {
-        emu.pc = 2195224u32;
+        emu.pc = 2193376u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f18));
+        return Ok(crate::NextStep::Direct(block_0x002177e0));
     } else {
-        emu.pc = 2195176u32;
+        emu.pc = 2193328u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217ee8));
+        return Ok(crate::NextStep::Direct(block_0x002177b0));
     }
 }
 #[inline(always)]
-pub fn block_0x00217ee8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177b0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1954,30 +3029,30 @@ pub fn block_0x00217ee8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195180u32);
+    emu.lbu_no_count(10usize, 2usize, 8u32, 2193332u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(18usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a == b {
-        emu.pc = 2195340u32;
+        emu.pc = 2193492u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f8c));
+        return Ok(crate::NextStep::Direct(block_0x00217854));
     } else {
-        emu.pc = 2195184u32;
+        emu.pc = 2193336u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217ef0));
+        return Ok(crate::NextStep::Direct(block_0x002177b8));
     }
 }
 #[inline(always)]
-pub fn block_0x00217ef0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177b8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -1985,20 +3060,20 @@ pub fn block_0x00217ef0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(10usize, 2usize, 8u32, 2195188u32)?;
-    emu.lw_no_count(11usize, 2usize, 12u32, 2195192u32)?;
-    emu.sw_no_count(10usize, 9usize, 0u32, 2195196u32)?;
-    emu.sw_no_count(11usize, 9usize, 4u32, 2195200u32)?;
+    emu.lw_no_count(10usize, 2usize, 8u32, 2193340u32)?;
+    emu.lw_no_count(11usize, 2usize, 12u32, 2193344u32)?;
+    emu.sw_no_count(10usize, 9usize, 0u32, 2193348u32)?;
+    emu.sw_no_count(11usize, 9usize, 4u32, 2193352u32)?;
     emu.add_memory_rw_events(4usize);
-    emu.pc = 2195200u32;
+    emu.pc = 2193352u32;
     emu.check_chunk_boundary_fast();
     if emu.should_yield() {
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
-    return Ok(crate::NextStep::Direct(block_0x00217f00));
+    return Ok(crate::NextStep::Direct(block_0x002177c8));
 }
 #[inline(always)]
-pub fn block_0x00217f00(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177c8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 6u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2006,14 +3081,14 @@ pub fn block_0x00217f00(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195204u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195208u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195212u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195216u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195220u32);
+    emu.lw_no_count(1usize, 2usize, 60u32, 2193356u32)?;
+    emu.lw_no_count(8usize, 2usize, 56u32, 2193360u32)?;
+    emu.lw_no_count(9usize, 2usize, 52u32, 2193364u32)?;
+    emu.lw_no_count(18usize, 2usize, 48u32, 2193368u32)?;
+    emu.adi_no_count(2usize, 2usize, 64u32, 2193372u32);
     emu.add_memory_rw_events(6usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195224u32;
+    let return_addr = 2193376u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -2025,7 +3100,7 @@ pub fn block_0x00217f00(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217f18(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177e0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2033,32 +3108,32 @@ pub fn block_0x00217f18(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195228u32);
-    emu.lw_no_count(8usize, 2usize, 12u32, 2195232u32)?;
-    emu.sb_no_count(18usize, 9usize, 0u32, 2195236u32);
+    emu.lbu_no_count(10usize, 2usize, 8u32, 2193380u32);
+    emu.lw_no_count(8usize, 2usize, 12u32, 2193384u32)?;
+    emu.sb_no_count(18usize, 9usize, 0u32, 2193388u32);
     emu.add_memory_rw_events(3usize);
     let b = emu.read_reg_b_tracked(10usize);
     let a = emu.read_reg_a_tracked(18usize);
     if a < b {
-        emu.pc = 2195248u32;
+        emu.pc = 2193400u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f30));
+        return Ok(crate::NextStep::Direct(block_0x002177f8));
     } else {
-        emu.pc = 2195240u32;
+        emu.pc = 2193392u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f28));
+        return Ok(crate::NextStep::Direct(block_0x002177f0));
     }
 }
 #[inline(always)]
-pub fn block_0x00217f28(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177f0(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2066,30 +3141,30 @@ pub fn block_0x00217f28(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(11usize, 0usize, 3u32, 2195244u32);
+    emu.adi_no_count(11usize, 0usize, 3u32, 2193396u32);
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(11usize);
     let a = emu.read_reg_a_tracked(10usize);
     if a != b {
-        emu.pc = 2195200u32;
+        emu.pc = 2193352u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f00));
+        return Ok(crate::NextStep::Direct(block_0x002177c8));
     } else {
-        emu.pc = 2195248u32;
+        emu.pc = 2193400u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f30));
+        return Ok(crate::NextStep::Direct(block_0x002177f8));
     }
 }
 #[inline(always)]
-pub fn block_0x00217f30(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x002177f8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2097,32 +3172,32 @@ pub fn block_0x00217f30(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(18usize, 8usize, 4u32, 2195252u32)?;
-    emu.lw_no_count(11usize, 18usize, 0u32, 2195256u32)?;
-    emu.lw_no_count(9usize, 8usize, 0u32, 2195260u32)?;
+    emu.lw_no_count(18usize, 8usize, 4u32, 2193404u32)?;
+    emu.lw_no_count(11usize, 18usize, 0u32, 2193408u32)?;
+    emu.lw_no_count(9usize, 8usize, 0u32, 2193412u32)?;
     emu.add_memory_rw_events(3usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2195272u32;
+        emu.pc = 2193424u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f48));
+        return Ok(crate::NextStep::Direct(block_0x00217810));
     } else {
-        emu.pc = 2195264u32;
+        emu.pc = 2193416u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f40));
+        return Ok(crate::NextStep::Direct(block_0x00217808));
     }
 }
 #[inline(always)]
-pub fn block_0x00217f40(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217808(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2130,10 +3205,10 @@ pub fn block_0x00217f40(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195268u32);
+    emu.adi_no_count(10usize, 9usize, 0u32, 2193420u32);
     emu.add_memory_rw_events(2usize);
     let base = emu.read_reg_b_tracked(11usize);
-    let return_addr = 2195272u32;
+    let return_addr = 2193424u32;
     emu.write_reg_no_count(1usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -2145,7 +3220,7 @@ pub fn block_0x00217f40(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217f48(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217810(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 2u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2153,30 +3228,30 @@ pub fn block_0x00217f48(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(11usize, 18usize, 4u32, 2195276u32)?;
+    emu.lw_no_count(11usize, 18usize, 4u32, 2193428u32)?;
     emu.add_memory_rw_events(1usize);
     let b = emu.read_reg_b_tracked(0usize);
     let a = emu.read_reg_a_tracked(11usize);
     if a == b {
-        emu.pc = 2195296u32;
+        emu.pc = 2193448u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f60));
+        return Ok(crate::NextStep::Direct(block_0x00217828));
     } else {
-        emu.pc = 2195280u32;
+        emu.pc = 2193432u32;
         emu.update_insn_clock();
         emu.check_chunk_boundary_fast();
         if emu.should_yield() {
             return Ok(crate::NextStep::Dynamic(emu.pc));
         }
-        return Ok(crate::NextStep::Direct(block_0x00217f50));
+        return Ok(crate::NextStep::Direct(block_0x00217818));
     }
 }
 #[inline(always)]
-pub fn block_0x00217f50(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217818(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 4u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2184,14 +3259,14 @@ pub fn block_0x00217f50(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(12usize, 18usize, 8u32, 2195284u32)?;
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195288u32);
-    emu.apc_no_count(1usize, 2195288u32, 4294901760u32, 2195292u32);
+    emu.lw_no_count(12usize, 18usize, 8u32, 2193436u32)?;
+    emu.adi_no_count(10usize, 9usize, 0u32, 2193440u32);
+    emu.apc_no_count(1usize, 2193440u32, 4294905856u32, 2193444u32);
     emu.add_memory_rw_events(4usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195296u32;
+    let return_addr = 2193448u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1936u32);
+    let target = base.wrapping_add(4294966028u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2201,7 +3276,7 @@ pub fn block_0x00217f50(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217f60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217828(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 5u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2209,15 +3284,15 @@ pub fn block_0x00217f60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.adi_no_count(11usize, 0usize, 12u32, 2195300u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195304u32);
-    emu.adi_no_count(10usize, 8usize, 0u32, 2195308u32);
-    emu.apc_no_count(1usize, 2195308u32, 4294901760u32, 2195312u32);
+    emu.adi_no_count(11usize, 0usize, 12u32, 2193452u32);
+    emu.adi_no_count(12usize, 0usize, 4u32, 2193456u32);
+    emu.adi_no_count(10usize, 8usize, 0u32, 2193460u32);
+    emu.apc_no_count(1usize, 2193460u32, 4294905856u32, 2193464u32);
     emu.add_memory_rw_events(5usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195316u32;
+    let return_addr = 2193468u32;
     emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1916u32);
+    let target = base.wrapping_add(4294966008u32);
     emu.pc = target;
     emu.update_insn_clock();
     emu.check_chunk_boundary_fast();
@@ -2227,7 +3302,7 @@ pub fn block_0x00217f60(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline(always)]
-pub fn block_0x00217f74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x0021783c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 6u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2235,14 +3310,14 @@ pub fn block_0x00217f74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     if emu.is_unconstrained_mode() {
         return emu.interpret_from_current_pc();
     }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195320u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195324u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195328u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195332u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195336u32);
+    emu.lw_no_count(1usize, 2usize, 60u32, 2193472u32)?;
+    emu.lw_no_count(8usize, 2usize, 56u32, 2193476u32)?;
+    emu.lw_no_count(9usize, 2usize, 52u32, 2193480u32)?;
+    emu.lw_no_count(18usize, 2usize, 48u32, 2193484u32)?;
+    emu.adi_no_count(2usize, 2usize, 64u32, 2193488u32);
     emu.add_memory_rw_events(6usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195340u32;
+    let return_addr = 2193492u32;
     emu.write_reg_no_count(0usize, return_addr);
     let target = base.wrapping_add(0u32);
     emu.pc = target;
@@ -2254,7 +3329,7 @@ pub fn block_0x00217f74(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     return Ok(crate::NextStep::Dynamic(target));
 }
 #[inline]
-pub fn block_0x00217f8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
+pub fn block_0x00217854(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
     const BLOCK_INSNS: u32 = 14u32;
     if !emu.can_fit_instructions(BLOCK_INSNS) {
         return emu.interpret_from_current_pc();
@@ -2264,26 +3339,26 @@ pub fn block_0x00217f8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
     }
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(10usize, a);
-    emu.pc = 2195344u32;
+    emu.pc = 2193496u32;
     emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 368u32, 2195348u32);
-    emu.adi_no_count(11usize, 0usize, 1u32, 2195352u32);
-    emu.sw_no_count(0usize, 2usize, 40u32, 2195356u32)?;
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195360u32);
-    emu.sw_no_count(10usize, 2usize, 24u32, 2195364u32)?;
-    emu.sw_no_count(11usize, 2usize, 28u32, 2195368u32)?;
-    emu.sw_no_count(12usize, 2usize, 32u32, 2195372u32)?;
-    emu.sw_no_count(0usize, 2usize, 36u32, 2195376u32)?;
+    emu.adi_no_count(10usize, 10usize, 4294965968u32, 2193500u32);
+    emu.adi_no_count(11usize, 0usize, 1u32, 2193504u32);
+    emu.sw_no_count(0usize, 2usize, 40u32, 2193508u32)?;
+    emu.adi_no_count(12usize, 0usize, 4u32, 2193512u32);
+    emu.sw_no_count(10usize, 2usize, 24u32, 2193516u32)?;
+    emu.sw_no_count(11usize, 2usize, 28u32, 2193520u32)?;
+    emu.sw_no_count(12usize, 2usize, 32u32, 2193524u32)?;
+    emu.sw_no_count(0usize, 2usize, 36u32, 2193528u32)?;
     let a = 0u32.wrapping_add(2236416u32);
     emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195380u32;
+    emu.pc = 2193532u32;
     emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 376u32, 2195384u32);
-    emu.adi_no_count(10usize, 2usize, 24u32, 2195388u32);
-    emu.apc_no_count(1usize, 2195388u32, 16384u32, 2195392u32);
+    emu.adi_no_count(11usize, 11usize, 4294965976u32, 2193536u32);
+    emu.adi_no_count(10usize, 2usize, 24u32, 2193540u32);
+    emu.apc_no_count(1usize, 2193540u32, 16384u32, 2193544u32);
     emu.add_memory_rw_events(14usize);
     let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195396u32;
+    let return_addr = 2193548u32;
     emu.write_reg_no_count(1usize, return_addr);
     let target = base.wrapping_add(4294966176u32);
     emu.pc = target;
@@ -2293,1082 +3368,4 @@ pub fn block_0x00217f8c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, St
         return Ok(crate::NextStep::Dynamic(emu.pc));
     }
     return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x00217fc4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 14u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(2usize, 2usize, 4294967232u32, 2195400u32);
-    emu.sw_no_count(1usize, 2usize, 60u32, 2195404u32)?;
-    emu.sw_no_count(8usize, 2usize, 56u32, 2195408u32)?;
-    emu.sw_no_count(9usize, 2usize, 52u32, 2195412u32)?;
-    emu.sw_no_count(18usize, 2usize, 48u32, 2195416u32)?;
-    emu.adi_no_count(9usize, 10usize, 0u32, 2195420u32);
-    emu.adi_no_count(18usize, 0usize, 4u32, 2195424u32);
-    emu.sb_no_count(18usize, 2usize, 8u32, 2195428u32);
-    emu.sw_no_count(11usize, 2usize, 16u32, 2195432u32)?;
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195436u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 156u32, 2195440u32);
-    emu.adi_no_count(10usize, 2usize, 8u32, 2195444u32);
-    emu.apc_no_count(1usize, 2195444u32, 20480u32, 2195448u32);
-    emu.add_memory_rw_events(14usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195452u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(360u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00217ffc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 1u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a == b {
-        emu.pc = 2195504u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218030));
-    } else {
-        emu.pc = 2195456u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218000));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218000(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195460u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(18usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a == b {
-        emu.pc = 2195620u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002180a4));
-    } else {
-        emu.pc = 2195464u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218008));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218008(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(10usize, 2usize, 8u32, 2195468u32)?;
-    emu.lw_no_count(11usize, 2usize, 12u32, 2195472u32)?;
-    emu.sw_no_count(10usize, 9usize, 0u32, 2195476u32)?;
-    emu.sw_no_count(11usize, 9usize, 4u32, 2195480u32)?;
-    emu.add_memory_rw_events(4usize);
-    emu.pc = 2195480u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00218018));
-}
-#[inline(always)]
-pub fn block_0x00218018(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 6u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195484u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195488u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195492u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195496u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195500u32);
-    emu.add_memory_rw_events(6usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195504u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218030(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195508u32);
-    emu.lw_no_count(8usize, 2usize, 12u32, 2195512u32)?;
-    emu.sb_no_count(18usize, 9usize, 0u32, 2195516u32);
-    emu.add_memory_rw_events(3usize);
-    let b = emu.read_reg_b_tracked(10usize);
-    let a = emu.read_reg_a_tracked(18usize);
-    if a < b {
-        emu.pc = 2195528u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218048));
-    } else {
-        emu.pc = 2195520u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218040));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218040(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 0usize, 3u32, 2195524u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(11usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a != b {
-        emu.pc = 2195480u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218018));
-    } else {
-        emu.pc = 2195528u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218048));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218048(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(18usize, 8usize, 4u32, 2195532u32)?;
-    emu.lw_no_count(11usize, 18usize, 0u32, 2195536u32)?;
-    emu.lw_no_count(9usize, 8usize, 0u32, 2195540u32)?;
-    emu.add_memory_rw_events(3usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(11usize);
-    if a == b {
-        emu.pc = 2195552u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218060));
-    } else {
-        emu.pc = 2195544u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218058));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218058(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195548u32);
-    emu.add_memory_rw_events(2usize);
-    let base = emu.read_reg_b_tracked(11usize);
-    let return_addr = 2195552u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218060(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(11usize, 18usize, 4u32, 2195556u32)?;
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(11usize);
-    if a == b {
-        emu.pc = 2195576u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218078));
-    } else {
-        emu.pc = 2195560u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218068));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218068(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(12usize, 18usize, 8u32, 2195564u32)?;
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195568u32);
-    emu.apc_no_count(1usize, 2195568u32, 4294901760u32, 2195572u32);
-    emu.add_memory_rw_events(4usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195576u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1656u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218078(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 5u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 0usize, 12u32, 2195580u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195584u32);
-    emu.adi_no_count(10usize, 8usize, 0u32, 2195588u32);
-    emu.apc_no_count(1usize, 2195588u32, 4294901760u32, 2195592u32);
-    emu.add_memory_rw_events(5usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195596u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1636u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x0021808c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 6u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195600u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195604u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195608u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195612u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195616u32);
-    emu.add_memory_rw_events(6usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195620u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x002180a4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 14u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(10usize, a);
-    emu.pc = 2195624u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 368u32, 2195628u32);
-    emu.adi_no_count(11usize, 0usize, 1u32, 2195632u32);
-    emu.sw_no_count(0usize, 2usize, 40u32, 2195636u32)?;
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195640u32);
-    emu.sw_no_count(10usize, 2usize, 24u32, 2195644u32)?;
-    emu.sw_no_count(11usize, 2usize, 28u32, 2195648u32)?;
-    emu.sw_no_count(12usize, 2usize, 32u32, 2195652u32)?;
-    emu.sw_no_count(0usize, 2usize, 36u32, 2195656u32)?;
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195660u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 376u32, 2195664u32);
-    emu.adi_no_count(10usize, 2usize, 24u32, 2195668u32);
-    emu.apc_no_count(1usize, 2195668u32, 16384u32, 2195672u32);
-    emu.add_memory_rw_events(14usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195676u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294965896u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x002180dc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 14u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(2usize, 2usize, 4294967232u32, 2195680u32);
-    emu.sw_no_count(1usize, 2usize, 60u32, 2195684u32)?;
-    emu.sw_no_count(8usize, 2usize, 56u32, 2195688u32)?;
-    emu.sw_no_count(9usize, 2usize, 52u32, 2195692u32)?;
-    emu.sw_no_count(18usize, 2usize, 48u32, 2195696u32)?;
-    emu.adi_no_count(9usize, 10usize, 0u32, 2195700u32);
-    emu.adi_no_count(18usize, 0usize, 4u32, 2195704u32);
-    emu.sb_no_count(18usize, 2usize, 8u32, 2195708u32);
-    emu.sw_no_count(11usize, 2usize, 16u32, 2195712u32)?;
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195716u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 204u32, 2195720u32);
-    emu.adi_no_count(10usize, 2usize, 8u32, 2195724u32);
-    emu.apc_no_count(1usize, 2195724u32, 20480u32, 2195728u32);
-    emu.add_memory_rw_events(14usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195732u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(80u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218114(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 1u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a == b {
-        emu.pc = 2195784u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218148));
-    } else {
-        emu.pc = 2195736u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218118));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218118(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195740u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(18usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a == b {
-        emu.pc = 2195900u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002181bc));
-    } else {
-        emu.pc = 2195744u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218120));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218120(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(10usize, 2usize, 8u32, 2195748u32)?;
-    emu.lw_no_count(11usize, 2usize, 12u32, 2195752u32)?;
-    emu.sw_no_count(10usize, 9usize, 0u32, 2195756u32)?;
-    emu.sw_no_count(11usize, 9usize, 4u32, 2195760u32)?;
-    emu.add_memory_rw_events(4usize);
-    emu.pc = 2195760u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00218130));
-}
-#[inline(always)]
-pub fn block_0x00218130(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 6u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195764u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195768u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195772u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195776u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195780u32);
-    emu.add_memory_rw_events(6usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195784u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218148(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lbu_no_count(10usize, 2usize, 8u32, 2195788u32);
-    emu.lw_no_count(8usize, 2usize, 12u32, 2195792u32)?;
-    emu.sb_no_count(18usize, 9usize, 0u32, 2195796u32);
-    emu.add_memory_rw_events(3usize);
-    let b = emu.read_reg_b_tracked(10usize);
-    let a = emu.read_reg_a_tracked(18usize);
-    if a < b {
-        emu.pc = 2195808u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218160));
-    } else {
-        emu.pc = 2195800u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218158));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218158(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 0usize, 3u32, 2195804u32);
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(11usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a != b {
-        emu.pc = 2195760u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218130));
-    } else {
-        emu.pc = 2195808u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218160));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218160(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(18usize, 8usize, 4u32, 2195812u32)?;
-    emu.lw_no_count(11usize, 18usize, 0u32, 2195816u32)?;
-    emu.lw_no_count(9usize, 8usize, 0u32, 2195820u32)?;
-    emu.add_memory_rw_events(3usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(11usize);
-    if a == b {
-        emu.pc = 2195832u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218178));
-    } else {
-        emu.pc = 2195824u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218170));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218170(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195828u32);
-    emu.add_memory_rw_events(2usize);
-    let base = emu.read_reg_b_tracked(11usize);
-    let return_addr = 2195832u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218178(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(11usize, 18usize, 4u32, 2195836u32)?;
-    emu.add_memory_rw_events(1usize);
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(11usize);
-    if a == b {
-        emu.pc = 2195856u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218190));
-    } else {
-        emu.pc = 2195840u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218180));
-    }
-}
-#[inline(always)]
-pub fn block_0x00218180(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 4u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(12usize, 18usize, 8u32, 2195844u32)?;
-    emu.adi_no_count(10usize, 9usize, 0u32, 2195848u32);
-    emu.apc_no_count(1usize, 2195848u32, 4294901760u32, 2195852u32);
-    emu.add_memory_rw_events(4usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195856u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1376u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218190(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 5u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 0usize, 12u32, 2195860u32);
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195864u32);
-    emu.adi_no_count(10usize, 8usize, 0u32, 2195868u32);
-    emu.apc_no_count(1usize, 2195868u32, 4294901760u32, 2195872u32);
-    emu.add_memory_rw_events(5usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195876u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1356u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x002181a4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 6u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(1usize, 2usize, 60u32, 2195880u32)?;
-    emu.lw_no_count(8usize, 2usize, 56u32, 2195884u32)?;
-    emu.lw_no_count(9usize, 2usize, 52u32, 2195888u32)?;
-    emu.lw_no_count(18usize, 2usize, 48u32, 2195892u32)?;
-    emu.adi_no_count(2usize, 2usize, 64u32, 2195896u32);
-    emu.add_memory_rw_events(6usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195900u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x002181bc(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 14u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(10usize, a);
-    emu.pc = 2195904u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(10usize, 10usize, 368u32, 2195908u32);
-    emu.adi_no_count(11usize, 0usize, 1u32, 2195912u32);
-    emu.sw_no_count(0usize, 2usize, 40u32, 2195916u32)?;
-    emu.adi_no_count(12usize, 0usize, 4u32, 2195920u32);
-    emu.sw_no_count(10usize, 2usize, 24u32, 2195924u32)?;
-    emu.sw_no_count(11usize, 2usize, 28u32, 2195928u32)?;
-    emu.sw_no_count(12usize, 2usize, 32u32, 2195932u32)?;
-    emu.sw_no_count(0usize, 2usize, 36u32, 2195936u32)?;
-    let a = 0u32.wrapping_add(2236416u32);
-    emu.write_reg_no_count(11usize, a);
-    emu.pc = 2195940u32;
-    emu.update_insn_clock();
-    emu.adi_no_count(11usize, 11usize, 376u32, 2195944u32);
-    emu.adi_no_count(10usize, 2usize, 24u32, 2195948u32);
-    emu.apc_no_count(1usize, 2195948u32, 16384u32, 2195952u32);
-    emu.add_memory_rw_events(14usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195956u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(4294965616u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x002181f4(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 1u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    let b = emu.read_reg_b_tracked(0usize);
-    let a = emu.read_reg_a_tracked(12usize);
-    if a == b {
-        emu.pc = 2195988u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218214));
-    } else {
-        emu.pc = 2195960u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x002181f8));
-    }
-}
-#[inline(always)]
-pub fn block_0x002181f8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 5u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(2usize, 2usize, 4294967280u32, 2195964u32);
-    emu.sw_no_count(1usize, 2usize, 12u32, 2195968u32)?;
-    emu.adi_no_count(10usize, 0usize, 2u32, 2195972u32);
-    emu.apc_no_count(1usize, 2195972u32, 4294905856u32, 2195976u32);
-    emu.add_memory_rw_events(5usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195980u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1376u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x0021820c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(1usize, 2usize, 12u32, 2195984u32)?;
-    emu.adi_no_count(2usize, 2usize, 16u32, 2195988u32);
-    emu.add_memory_rw_events(2usize);
-    emu.pc = 2195988u32;
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x00218214));
-}
-#[inline(always)]
-pub fn block_0x00218214(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 2u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(10usize, 0usize, 0u32, 2195992u32);
-    emu.add_memory_rw_events(2usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2195996u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x0021821c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 12u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(2usize, 2usize, 4294967264u32, 2196000u32);
-    emu.sw_no_count(1usize, 2usize, 28u32, 2196004u32)?;
-    emu.sw_no_count(8usize, 2usize, 24u32, 2196008u32)?;
-    emu.sw_no_count(9usize, 2usize, 20u32, 2196012u32)?;
-    emu.sw_no_count(18usize, 2usize, 16u32, 2196016u32)?;
-    emu.sw_no_count(19usize, 2usize, 12u32, 2196020u32)?;
-    emu.adi_no_count(8usize, 12usize, 0u32, 2196024u32);
-    emu.lw_no_count(9usize, 10usize, 8u32, 2196028u32)?;
-    emu.lw_no_count(10usize, 9usize, 0u32, 2196032u32)?;
-    emu.lw_no_count(18usize, 9usize, 8u32, 2196036u32)?;
-    emu.sbr_no_count(10usize, 10usize, 18usize, 2196040u32);
-    emu.add_memory_rw_events(11usize);
-    let b = emu.read_reg_b_tracked(12usize);
-    let a = emu.read_reg_a_tracked(10usize);
-    if a < b {
-        emu.pc = 2196104u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x00218288));
-    } else {
-        emu.pc = 2196044u32;
-        emu.update_insn_clock();
-        emu.check_chunk_boundary_fast();
-        if emu.should_yield() {
-            return Ok(crate::NextStep::Dynamic(emu.pc));
-        }
-        return Ok(crate::NextStep::Direct(block_0x0021824c));
-    }
-}
-#[inline(always)]
-pub fn block_0x0021824c(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 5u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.lw_no_count(10usize, 9usize, 4u32, 2196048u32)?;
-    emu.adr_no_count(10usize, 10usize, 18usize, 2196052u32);
-    emu.adi_no_count(12usize, 8usize, 0u32, 2196056u32);
-    emu.apc_no_count(1usize, 2196056u32, 4294905856u32, 2196060u32);
-    emu.add_memory_rw_events(5usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2196064u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(1548u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline]
-pub fn block_0x00218260(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 10u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adr_no_count(8usize, 18usize, 8usize, 2196068u32);
-    emu.sw_no_count(8usize, 9usize, 8u32, 2196072u32)?;
-    emu.adi_no_count(10usize, 0usize, 0u32, 2196076u32);
-    emu.lw_no_count(1usize, 2usize, 28u32, 2196080u32)?;
-    emu.lw_no_count(8usize, 2usize, 24u32, 2196084u32)?;
-    emu.lw_no_count(9usize, 2usize, 20u32, 2196088u32)?;
-    emu.lw_no_count(18usize, 2usize, 16u32, 2196092u32)?;
-    emu.lw_no_count(19usize, 2usize, 12u32, 2196096u32)?;
-    emu.adi_no_count(2usize, 2usize, 32u32, 2196100u32);
-    emu.add_memory_rw_events(10usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2196104u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    let target = base.wrapping_add(0u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x00218288(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 8u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(13usize, 0usize, 1u32, 2196108u32);
-    emu.adi_no_count(14usize, 0usize, 1u32, 2196112u32);
-    emu.adi_no_count(10usize, 9usize, 0u32, 2196116u32);
-    emu.adi_no_count(19usize, 11usize, 0u32, 2196120u32);
-    emu.adi_no_count(11usize, 18usize, 0u32, 2196124u32);
-    emu.adi_no_count(12usize, 8usize, 0u32, 2196128u32);
-    emu.apc_no_count(1usize, 2196128u32, 0u32, 2196132u32);
-    emu.add_memory_rw_events(8usize);
-    let base = emu.read_reg_b_tracked(1usize);
-    let return_addr = 2196136u32;
-    emu.write_reg_no_count(1usize, return_addr);
-    let target = base.wrapping_add(544u32);
-    emu.pc = target;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Dynamic(target));
-}
-#[inline(always)]
-pub fn block_0x002182a8(emu: &mut AotEmulatorCore) -> Result<crate::NextStep, String> {
-    const BLOCK_INSNS: u32 = 3u32;
-    if !emu.can_fit_instructions(BLOCK_INSNS) {
-        return emu.interpret_from_current_pc();
-    }
-    if emu.is_unconstrained_mode() {
-        return emu.interpret_from_current_pc();
-    }
-    emu.adi_no_count(11usize, 19usize, 0u32, 2196140u32);
-    emu.lw_no_count(18usize, 9usize, 8u32, 2196144u32)?;
-    emu.add_memory_rw_events(3usize);
-    let return_addr = 2196148u32;
-    emu.write_reg_no_count(0usize, return_addr);
-    emu.pc = 2196044u32;
-    emu.update_insn_clock();
-    emu.check_chunk_boundary_fast();
-    if emu.should_yield() {
-        return Ok(crate::NextStep::Dynamic(emu.pc));
-    }
-    return Ok(crate::NextStep::Direct(block_0x0021824c));
 }
