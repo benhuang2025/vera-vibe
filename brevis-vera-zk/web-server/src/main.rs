@@ -552,7 +552,7 @@ fn run_prove_job(state: AppState, session_id: String, job_id: String, real_proof
     let proof_type: String;
 
     if real_proof {
-        update(55, "Generating Real STARK Proof (this takes ~60s)...");
+        update(55, "Generating Real STARK Proof (this takes ~30s)...");
 
         use pico_vm::configs::config::StarkGenericConfig;
         use pico_vm::configs::stark_config::KoalaBearPoseidon2;
