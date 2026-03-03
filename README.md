@@ -84,19 +84,29 @@
 git clone https://github.com/benhuang2025/vera-vibe.git
 cd vera-vibe
 
-# Run the full end-to-end test
+# Run the full end-to-end test (fast, emulation mode)
 chmod +x test_e2e.sh
 ./test_e2e.sh
+
+# Run with real STARK proof generation (slower, cryptographically verifiable)
+./test_e2e.sh --real-proof
 ```
 
 > **Note**: The repository includes all pre-built artifacts (ELF binaries, AOT chunks, and VK maps), so you can run the E2E test immediately after cloning — no additional build steps required.
+
+### Two Proof Modes
+
+| Mode | Command | Proof Type | Time (Mac 14-core) |
+|---|---|---|---|
+| **Emulation** (default) | `./test_e2e.sh` | Emulated execution, no cryptographic proof | ~2s |
+| **Real STARK** | `./test_e2e.sh --real-proof` | Pico STARK proof, independently verifiable | ~107s |
 
 ### What the E2E Test Does
 
 1. **Keygen** — Generates a Root CA key + Device key pair, outputs `Trusted Root CA Hash`
 2. **Sign** — Signs a photo with the device key, auto-detects CPU cores for shard count
 3. **Edit** — Applies edit operations (or none) and produces `edited_test.png`
-4. **ZK Prove** — Runs parallel AOT proving across all CPU cores (~750ms for 37MB image on 124-core server)
+4. **ZK Prove** — Runs parallel AOT emulation + optional STARK proof generation
 5. **Verify (3 cases)**:
    - ✅ Positive: correct image + correct Root CA hash → `VERIFICATION SUCCESSFUL`
    - ✅ Negative: tampered image → `Image Hash MISMATCH!`
