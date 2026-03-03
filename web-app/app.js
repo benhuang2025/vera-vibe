@@ -354,9 +354,14 @@ function showVerdict(data) {
         ? '🏆 VERIFICATION SUCCESSFUL'
         : '🚫 VERIFICATION FAILED';
 
-    // Edit history
+    // Edit history (filter out internal labels like "ParallelAOT")
     if (data.edit_types && data.edit_types.length) {
-        historyEl.textContent = `Edit History: Origin → ${data.edit_types.join(' → ')}`;
+        const userVisible = data.edit_types.filter(t => t !== 'ParallelAOT');
+        if (userVisible.length) {
+            historyEl.textContent = `Edit History: Origin → ${userVisible.join(' → ')}`;
+        } else {
+            historyEl.textContent = '';
+        }
     }
 
     document.getElementById('verdictContainer').style.display = 'block';
