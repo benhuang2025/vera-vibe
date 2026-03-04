@@ -10,6 +10,7 @@ keygen_output_v4.txt
 
 # Secrets (IMPORTANT)
 *.pem
+device_cert.json
 
 # Generated Proofs and Manifests
 signed*.json
@@ -34,9 +35,4 @@ DSC00050.JPG
 # AOT Artifacts and Tools
 pico_tools/
 test_aot_log*.txt
-brevis-vera-zk/aggregator-aot/
-brevis-vera-zk/shard-aot/
-brevis-vera-zk/aot-runtime/
-brevis-vera-zk/vm/
-brevis-vera-zk/derive/
 brevis-vera-zk/keygen_test.txt

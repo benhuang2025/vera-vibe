@@ -1,7 +1,10 @@
 #![no_main]
 
 pico_sdk::entrypoint!(main);
-use brevis_vera_lib::{EditManifest, EditOperation, PublicValues, SignedPhoto, pixel_utils};
+use brevis_vera_lib::{
+    EditManifest, EditOperation, PublicValues, SignedPhoto, compute_block_hashes,
+    compute_image_commitment, pixel_utils,
+};
 use p256::ecdsa::{Signature, VerifyingKey, signature::Verifier};
 use pico_sdk::io::{commit, read_as};
 use sha2::{Digest, Sha256};
@@ -12,17 +15,14 @@ pub fn main() {
     let manifest: EditManifest = read_as();
 
     // 2. Verify Authenticity (ECDSA P-256)
-    // First, verify that the metadata reflects the provided image hash
-    let mut hasher = Sha256::new();
-    hasher.update(&signed_photo.image_bytes);
-    let computed_image_hash: [u8; 32] = hasher.finalize().into();
+    let block_hashes = compute_block_hashes(&signed_photo.image_bytes);
+    let computed_commitment = compute_image_commitment(&block_hashes);
 
     assert_eq!(
-        computed_image_hash, signed_photo.metadata.image_hash,
-        "Image data does not match metadata hash"
+        computed_commitment, signed_photo.metadata.image_commitment,
+        "Image data does not match metadata commitment"
     );
 
-    // Second, verify the signature over the metadata
     let metadata_bytes = signed_photo.metadata.to_bytes();
     let verifying_key = VerifyingKey::from_sec1_bytes(&signed_photo.signature.public_key)
         .expect("Invalid public key");
@@ -63,40 +63,33 @@ pub fn main() {
             EditOperation::AdjustBrightness { delta } => {
                 current_pixels = pixel_utils::apply_brightness(&current_pixels, delta);
             }
+            EditOperation::Grayscale => {
+                current_pixels = pixel_utils::apply_grayscale(&current_pixels);
+            }
+            EditOperation::AdjustContrast { factor } => {
+                current_pixels = pixel_utils::apply_contrast(&current_pixels, factor);
+            }
+            EditOperation::Rotate90 => {
+                current_pixels = pixel_utils::apply_rotate90(&current_pixels, current_w, current_h);
+                let tmp = current_w;
+                current_w = current_h;
+                current_h = tmp;
+            }
         }
     }
 
     // 4. Compute Final Hash
-    let mut final_hasher = Sha256::new();
-    final_hasher.update(&current_pixels);
-    let output_image_hash: [u8; 32] = final_hasher.finalize().into();
-
-    // 4b. Compute output shard hashes
-    let num_shards = 64; // Hardcoded matches mock-signer
-    let shard_size = (current_pixels.len() + num_shards - 1) / num_shards;
-    let mut shard_hashes = Vec::new();
-
-    for i in 0..num_shards {
-        let start = i * shard_size;
-        let end = core::cmp::min(start + shard_size, current_pixels.len());
-        if start >= current_pixels.len() {
-            shard_hashes.push([0u8; 32]);
-            continue;
-        }
-        let mut h = Sha256::new();
-        h.update(&current_pixels[start..end]);
-        shard_hashes.push(h.finalize().into());
-    }
+    let edited_block_hashes = compute_block_hashes(&current_pixels);
+    let output_image_hash = compute_image_commitment(&edited_block_hashes);
 
     // 5. Commit Public Values
-    let mut pub_key_hasher = Sha256::new();
-    pub_key_hasher.update(&signed_photo.signature.public_key);
-    let pub_key_hash: [u8; 32] = pub_key_hasher.finalize().into();
+    let pub_key_hash: [u8; 32] = Sha256::digest(&signed_photo.signature.public_key).into();
 
     commit(&PublicValues {
+        original_image_commitment: signed_photo.metadata.image_commitment,
         pub_key_hash,
+        root_ca_hash: [0u8; 32],
         edit_types,
         output_image_hash,
-        shard_hashes,
     });
 }

@@ -1,2 +1,2 @@
-Keypair generated and saved to "private_key_test.pem"
-Public Key (HEX): 04eb1ae463fe711625fa3a1ef247f91b64f43eabc732274c8eab5fd3a363ba28925fc29e1b9c251fff1dca218e9057a4de6c78070d0ed345899a9e2fb1e81cc980
+Generated Trusted Root CA Hash: 3ad98dd97210d45580c1c310fc08ae1f4dc7d00278d8bed4644e1df205e57723
+Generated Device PubKey Hash: d7af49e7f1c78542a973ee79ae4341d9b3e65873d8e4b7b59cc24fa8d8c6229e

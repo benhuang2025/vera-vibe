@@ -1,0 +1,37 @@
+[package]
+name = "aggregator-aot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pico-aot-runtime = { path = "../aot-runtime" }
+agg-aot-chunk-000 = { path = "chunks/chunk_000" }
+agg-aot-chunk-001 = { path = "chunks/chunk_001" }
+agg-aot-chunk-002 = { path = "chunks/chunk_002" }
+agg-aot-chunk-003 = { path = "chunks/chunk_003" }
+agg-aot-chunk-004 = { path = "chunks/chunk_004" }
+agg-aot-chunk-005 = { path = "chunks/chunk_005" }
+agg-aot-chunk-006 = { path = "chunks/chunk_006" }
+agg-aot-chunk-007 = { path = "chunks/chunk_007" }
+agg-aot-chunk-008 = { path = "chunks/chunk_008" }
+agg-aot-chunk-009 = { path = "chunks/chunk_009" }
+agg-aot-chunk-010 = { path = "chunks/chunk_010" }
+agg-aot-chunk-011 = { path = "chunks/chunk_011" }
+agg-aot-chunk-012 = { path = "chunks/chunk_012" }
+agg-aot-chunk-013 = { path = "chunks/chunk_013" }
+agg-aot-chunk-014 = { path = "chunks/chunk_014" }
+agg-aot-chunk-015 = { path = "chunks/chunk_015" }
+agg-aot-chunk-016 = { path = "chunks/chunk_016" }
+agg-aot-chunk-017 = { path = "chunks/chunk_017" }
+agg-aot-chunk-018 = { path = "chunks/chunk_018" }
+agg-aot-chunk-019 = { path = "chunks/chunk_019" }
+agg-aot-chunk-020 = { path = "chunks/chunk_020" }
+agg-aot-chunk-021 = { path = "chunks/chunk_021" }
+agg-aot-chunk-022 = { path = "chunks/chunk_022" }
+agg-aot-chunk-023 = { path = "chunks/chunk_023" }
+agg-aot-chunk-024 = { path = "chunks/chunk_024" }
+agg-aot-chunk-025 = { path = "chunks/chunk_025" }
+agg-aot-chunk-026 = { path = "chunks/chunk_026" }
+agg-aot-chunk-027 = { path = "chunks/chunk_027" }
+agg-aot-chunk-028 = { path = "chunks/chunk_028" }
+agg-aot-chunk-029 = { path = "chunks/chunk_029" }

@@ -1,0 +1,33 @@
+[package]
+name = "shard-aot"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+pico-aot-runtime = { path = "../aot-runtime" }
+shard-aot-chunk-000 = { path = "chunks/chunk_000" }
+shard-aot-chunk-001 = { path = "chunks/chunk_001" }
+shard-aot-chunk-002 = { path = "chunks/chunk_002" }
+shard-aot-chunk-003 = { path = "chunks/chunk_003" }
+shard-aot-chunk-004 = { path = "chunks/chunk_004" }
+shard-aot-chunk-005 = { path = "chunks/chunk_005" }
+shard-aot-chunk-006 = { path = "chunks/chunk_006" }
+shard-aot-chunk-007 = { path = "chunks/chunk_007" }
+shard-aot-chunk-008 = { path = "chunks/chunk_008" }
+shard-aot-chunk-009 = { path = "chunks/chunk_009" }
+shard-aot-chunk-010 = { path = "chunks/chunk_010" }
+shard-aot-chunk-011 = { path = "chunks/chunk_011" }
+shard-aot-chunk-012 = { path = "chunks/chunk_012" }
+shard-aot-chunk-013 = { path = "chunks/chunk_013" }
+shard-aot-chunk-014 = { path = "chunks/chunk_014" }
+shard-aot-chunk-015 = { path = "chunks/chunk_015" }
+shard-aot-chunk-016 = { path = "chunks/chunk_016" }
+shard-aot-chunk-017 = { path = "chunks/chunk_017" }
+shard-aot-chunk-018 = { path = "chunks/chunk_018" }
+shard-aot-chunk-019 = { path = "chunks/chunk_019" }
+shard-aot-chunk-020 = { path = "chunks/chunk_020" }
+shard-aot-chunk-021 = { path = "chunks/chunk_021" }
+shard-aot-chunk-022 = { path = "chunks/chunk_022" }
+shard-aot-chunk-023 = { path = "chunks/chunk_023" }
+shard-aot-chunk-024 = { path = "chunks/chunk_024" }
+shard-aot-chunk-025 = { path = "chunks/chunk_025" }
