@@ -174,7 +174,7 @@ Tested on a 128-vCPU Linux server with a 4320×2880 image (37MB raw pixels, 570 
 
 Key optimizations:
 - **SHA256 Precompile**: Activated via `brevis-network/hashes` fork — all SHA256 operations route through Pico's built-in hardware acceleration
-- **Plan D (Block-Based Commitment)**: 64KB fixed blocks decouple camera signing from prover sharding. Aggregator receives 36KB of block hashes instead of 37MB of raw pixels
+- **Block-Based Commitment**: 64KB fixed blocks decouple camera signing from prover sharding. Aggregator receives 36KB of block hashes instead of 37MB of raw pixels
 - **Parallel AOT**: 124 shards across all CPU cores via Rayon
 
 See [PERFORMANCE_BENCHMARK.md](PERFORMANCE_BENCHMARK.md) for detailed benchmarks.
