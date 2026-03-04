@@ -218,6 +218,5 @@ cd .. && ./test_e2e.sh
 
 ---
 
-## Core Philosophy: Proof of Origin
-> "Don't trust, verify."
-> Brevis Vera proves that we can allow digital creativity without sacrificing truth.
+## Note
+> There is still potential soundness issue
